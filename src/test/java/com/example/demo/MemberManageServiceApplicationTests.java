@@ -1,7 +1,7 @@
 package com.example.demo;
 
-import com.meidusa.fastjson.JSON;
-import com.meidusa.fastjson.JSONObject;
+
+import com.alibaba.fastjson.JSONObject;
 import com.rechenggit.MemberManageServiceApplication;
 import com.rechenggit.core.domainservice.repository.MemberRepository;
 import com.rechenggit.core.domainservice.repository.SequenceRepository;
@@ -32,7 +32,8 @@ public class MemberManageServiceApplicationTests {
         System.out.println(111);
         // sequenceRepository.flush();
         System.out.println("200001380005");
-        System.out.println(memberRepository.load("200001380005"));
+
+        System.out.println(JSONObject.toJSONString(memberRepository.load("200001380005")));
         System.out.println(memberRepository.load("200001380005"));
         System.out.println(memberRepository.load("200001380005"));
     }

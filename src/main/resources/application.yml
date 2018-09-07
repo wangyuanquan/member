@@ -59,7 +59,7 @@ mybatis:
 
   mapper-locations: classpath:mapping/*.xml
 
-  type-aliases-package: com.hrf.model
+  type-aliases-package: com.rechenggit.core.dal.dataobject
 
 
 

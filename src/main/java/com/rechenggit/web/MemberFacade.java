@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(value="/member")
 public class MemberFacade {
+
     @GetMapping(value = "/query", produces = {"application/json;charset=UTF-8"})
 
     public String addUser(String memberId){
