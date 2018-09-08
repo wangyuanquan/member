@@ -8,7 +8,7 @@ import lombok.ToString;
 @Setter
 @ToString
 public class BaseResponse<T> {
-    private int status;
+    private int status =200;
 
     private String message;
 

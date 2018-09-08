@@ -59,8 +59,28 @@
                enableUpdateByExample="false" enableDeleteByExample="false"
                enableSelectByExample="false" selectByExampleQueryId="false">
         </table>-->
-                <table tableName="tm_member"
+        <!--<table tableName="tm_member"
                domainObjectName="Member" enableCountByExample="false"
+               enableUpdateByExample="false" enableDeleteByExample="false"
+               enableSelectByExample="false" selectByExampleQueryId="false">
+        </table>-->
+        <table tableName="tm_enterprise_basic_info"
+               domainObjectName="EnterpriseBasicInfo" enableCountByExample="false"
+               enableUpdateByExample="false" enableDeleteByExample="false"
+               enableSelectByExample="false" selectByExampleQueryId="false">
+        </table>
+        <table tableName="tm_company_info"
+               domainObjectName="CompanyInfo" enableCountByExample="false"
+               enableUpdateByExample="false" enableDeleteByExample="false"
+               enableSelectByExample="false" selectByExampleQueryId="false">
+        </table>
+        <table tableName="tm_store_info"
+               domainObjectName="StoreInfo" enableCountByExample="false"
+               enableUpdateByExample="false" enableDeleteByExample="false"
+               enableSelectByExample="false" selectByExampleQueryId="false">
+        </table>
+        <table tableName="tm_enterprise_other_info"
+               domainObjectName="EnterpriseOtherInfo" enableCountByExample="false"
                enableUpdateByExample="false" enableDeleteByExample="false"
                enableSelectByExample="false" selectByExampleQueryId="false">
         </table>
