@@ -4,13 +4,15 @@ import com.alibaba.fastjson.JSONObject;
 import com.rechenggit.core.dal.dataobject.Member;
 import com.rechenggit.core.dal.mongodbobject.Customer;
 import com.rechenggit.core.dal.mongodbobject.User;
+import com.rechenggit.core.domain.Example;
 import com.rechenggit.core.domainservice.mongodbrepository.CustomerRepository;
-import com.rechenggit.core.domainservice.mongodbrepository.UserRepository;
 import com.rechenggit.core.domainservice.mongodbrepository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -18,14 +20,12 @@ import java.util.List;
 import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(value="/example")
-public class ExampleControl
+public class ExampleControl extends BaseControl
 {
         private final static Logger logger = LoggerFactory.getLogger(ExampleControl.class);
 
@@ -61,15 +61,19 @@ public class ExampleControl
         return "delete sucess";
     }
 
-    @RequestMapping("/add")
-    public String insert() {
+    @GetMapping("/add")
+    public String nsert() {
         User user =new User(16, ""+16, 16);
         userService.insert(user);
         return "sucess";
     }
-
+    @PostMapping("/example")
+    public String example(@RequestBody @Validated Example example, BindingResult bindingResult) {
+        System.out.println("example:"+JSONObject.toJSONString(example));
+        return "sucess";
+    }
     @RequestMapping("/insert")
-    public String insertAll() {
+    public String insertAll(String name,String pwd) {
         List<User> list = new ArrayList<>();
         for (int i = 10; i < 15; i++) {
             list.add(new User(i, "" + i, i));
