@@ -13,6 +13,6 @@ public class EnterPriseMemberControl extends BaseControl {
 
     @PostMapping("/saveServiceInfo")
     public static void saveEnterpriseServiceInfo() {
-
+        System.out.println("ss");
     }
 }
