@@ -54,7 +54,6 @@ public class EnterPriseMemberControl extends BaseControl {
         }
         return success(response);
 
-        return enterpriseMemberService.saveEnterpriseBasicInfo(enterpriseBasic);
     }
 
     @PostMapping("/updateEnterpriseBasicInfo")
@@ -63,5 +62,16 @@ public class EnterPriseMemberControl extends BaseControl {
         logger.info("保存enterpriseBasic:"+ JSONObject.toJSONString(enterpriseBasic));
 
         return enterpriseMemberService.updateEnterpriseBasicInfo(enterpriseBasic);
+    }
+
+    @PostMapping("/queryEnterpriseBasicInfo")
+    public EnterpriseBasic queryEnterpriseBasicInfo(@RequestBody String memberId) {
+
+        return enterpriseMemberService.queryEnterpriseBasicInfo(memberId);
+    }
+    @PostMapping("/queryEnterpriseBasicInfo")
+    public BaseResponse deleteEnterpriseBasicInfo(@RequestBody String memberId) {
+
+        return enterpriseMemberService.deleteEnterpriseBasicInfo(memberId);
     }
 }

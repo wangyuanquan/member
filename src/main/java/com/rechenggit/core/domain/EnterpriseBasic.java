@@ -91,12 +91,12 @@ public class EnterpriseBasic {
     private List<EnterpriseCompany> companyInfo;
 
     /**
-     * 商店信息
+     * 商店信息id
      */
     private String storeInfoId;
 
     /**
-     * 公司信息
+     * 公司信息id
      */
     private String companyInfoId;
 
