@@ -6,6 +6,7 @@ server:
 
   port: 8681
 
+  context-path: /member-manage
 mybatis:
 
   mapper-locations: classpath:mapping/*.xml
@@ -14,7 +15,7 @@ mybatis:
 
 
 
-#pagehelper·ÖÒ³²å¼þ
+#pagehelperï¿½ï¿½Ò³ï¿½ï¿½ï¿½
 
 pagehelper:
 
