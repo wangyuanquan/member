@@ -177,6 +177,15 @@
                     </dependency>
                 </dependencies>
             </plugin>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <finalName>${project.name}</finalName>
+                    <!--fork 此属性启用无法进入debug-->
+                    <fork>false</fork>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
     <distributionManagement>
