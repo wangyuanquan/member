@@ -9,6 +9,7 @@ import com.rechenggit.core.domainservice.service.EnterpriseMemberService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,9 +29,10 @@ public class EnterPriseMemberControl extends BaseControl {
         return enterpriseMemberService.saveEnterpriseBasicInfo(enterpriseBasic);
     }
     @PostMapping("/saveServiceInfo")
-    public BaseResponse saveEnterpriseServiceInfo(@RequestBody @Validated EnterpriseMemberServiceDomain enterpriseMemberServiceDomain) {
+    public BaseResponse saveEnterpriseServiceInfo(@RequestBody @Validated EnterpriseMemberServiceDomain enterpriseMemberServiceDomain, BindingResult result) {
         BaseResponse<EnterpriseMemberServiceDomain> response=new BaseResponse();
         try{
+            validate(result);
             enterpriseMemberService.saveEnterpriseServiceInfo(enterpriseMemberServiceDomain);
 
         }catch (Exception e){
