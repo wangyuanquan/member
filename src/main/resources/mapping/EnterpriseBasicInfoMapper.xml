@@ -1,34 +1,39 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.rechenggit.core.dal.mapper.EnterpriseBasicInfoMapper" >
-  <resultMap id="BaseResultMap" type="com.rechenggit.core.dal.dataobject.EnterpriseBasicInfo" >
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rechenggit.core.dal.mapper.EnterpriseBasicInfoMapper">
+  <resultMap id="BaseResultMap" type="com.rechenggit.core.dal.dataobject.EnterpriseBasicInfo">
     <!--
       WARNING - @mbggenerated
     -->
-    <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="member_id" property="memberId" jdbcType="VARCHAR" />
-    <result column="address" property="address" jdbcType="VARCHAR" />
-    <result column="suburb" property="suburb" jdbcType="VARCHAR" />
-    <result column="state" property="state" jdbcType="VARCHAR" />
-    <result column="post_code" property="postCode" jdbcType="VARCHAR" />
-    <result column="phone" property="phone" jdbcType="VARCHAR" />
-    <result column="email" property="email" jdbcType="VARCHAR" />
-    <result column="contact_name" property="contactName" jdbcType="VARCHAR" />
-    <result column="contact_phone" property="contactPhone" jdbcType="VARCHAR" />
-    <result column="contact_title" property="contactTitle" jdbcType="VARCHAR" />
-    <result column="bill_name" property="billName" jdbcType="VARCHAR" />
-    <result column="bill_bank" property="billBank" jdbcType="VARCHAR" />
-    <result column="bill_bbs_account" property="billBbsAccount" jdbcType="VARCHAR" />
-    <result column="bill_file_path" property="billFilePath" jdbcType="VARCHAR" />
-    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
-    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="member_id" jdbcType="VARCHAR" property="memberId" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="suburb" jdbcType="VARCHAR" property="suburb" />
+    <result column="state" jdbcType="VARCHAR" property="state" />
+    <result column="post_code" jdbcType="VARCHAR" property="postCode" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="contact_name" jdbcType="VARCHAR" property="contactName" />
+    <result column="contact_phone" jdbcType="VARCHAR" property="contactPhone" />
+    <result column="contact_title" jdbcType="VARCHAR" property="contactTitle" />
+    <result column="bill_name" jdbcType="VARCHAR" property="billName" />
+    <result column="bill_bank" jdbcType="VARCHAR" property="billBank" />
+    <result column="bill_bbs_account" jdbcType="VARCHAR" property="billBbsAccount" />
+    <result column="bill_file_path" jdbcType="VARCHAR" property="billFilePath" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
+    <result column="rate" jdbcType="VARCHAR" property="rate" />
+    <result column="profit_distribution" jdbcType="INTEGER" property="profitDistribution" />
+    <result column="settlement_cycle" jdbcType="VARCHAR" property="settlementCycle" />
+    <result column="uploading_files" jdbcType="VARCHAR" property="uploadingFiles" />
   </resultMap>
-  <sql id="Base_Column_List" >
+  <sql id="Base_Column_List">
     <!--
       WARNING - @mbggenerated
     -->
     id, member_id, address, suburb, state, post_code, phone, email, contact_name, contact_phone, 
     contact_title, bill_name, bill_bank, bill_bbs_account, bill_file_path, create_time, 
-    update_time
+    update_time, type, rate, profit_distribution, settlement_cycle, uploading_files
   </sql>
 </mapper>

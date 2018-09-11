@@ -12,6 +12,12 @@ public class StoreInfo {
     private String memberId;
 
     /**
+     * 页面展示序号
+     */
+    @Column(name = "display_num")
+    private Byte displayNum;
+
+    /**
      * 商店名称
      */
     @Column(name = "store_name")
@@ -85,6 +91,24 @@ public class StoreInfo {
      */
     public void setMemberId(String memberId) {
         this.memberId = memberId == null ? null : memberId.trim();
+    }
+
+    /**
+     * 获取页面展示序号
+     *
+     * @return display_num - 页面展示序号
+     */
+    public Byte getDisplayNum() {
+        return displayNum;
+    }
+
+    /**
+     * 设置页面展示序号
+     *
+     * @param displayNum 页面展示序号
+     */
+    public void setDisplayNum(Byte displayNum) {
+        this.displayNum = displayNum;
     }
 
     /**

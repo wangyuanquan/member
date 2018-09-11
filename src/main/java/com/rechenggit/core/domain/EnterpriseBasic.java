@@ -6,8 +6,6 @@ import lombok.ToString;
 
 import java.util.List;
 
-@Getter
-@Setter
 @ToString
 public class EnterpriseBasic {
 
@@ -92,5 +90,131 @@ public class EnterpriseBasic {
      */
     private List<EnterpriseCompany> companyInfo;
 
+    public String getMemberId() {
+        return memberId;
+    }
 
+    public void setMemberId(String memberId) {
+        this.memberId = memberId;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getSuburb() {
+        return suburb;
+    }
+
+    public void setSuburb(String suburb) {
+        this.suburb = suburb;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public String getPostCode() {
+        return postCode;
+    }
+
+    public void setPostCode(String postCode) {
+        this.postCode = postCode;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getContactName() {
+        return contactName;
+    }
+
+    public void setContactName(String contactName) {
+        this.contactName = contactName;
+    }
+
+    public String getContactPhone() {
+        return contactPhone;
+    }
+
+    public void setContactPhone(String contactPhone) {
+        this.contactPhone = contactPhone;
+    }
+
+    public String getContactTitle() {
+        return contactTitle;
+    }
+
+    public void setContactTitle(String contactTitle) {
+        this.contactTitle = contactTitle;
+    }
+
+    public String getBillName() {
+        return billName;
+    }
+
+    public void setBillName(String billName) {
+        this.billName = billName;
+    }
+
+    public String getBillBank() {
+        return billBank;
+    }
+
+    public void setBillBank(String billBank) {
+        this.billBank = billBank;
+    }
+
+    public String getBillBbsAccount() {
+        return billBbsAccount;
+    }
+
+    public void setBillBbsAccount(String billBbsAccount) {
+        this.billBbsAccount = billBbsAccount;
+    }
+
+    public String getBillFilePath() {
+        return billFilePath;
+    }
+
+    public void setBillFilePath(String billFilePath) {
+        this.billFilePath = billFilePath;
+    }
+
+    public List<EnterpriseStore> getStoreInfo() {
+        return storeInfo;
+    }
+
+    public void setStoreInfo(List<EnterpriseStore> storeInfo) {
+        this.storeInfo = storeInfo;
+    }
+
+    public List<EnterpriseCompany> getCompanyInfo() {
+        return companyInfo;
+    }
+
+    public void setCompanyInfo(List<EnterpriseCompany> companyInfo) {
+        this.companyInfo = companyInfo;
+    }
 }

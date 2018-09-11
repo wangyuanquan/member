@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.rechenggit.core.dal.dataobject.Member;
 import com.rechenggit.core.dal.mongodbobject.Customer;
 import com.rechenggit.core.dal.mongodbobject.User;
-import com.rechenggit.core.domain.Example;
+import com.rechenggit.core.domain.NotEmptyTest;
 import com.rechenggit.core.domainservice.mongodbrepository.CustomerRepository;
 import com.rechenggit.core.domainservice.mongodbrepository.UserRepository;
 import org.slf4j.Logger;
@@ -68,7 +68,7 @@ public class ExampleControl extends BaseControl
         return "sucess";
     }
     @PostMapping("/example")
-    public String example(@RequestBody @Validated Example example, BindingResult bindingResult) {
+    public String example(@RequestBody @Validated NotEmptyTest example, BindingResult bindingResult) {
         System.out.println("example:"+JSONObject.toJSONString(example));
         return "sucess";
     }

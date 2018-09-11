@@ -12,6 +12,12 @@ public class CompanyInfo {
     private String memberId;
 
     /**
+     * 页面展示序号
+     */
+    @Column(name = "display_num")
+    private Byte displayNum;
+
+    /**
      * 公司注册：名称
      */
     @Column(name = "company_name")
@@ -109,6 +115,24 @@ public class CompanyInfo {
      */
     public void setMemberId(String memberId) {
         this.memberId = memberId == null ? null : memberId.trim();
+    }
+
+    /**
+     * 获取页面展示序号
+     *
+     * @return display_num - 页面展示序号
+     */
+    public Byte getDisplayNum() {
+        return displayNum;
+    }
+
+    /**
+     * 设置页面展示序号
+     *
+     * @param displayNum 页面展示序号
+     */
+    public void setDisplayNum(Byte displayNum) {
+        this.displayNum = displayNum;
     }
 
     /**

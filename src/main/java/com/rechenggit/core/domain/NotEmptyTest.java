@@ -3,7 +3,7 @@ package com.rechenggit.core.domain;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
-public class Example {
+public class NotEmptyTest {
     @NotEmpty(message = "{name.empty.error}")
     private String name;
     @NotEmpty( message = "{name.empty.error}")

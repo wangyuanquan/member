@@ -1,32 +1,33 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.rechenggit.core.dal.mapper.CompanyInfoMapper" >
-  <resultMap id="BaseResultMap" type="com.rechenggit.core.dal.dataobject.CompanyInfo" >
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rechenggit.core.dal.mapper.CompanyInfoMapper">
+  <resultMap id="BaseResultMap" type="com.rechenggit.core.dal.dataobject.CompanyInfo">
     <!--
       WARNING - @mbggenerated
     -->
-    <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="member_id" property="memberId" jdbcType="VARCHAR" />
-    <result column="company_name" property="companyName" jdbcType="VARCHAR" />
-    <result column="company_abn" property="companyAbn" jdbcType="VARCHAR" />
-    <result column="company_acn" property="companyAcn" jdbcType="VARCHAR" />
-    <result column="company_industry" property="companyIndustry" jdbcType="VARCHAR" />
-    <result column="company_address" property="companyAddress" jdbcType="VARCHAR" />
-    <result column="company_suburb" property="companySuburb" jdbcType="VARCHAR" />
-    <result column="company_state" property="companyState" jdbcType="VARCHAR" />
-    <result column="company_postcode" property="companyPostcode" jdbcType="VARCHAR" />
-    <result column="directer_name" property="directerName" jdbcType="VARCHAR" />
-    <result column="photo_id" property="photoId" jdbcType="VARCHAR" />
-    <result column="photo_id_type" property="photoIdType" jdbcType="TINYINT" />
-    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
-    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="member_id" jdbcType="VARCHAR" property="memberId" />
+    <result column="display_num" jdbcType="TINYINT" property="displayNum" />
+    <result column="company_name" jdbcType="VARCHAR" property="companyName" />
+    <result column="company_abn" jdbcType="VARCHAR" property="companyAbn" />
+    <result column="company_acn" jdbcType="VARCHAR" property="companyAcn" />
+    <result column="company_industry" jdbcType="VARCHAR" property="companyIndustry" />
+    <result column="company_address" jdbcType="VARCHAR" property="companyAddress" />
+    <result column="company_suburb" jdbcType="VARCHAR" property="companySuburb" />
+    <result column="company_state" jdbcType="VARCHAR" property="companyState" />
+    <result column="company_postcode" jdbcType="VARCHAR" property="companyPostcode" />
+    <result column="directer_name" jdbcType="VARCHAR" property="directerName" />
+    <result column="photo_id" jdbcType="VARCHAR" property="photoId" />
+    <result column="photo_id_type" jdbcType="TINYINT" property="photoIdType" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
-  <sql id="Base_Column_List" >
+  <sql id="Base_Column_List">
     <!--
       WARNING - @mbggenerated
     -->
-    id, member_id, company_name, company_abn, company_acn, company_industry, company_address, 
-    company_suburb, company_state, company_postcode, directer_name, photo_id, photo_id_type, 
-    create_time, update_time
+    id, member_id, display_num, company_name, company_abn, company_acn, company_industry, 
+    company_address, company_suburb, company_state, company_postcode, directer_name, 
+    photo_id, photo_id_type, create_time, update_time
   </sql>
 </mapper>

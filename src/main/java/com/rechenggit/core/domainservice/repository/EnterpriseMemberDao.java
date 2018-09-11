@@ -1,9 +1,9 @@
-package com.rechenggit.core.domainservice.service;
+package com.rechenggit.core.domainservice.repository;
 
 import com.rechenggit.core.common.BaseResponse;
 import com.rechenggit.core.domain.EnterpriseBasic;
 
-public interface EnterpriseMemberService {
+public interface EnterpriseMemberDao {
     /**
      * 保存商户基本信息
      * @param enterpriseBasic

@@ -93,6 +93,23 @@ public class EnterpriseBasicInfo {
     @Column(name = "update_time")
     private Date updateTime;
 
+    private String type;
+
+    private String rate;
+
+    @Column(name = "profit_distribution")
+    private Integer profitDistribution;
+
+    @Column(name = "settlement_cycle")
+    private String settlementCycle;
+
+    @Column(name = "uploading_files")
+    private String uploadingFiles;
+
+    public EnterpriseBasicInfo() {
+    }
+
+
     /**
      * @return id
      */
@@ -385,5 +402,75 @@ public class EnterpriseBasicInfo {
      */
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    /**
+     * @return type
+     */
+    public String getType() {
+        return type;
+    }
+
+    /**
+     * @param type
+     */
+    public void setType(String type) {
+        this.type = type == null ? null : type.trim();
+    }
+
+    /**
+     * @return rate
+     */
+    public String getRate() {
+        return rate;
+    }
+
+    /**
+     * @param rate
+     */
+    public void setRate(String rate) {
+        this.rate = rate == null ? null : rate.trim();
+    }
+
+    /**
+     * @return profit_distribution
+     */
+    public Integer getProfitDistribution() {
+        return profitDistribution;
+    }
+
+    /**
+     * @param profitDistribution
+     */
+    public void setProfitDistribution(Integer profitDistribution) {
+        this.profitDistribution = profitDistribution;
+    }
+
+    /**
+     * @return settlement_cycle
+     */
+    public String getSettlementCycle() {
+        return settlementCycle;
+    }
+
+    /**
+     * @param settlementCycle
+     */
+    public void setSettlementCycle(String settlementCycle) {
+        this.settlementCycle = settlementCycle == null ? null : settlementCycle.trim();
+    }
+
+    /**
+     * @return uploading_files
+     */
+    public String getUploadingFiles() {
+        return uploadingFiles;
+    }
+
+    /**
+     * @param uploadingFiles
+     */
+    public void setUploadingFiles(String uploadingFiles) {
+        this.uploadingFiles = uploadingFiles == null ? null : uploadingFiles.trim();
     }
 }

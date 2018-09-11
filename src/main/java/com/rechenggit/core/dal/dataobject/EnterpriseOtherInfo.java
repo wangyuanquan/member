@@ -47,6 +47,22 @@ public class EnterpriseOtherInfo {
     @Column(name = "update_time")
     private Date updateTime;
 
+    @Column(name = "uploading_files")
+    private String uploadingFiles;
+
+    @Column(name = "settlement_cycle")
+    private String settlementCycle;
+
+    @Column(name = "profit_distribution")
+    private Integer profitDistribution;
+
+    @Column(name = "column_13")
+    private Integer column13;
+
+    private String type;
+
+    private Integer rate;
+
     /**
      * @return id
      */
@@ -191,5 +207,89 @@ public class EnterpriseOtherInfo {
      */
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    /**
+     * @return uploading_files
+     */
+    public String getUploadingFiles() {
+        return uploadingFiles;
+    }
+
+    /**
+     * @param uploadingFiles
+     */
+    public void setUploadingFiles(String uploadingFiles) {
+        this.uploadingFiles = uploadingFiles == null ? null : uploadingFiles.trim();
+    }
+
+    /**
+     * @return settlement_cycle
+     */
+    public String getSettlementCycle() {
+        return settlementCycle;
+    }
+
+    /**
+     * @param settlementCycle
+     */
+    public void setSettlementCycle(String settlementCycle) {
+        this.settlementCycle = settlementCycle == null ? null : settlementCycle.trim();
+    }
+
+    /**
+     * @return profit_distribution
+     */
+    public Integer getProfitDistribution() {
+        return profitDistribution;
+    }
+
+    /**
+     * @param profitDistribution
+     */
+    public void setProfitDistribution(Integer profitDistribution) {
+        this.profitDistribution = profitDistribution;
+    }
+
+    /**
+     * @return column_13
+     */
+    public Integer getColumn13() {
+        return column13;
+    }
+
+    /**
+     * @param column13
+     */
+    public void setColumn13(Integer column13) {
+        this.column13 = column13;
+    }
+
+    /**
+     * @return type
+     */
+    public String getType() {
+        return type;
+    }
+
+    /**
+     * @param type
+     */
+    public void setType(String type) {
+        this.type = type == null ? null : type.trim();
+    }
+
+    /**
+     * @return rate
+     */
+    public Integer getRate() {
+        return rate;
+    }
+
+    /**
+     * @param rate
+     */
+    public void setRate(Integer rate) {
+        this.rate = rate;
     }
 }
