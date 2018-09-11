@@ -69,7 +69,7 @@ public class EnterPriseMemberControl extends BaseControl {
 
         return enterpriseMemberService.queryEnterpriseBasicInfo(memberId);
     }
-    @PostMapping("/queryEnterpriseBasicInfo")
+    @PostMapping("/deleteEnterpriseBasicInfo")
     public BaseResponse deleteEnterpriseBasicInfo(@RequestBody String memberId) {
 
         return enterpriseMemberService.deleteEnterpriseBasicInfo(memberId);

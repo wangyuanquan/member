@@ -134,7 +134,21 @@ public class EnterpriseMemberRepositoryImpl implements EnterpriseMemberRepositor
 
     @Override
     public BaseResponse deleteEnterpriseBasicInfo(String memberId) {
-
-        return null;
+        //基本信息
+        Example exampleBasicInfo = new Example(EnterpriseBasicInfo.class);
+        exampleBasicInfo.createCriteria().andEqualTo("memberId", memberId);
+        int num = enterpriseBasicInfoMapper.deleteByExample(exampleBasicInfo);
+        //商店
+        Example exampleStore = new Example(StoreInfo.class);
+        exampleStore.createCriteria().andEqualTo("memberId", memberId);
+        num += storeInfoMapper.deleteByExample(exampleStore);
+        //公司
+        Example exampleCompany = new Example(CompanyInfo.class);
+        exampleCompany.createCriteria().andEqualTo("memberId", memberId);
+        num += companyInfoMapper.deleteByExample(exampleCompany);
+        if(num < 1){
+            return new BaseResponse(503,"无相关信息");
+        }
+        return new BaseResponse();
     }
 }
