@@ -21,11 +21,19 @@ public class EnterPriseMemberControl extends BaseControl {
     @Autowired
     private EnterpriseMemberService enterpriseMemberService;
 
-    @PostMapping("/saveServiceInfo")
-    public BaseResponse saveEnterpriseServiceInfo(@RequestBody EnterpriseBasic enterpriseBasic) {
+    @PostMapping("/saveEnterpriseBasicInfo")
+    public BaseResponse saveEnterpriseBasicInfo(@RequestBody EnterpriseBasic enterpriseBasic) {
 
         logger.info("保存enterpriseBasic:"+ JSONObject.toJSONString(enterpriseBasic));
 
-        return enterpriseMemberService.saveEnterpriseServiceInfo(enterpriseBasic);
+        return enterpriseMemberService.saveEnterpriseBasicInfo(enterpriseBasic);
+    }
+
+    @PostMapping("/updateEnterpriseBasicInfo")
+    public BaseResponse updateEnterpriseBasicInfo(@RequestBody EnterpriseBasic enterpriseBasic) {
+
+        logger.info("保存enterpriseBasic:"+ JSONObject.toJSONString(enterpriseBasic));
+
+        return enterpriseMemberService.updateEnterpriseBasicInfo(enterpriseBasic);
     }
 }

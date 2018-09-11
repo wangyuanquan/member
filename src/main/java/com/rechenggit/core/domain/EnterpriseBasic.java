@@ -90,6 +90,16 @@ public class EnterpriseBasic {
      */
     private List<EnterpriseCompany> companyInfo;
 
+    /**
+     * 商店信息
+     */
+    private String storeInfoId;
+
+    /**
+     * 公司信息
+     */
+    private String companyInfoId;
+
     public String getMemberId() {
         return memberId;
     }
@@ -216,5 +226,13 @@ public class EnterpriseBasic {
 
     public void setCompanyInfo(List<EnterpriseCompany> companyInfo) {
         this.companyInfo = companyInfo;
+    }
+
+    public String getStoreInfoId() {
+        return storeInfoId;
+    }
+
+    public void setStoreInfoId(String storeInfoId) {
+        this.storeInfoId = storeInfoId;
     }
 }
