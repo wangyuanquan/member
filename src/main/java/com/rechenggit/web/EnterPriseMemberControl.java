@@ -3,11 +3,13 @@ package com.rechenggit.web;
 import com.alibaba.fastjson.JSONObject;
 import com.rechenggit.core.common.BaseResponse;
 import com.rechenggit.core.domain.EnterpriseBasic;
+import com.rechenggit.core.domain.EnterpriseMemberServiceDomain;
 import com.rechenggit.core.domainservice.mongodbrepository.UserRepository;
 import com.rechenggit.core.domainservice.service.EnterpriseMemberService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,11 +23,24 @@ public class EnterPriseMemberControl extends BaseControl {
     @Autowired
     private EnterpriseMemberService enterpriseMemberService;
 
-    @PostMapping("/saveServiceInfo")
+    @PostMapping("/saveBasicInfo")
     public BaseResponse saveEnterpriseServiceInfo(@RequestBody EnterpriseBasic enterpriseBasic) {
 
         logger.info("保存enterpriseBasic:"+ JSONObject.toJSONString(enterpriseBasic));
 
-        return enterpriseMemberService.saveEnterpriseServiceInfo(enterpriseBasic);
+        return enterpriseMemberService.saveEnterpriseBasicInfo(enterpriseBasic);
+    }
+    @PostMapping("/saveServiceInfo")
+    public BaseResponse saveEnterpriseServiceInfo(@RequestBody @Validated EnterpriseMemberServiceDomain enterpriseMemberServiceDomain) {
+        BaseResponse<EnterpriseMemberServiceDomain> response=new BaseResponse();
+        try{
+            enterpriseMemberService.saveEnterpriseServiceInfo(enterpriseMemberServiceDomain);
+
+        }catch (Exception e){
+            return  fail(response);
+
+        }
+        return success();
+
     }
 }
