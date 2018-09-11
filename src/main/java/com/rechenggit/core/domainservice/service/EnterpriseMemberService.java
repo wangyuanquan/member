@@ -2,6 +2,7 @@ package com.rechenggit.core.domainservice.service;
 
 import com.rechenggit.core.common.BaseResponse;
 import com.rechenggit.core.domain.EnterpriseBasic;
+import com.rechenggit.core.domain.EnterpriseMemberServiceDomain;
 
 public interface EnterpriseMemberService {
     /**
@@ -24,4 +25,8 @@ public interface EnterpriseMemberService {
      * @param memberId
      */
     BaseResponse deleteEnterpriseBasicInfo(String memberId);
+
+    void saveEnterpriseServiceInfo(EnterpriseMemberServiceDomain enterpriseMemberServiceDomain);
+
+    EnterpriseMemberServiceDomain queryEnterpriseServiceInfoById(String memberId);
 }
