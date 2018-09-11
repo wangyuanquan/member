@@ -1,15 +1,18 @@
+/*
 package com.example.demo;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 
 public class test {
 
-    /**
+    */
+/**
      * 该方法是用于相同对象不同属性值的合并，如果两个相同对象中同一属性都有值，那么sourceBean中的值会覆盖tagetBean重点的值
      * @param sourceBean    被提取的对象bean
      * @param targetBean    用于合并的对象bean
-     * @return targetBean,合并后的对象
-     */
+     * @return targetBean,合并后的对象·
+     *//*
+
     private TestModel combineSydwCore(TestModel sourceBean,TestModel targetBean){
         Class sourceBeanClass = sourceBean.getClass();
         Class targetBeanClass = targetBean.getClass();
@@ -55,3 +58,4 @@ public class test {
         System.out.println(targetModel.toString());
     }
 }
+*/
