@@ -26,6 +26,10 @@ public class BaseControl {
         return new BaseResponse();
 
     }
+    public BaseResponse success(BaseResponse response){
+        return response;
+
+    }
     public BaseResponse fail(BaseResponse response){
         if (response ==null){
             return fail();

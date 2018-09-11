@@ -41,4 +41,9 @@ public class EnterpriseMemberServiceImpl implements EnterpriseMemberService {
     public void saveEnterpriseServiceInfo(EnterpriseMemberServiceDomain enterpriseMemberServiceDomain) {
         mongoMemberRespository.insert(enterpriseMemberServiceDomain);
     }
+
+    @Override
+    public EnterpriseMemberServiceDomain queryEnterpriseServiceInfoById(String memberId) {
+        return mongoMemberRespository.findOne(memberId);
+    }
 }

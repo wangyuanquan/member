@@ -19,4 +19,6 @@ public interface MongoMemberRespository {
     void remove(String id);
 
     List<EnterpriseMemberServiceDomain> findByPage(EnterpriseMemberServiceDomain enterpriseMemberServiceDomain, Pageable pageable);
+
+    EnterpriseMemberServiceDomain findOne(String memberId);
 }

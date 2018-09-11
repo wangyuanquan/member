@@ -1,5 +1,6 @@
 package com.rechenggit.core.domainservice.mongodbrepository.impl;
 
+import com.rechenggit.core.dal.mongodbobject.User;
 import com.rechenggit.core.domain.EnterpriseMemberServiceDomain;
 import com.rechenggit.core.domainservice.mongodbrepository.MongoMemberRespository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,13 +23,13 @@ public class MongoMemberRespositoryImpl implements MongoMemberRespository {
     }
 
     @Override
-    public EnterpriseMemberServiceDomain getEnterpriseMemberService(String id) {
-        return mongoTemplate.findOne(new Query(Criteria.where("id").is(id)), EnterpriseMemberServiceDomain.class);
+    public EnterpriseMemberServiceDomain getEnterpriseMemberService(String memberId) {
+        return mongoTemplate.findOne(new Query(Criteria.where("memberId").is(memberId)), EnterpriseMemberServiceDomain.class);
     }
 
     @Override
     public void update(EnterpriseMemberServiceDomain enterpriseMemberServiceDomain) {
-        Criteria criteria = Criteria.where("id").is(enterpriseMemberServiceDomain.getId());
+        Criteria criteria = Criteria.where("memberId").is(enterpriseMemberServiceDomain.getMemberId());
         Query query = new Query(criteria);
         Update update = Update.update("instorePaymentServie", enterpriseMemberServiceDomain.getInstorePaymentServie())
                 .set("jsapiPaymentService",enterpriseMemberServiceDomain.getJsapiPaymentService())
@@ -40,8 +41,25 @@ public class MongoMemberRespositoryImpl implements MongoMemberRespository {
     }
 
     @Override
-    public void insert(EnterpriseMemberServiceDomain user) {
-        mongoTemplate.insert(user);
+    public void insert(EnterpriseMemberServiceDomain enterpriseMemberServiceDomain) {
+        Criteria criteria = Criteria.where("memberId").is(enterpriseMemberServiceDomain.getMemberId());
+        Query query = new Query(criteria);
+
+        if (mongoTemplate.findOne(query,EnterpriseMemberServiceDomain.class)!=null){
+
+            Update update = Update.update("instorePaymentServie", enterpriseMemberServiceDomain.getInstorePaymentServie())
+                    .set("webSitePaymentService",enterpriseMemberServiceDomain.getWebSitePaymentService())
+                    .set("webSitePaymentServiveContent",enterpriseMemberServiceDomain.getWebSitePaymentServiveContent())
+                    .set("jsapiPaymentService",enterpriseMemberServiceDomain.getJsapiPaymentService())
+                    .set("jsapiPaymentServiceContent",enterpriseMemberServiceDomain.getJsapiPaymentServiceContent())
+                    .set("instorePaymentServie",enterpriseMemberServiceDomain.getInstorePaymentServie())
+                    .set("weChatMallPaymentService",enterpriseMemberServiceDomain.getWeChatMallPaymentService()
+                    );
+        }else {
+            mongoTemplate.insert(enterpriseMemberServiceDomain);
+        }
+
+
     }
 
     @Override
@@ -57,5 +75,10 @@ public class MongoMemberRespositoryImpl implements MongoMemberRespository {
     @Override
     public List<EnterpriseMemberServiceDomain> findByPage(EnterpriseMemberServiceDomain enterpriseMemberServiceDomain, Pageable pageable) {
         return null;
+    }
+
+    @Override
+    public EnterpriseMemberServiceDomain findOne(String memberId) {
+        return mongoTemplate.findOne(new Query(Criteria.where("memberId").is(memberId)), EnterpriseMemberServiceDomain.class);
     }
 }

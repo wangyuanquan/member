@@ -27,4 +27,6 @@ public interface EnterpriseMemberService {
     BaseResponse deleteEnterpriseBasicInfo(String memberId);
 
     void saveEnterpriseServiceInfo(EnterpriseMemberServiceDomain enterpriseMemberServiceDomain);
+
+    EnterpriseMemberServiceDomain queryEnterpriseServiceInfoById(String memberId);
 }
