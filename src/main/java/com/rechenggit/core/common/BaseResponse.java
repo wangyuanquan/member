@@ -8,9 +8,17 @@ import lombok.ToString;
 @Setter
 @ToString
 public class BaseResponse<T> {
+    /*
+    200 ： 成功
+    500 ： 失败
+    501 ： 没有商品ID，添加相关信息失败
+    502 ： 该商户信息已添加
+    503 :  无相关信息
+
+    * */
     private int status =200;
 
-    private String message;
+    private String message = "成功";
 
     private T data;
 

@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.rechenggit.core.common.BaseResponse;
 import com.rechenggit.core.domain.EnterpriseBasic;
 import com.rechenggit.core.domain.EnterpriseMemberServiceDomain;
-import com.rechenggit.core.domainservice.mongodbrepository.UserRepository;
 import com.rechenggit.core.domainservice.service.EnterpriseMemberService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,8 +20,9 @@ public class EnterPriseMemberControl extends BaseControl {
     @Autowired
     private EnterpriseMemberService enterpriseMemberService;
 
-    @PostMapping("/saveBasicInfo")
-    public BaseResponse saveEnterpriseServiceInfo(@RequestBody EnterpriseBasic enterpriseBasic) {
+
+    @PostMapping("/saveEnterpriseBasicInfo")
+    public BaseResponse saveEnterpriseBasicInfo(@RequestBody EnterpriseBasic enterpriseBasic) {
 
         logger.info("保存enterpriseBasic:"+ JSONObject.toJSONString(enterpriseBasic));
 
@@ -56,5 +56,24 @@ public class EnterPriseMemberControl extends BaseControl {
         }
         return success(response);
 
+    }
+
+    @PostMapping("/updateEnterpriseBasicInfo")
+    public BaseResponse updateEnterpriseBasicInfo(@RequestBody EnterpriseBasic enterpriseBasic) {
+
+        logger.info("保存enterpriseBasic:"+ JSONObject.toJSONString(enterpriseBasic));
+
+        return enterpriseMemberService.updateEnterpriseBasicInfo(enterpriseBasic);
+    }
+
+    @PostMapping("/queryEnterpriseBasicInfo")
+    public EnterpriseBasic queryEnterpriseBasicInfo(@RequestBody String memberId) {
+
+        return enterpriseMemberService.queryEnterpriseBasicInfo(memberId);
+    }
+    @PostMapping("/deleteEnterpriseBasicInfo")
+    public BaseResponse deleteEnterpriseBasicInfo(@RequestBody String memberId) {
+
+        return enterpriseMemberService.deleteEnterpriseBasicInfo(memberId);
     }
 }
