@@ -4,14 +4,16 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @ToString
 public class EnterpriseBasic {
 
     /**
-     * 商家名称
+     * 商家id
      */
+    @NotNull()
     private String memberId;
 
     /**

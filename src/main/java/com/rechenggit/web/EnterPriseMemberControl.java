@@ -21,13 +21,6 @@ public class EnterPriseMemberControl extends BaseControl {
     private EnterpriseMemberService enterpriseMemberService;
 
 
-    @PostMapping("/saveEnterpriseBasicInfo")
-    public BaseResponse saveEnterpriseBasicInfo(@RequestBody EnterpriseBasic enterpriseBasic) {
-
-        logger.info("保存enterpriseBasic:"+ JSONObject.toJSONString(enterpriseBasic));
-
-        return enterpriseMemberService.saveEnterpriseBasicInfo(enterpriseBasic);
-    }
     @PostMapping("/saveServiceInfo")
     public BaseResponse saveEnterpriseServiceInfo(@RequestBody @Validated EnterpriseMemberServiceDomain enterpriseMemberServiceDomain, BindingResult result) {
         BaseResponse<EnterpriseMemberServiceDomain> response=new BaseResponse();
@@ -58,22 +51,55 @@ public class EnterPriseMemberControl extends BaseControl {
 
     }
 
+    @PostMapping("/saveEnterpriseBasicInfo")
+    public BaseResponse saveEnterpriseBasicInfo(@RequestBody @Validated EnterpriseBasic enterpriseBasic ,BindingResult result) {
+        BaseResponse<EnterpriseBasic> response = new BaseResponse();
+        try{
+            validate(result);
+            logger.info("保存enterpriseBasic:"+ JSONObject.toJSONString(enterpriseBasic));
+            response = enterpriseMemberService.saveEnterpriseBasicInfo(enterpriseBasic);
+        }catch (Exception e){
+            logger.error("保存基本信息错误：{}",e);
+            return  fail(response);
+        }
+        return response;
+    }
     @PostMapping("/updateEnterpriseBasicInfo")
-    public BaseResponse updateEnterpriseBasicInfo(@RequestBody EnterpriseBasic enterpriseBasic) {
-
-        logger.info("保存enterpriseBasic:"+ JSONObject.toJSONString(enterpriseBasic));
-
-        return enterpriseMemberService.updateEnterpriseBasicInfo(enterpriseBasic);
+    public BaseResponse updateEnterpriseBasicInfo(@RequestBody @Validated EnterpriseBasic enterpriseBasic ,BindingResult result) {
+        BaseResponse<EnterpriseBasic> response = new BaseResponse();
+        try{
+            validate(result);
+            logger.info("更新enterpriseBasic:"+ JSONObject.toJSONString(enterpriseBasic));
+            response = enterpriseMemberService.updateEnterpriseBasicInfo(enterpriseBasic);
+        }catch (Exception e){
+            logger.error("更新基本信息错误：{}",e);
+            return  fail(response);
+        }
+        return response;
     }
 
     @PostMapping("/queryEnterpriseBasicInfo")
-    public EnterpriseBasic queryEnterpriseBasicInfo(@RequestBody String memberId) {
-
-        return enterpriseMemberService.queryEnterpriseBasicInfo(memberId);
+    public BaseResponse queryEnterpriseBasicInfo(@RequestBody String memberId) {
+        BaseResponse<EnterpriseBasic> response = new BaseResponse();
+        try{
+            EnterpriseBasic enterpriseBasic = enterpriseMemberService.queryEnterpriseBasicInfo(memberId);
+            response.setData(enterpriseBasic);
+        }catch (Exception e){
+            logger.error("查询商户信息失败：{}",e);
+            return  fail();
+        }
+        return success(response);
     }
     @PostMapping("/deleteEnterpriseBasicInfo")
     public BaseResponse deleteEnterpriseBasicInfo(@RequestBody String memberId) {
-
-        return enterpriseMemberService.deleteEnterpriseBasicInfo(memberId);
+        BaseResponse<EnterpriseBasic> response = new BaseResponse();
+        try{
+            logger.info("删除基本信息 memberId:"+ memberId);
+            response = enterpriseMemberService.deleteEnterpriseBasicInfo(memberId);
+        }catch (Exception e){
+            logger.error("删除基本信息错误：{}",e);
+            return  fail(response);
+        }
+        return response;
     }
 }
