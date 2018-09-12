@@ -30,6 +30,8 @@ public class EnterPriseMemberControl extends BaseControl {
 
         }catch (Exception e){
             logger.error("保存会员服务信息错误：{}",e);
+            response.setStatus(501);
+            response.setMessage(e.getMessage());
             return  fail(response);
 
         }
