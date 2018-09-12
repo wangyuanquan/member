@@ -9,7 +9,7 @@ public class EnterpriseBasicInfo {
     private Integer id;
 
     /**
-     * 商家名称
+     * 商家ID
      */
     @Column(name = "member_id")
     private String memberId;
@@ -106,9 +106,53 @@ public class EnterpriseBasicInfo {
     @Column(name = "uploading_files")
     private String uploadingFiles;
 
-    public EnterpriseBasicInfo() {
-    }
+    /**
+     * 公司注册-名称
+     */
+    @Column(name = "company_name")
+    private String companyName;
 
+    /**
+     * 公司注册-支持票据(ABN)
+     */
+    @Column(name = "company_abn")
+    private String companyAbn;
+
+    /**
+     * 公司注册-税号(ACN)
+     */
+    @Column(name = "company_acn")
+    private String companyAcn;
+
+    /**
+     * 公司注册-行业
+     */
+    @Column(name = "company_industry")
+    private String companyIndustry;
+
+    /**
+     * 公司注册-地址
+     */
+    @Column(name = "company_address")
+    private String companyAddress;
+
+    /**
+     * 注册地址-市郊
+     */
+    @Column(name = "company_suburb")
+    private String companySuburb;
+
+    /**
+     * 注册地址-州
+     */
+    @Column(name = "company_state")
+    private String companyState;
+
+    /**
+     * 注册地址-邮政编码
+     */
+    @Column(name = "company_postcode")
+    private String companyPostcode;
 
     /**
      * @return id
@@ -125,18 +169,18 @@ public class EnterpriseBasicInfo {
     }
 
     /**
-     * 获取商家名称
+     * 获取商家ID
      *
-     * @return member_id - 商家名称
+     * @return member_id - 商家ID
      */
     public String getMemberId() {
         return memberId;
     }
 
     /**
-     * 设置商家名称
+     * 设置商家ID
      *
-     * @param memberId 商家名称
+     * @param memberId 商家ID
      */
     public void setMemberId(String memberId) {
         this.memberId = memberId == null ? null : memberId.trim();
@@ -472,5 +516,149 @@ public class EnterpriseBasicInfo {
      */
     public void setUploadingFiles(String uploadingFiles) {
         this.uploadingFiles = uploadingFiles == null ? null : uploadingFiles.trim();
+    }
+
+    /**
+     * 获取公司注册-名称
+     *
+     * @return company_name - 公司注册-名称
+     */
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    /**
+     * 设置公司注册-名称
+     *
+     * @param companyName 公司注册-名称
+     */
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName == null ? null : companyName.trim();
+    }
+
+    /**
+     * 获取公司注册-支持票据(ABN)
+     *
+     * @return company_abn - 公司注册-支持票据(ABN)
+     */
+    public String getCompanyAbn() {
+        return companyAbn;
+    }
+
+    /**
+     * 设置公司注册-支持票据(ABN)
+     *
+     * @param companyAbn 公司注册-支持票据(ABN)
+     */
+    public void setCompanyAbn(String companyAbn) {
+        this.companyAbn = companyAbn == null ? null : companyAbn.trim();
+    }
+
+    /**
+     * 获取公司注册-税号(ACN)
+     *
+     * @return company_acn - 公司注册-税号(ACN)
+     */
+    public String getCompanyAcn() {
+        return companyAcn;
+    }
+
+    /**
+     * 设置公司注册-税号(ACN)
+     *
+     * @param companyAcn 公司注册-税号(ACN)
+     */
+    public void setCompanyAcn(String companyAcn) {
+        this.companyAcn = companyAcn == null ? null : companyAcn.trim();
+    }
+
+    /**
+     * 获取公司注册-行业
+     *
+     * @return company_industry - 公司注册-行业
+     */
+    public String getCompanyIndustry() {
+        return companyIndustry;
+    }
+
+    /**
+     * 设置公司注册-行业
+     *
+     * @param companyIndustry 公司注册-行业
+     */
+    public void setCompanyIndustry(String companyIndustry) {
+        this.companyIndustry = companyIndustry == null ? null : companyIndustry.trim();
+    }
+
+    /**
+     * 获取公司注册-地址
+     *
+     * @return company_address - 公司注册-地址
+     */
+    public String getCompanyAddress() {
+        return companyAddress;
+    }
+
+    /**
+     * 设置公司注册-地址
+     *
+     * @param companyAddress 公司注册-地址
+     */
+    public void setCompanyAddress(String companyAddress) {
+        this.companyAddress = companyAddress == null ? null : companyAddress.trim();
+    }
+
+    /**
+     * 获取注册地址-市郊
+     *
+     * @return company_suburb - 注册地址-市郊
+     */
+    public String getCompanySuburb() {
+        return companySuburb;
+    }
+
+    /**
+     * 设置注册地址-市郊
+     *
+     * @param companySuburb 注册地址-市郊
+     */
+    public void setCompanySuburb(String companySuburb) {
+        this.companySuburb = companySuburb == null ? null : companySuburb.trim();
+    }
+
+    /**
+     * 获取注册地址-州
+     *
+     * @return company_state - 注册地址-州
+     */
+    public String getCompanyState() {
+        return companyState;
+    }
+
+    /**
+     * 设置注册地址-州
+     *
+     * @param companyState 注册地址-州
+     */
+    public void setCompanyState(String companyState) {
+        this.companyState = companyState == null ? null : companyState.trim();
+    }
+
+    /**
+     * 获取注册地址-邮政编码
+     *
+     * @return company_postcode - 注册地址-邮政编码
+     */
+    public String getCompanyPostcode() {
+        return companyPostcode;
+    }
+
+    /**
+     * 设置注册地址-邮政编码
+     *
+     * @param companyPostcode 注册地址-邮政编码
+     */
+    public void setCompanyPostcode(String companyPostcode) {
+        this.companyPostcode = companyPostcode == null ? null : companyPostcode.trim();
     }
 }

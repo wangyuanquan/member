@@ -27,6 +27,14 @@
     <result column="profit_distribution" jdbcType="INTEGER" property="profitDistribution" />
     <result column="settlement_cycle" jdbcType="VARCHAR" property="settlementCycle" />
     <result column="uploading_files" jdbcType="VARCHAR" property="uploadingFiles" />
+    <result column="company_name" jdbcType="VARCHAR" property="companyName" />
+    <result column="company_abn" jdbcType="VARCHAR" property="companyAbn" />
+    <result column="company_acn" jdbcType="VARCHAR" property="companyAcn" />
+    <result column="company_industry" jdbcType="VARCHAR" property="companyIndustry" />
+    <result column="company_address" jdbcType="VARCHAR" property="companyAddress" />
+    <result column="company_suburb" jdbcType="VARCHAR" property="companySuburb" />
+    <result column="company_state" jdbcType="VARCHAR" property="companyState" />
+    <result column="company_postcode" jdbcType="VARCHAR" property="companyPostcode" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--
@@ -34,6 +42,8 @@
     -->
     id, member_id, address, suburb, state, post_code, phone, email, contact_name, contact_phone, 
     contact_title, bill_name, bill_bank, bill_bbs_account, bill_file_path, create_time, 
-    update_time, type, rate, profit_distribution, settlement_cycle, uploading_files
+    update_time, type, rate, profit_distribution, settlement_cycle, uploading_files, 
+    company_name, company_abn, company_acn, company_industry, company_address, company_suburb, 
+    company_state, company_postcode
   </sql>
 </mapper>
