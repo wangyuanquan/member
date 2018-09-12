@@ -78,8 +78,11 @@ public class EnterPriseMemberControl extends BaseControl {
         return response;
     }
 
-    @PostMapping("/queryEnterpriseBasicInfo")
-    public BaseResponse queryEnterpriseBasicInfo(@RequestBody String memberId) {
+    @RequestMapping("/queryEnterpriseBasicInfo")
+    public BaseResponse queryEnterpriseBasicInfo(String memberId) {
+        if(memberId == null || "".equals(memberId) ){
+            return new BaseResponse(501,"没有商户ID，操作失败");
+        }
         BaseResponse<EnterpriseBasic> response = new BaseResponse();
         try{
             EnterpriseBasic enterpriseBasic = enterpriseMemberService.queryEnterpriseBasicInfo(memberId);
@@ -90,8 +93,8 @@ public class EnterPriseMemberControl extends BaseControl {
         }
         return success(response);
     }
-    @PostMapping("/deleteEnterpriseBasicInfo")
-    public BaseResponse deleteEnterpriseBasicInfo(@RequestBody String memberId) {
+    @RequestMapping("/deleteEnterpriseBasicInfo")
+    public BaseResponse deleteEnterpriseBasicInfo(String memberId) {
         BaseResponse<EnterpriseBasic> response = new BaseResponse();
         try{
             logger.info("删除基本信息 memberId:"+ memberId);
