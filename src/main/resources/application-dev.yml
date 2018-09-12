@@ -52,6 +52,7 @@ spring:
         password:
     data:
          mongodb:
-           uri: mongodb://root:root@10.10.60.102:27017/member
+
+            uri: mongodb://localhost:27017/member
 
 
