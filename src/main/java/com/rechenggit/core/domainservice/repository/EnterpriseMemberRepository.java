@@ -2,6 +2,7 @@ package com.rechenggit.core.domainservice.repository;
 
 import com.rechenggit.core.common.BaseResponse;
 import com.rechenggit.core.domain.EnterpriseBasic;
+import com.rechenggit.core.domain.EnterpriseOther;
 
 public interface EnterpriseMemberRepository {
     /**
@@ -18,10 +19,25 @@ public interface EnterpriseMemberRepository {
      * 查询商户基本信息
      * @param memberId
      */
-    EnterpriseBasic queryEnterpriseBasicInfo(String memberId);
+    BaseResponse queryEnterpriseBasicInfo(String memberId);
     /**
      * 删除商户基本信息
      * @param memberId
      */
     BaseResponse deleteEnterpriseBasicInfo(String memberId);
+    /**
+     * 保存商户其他信息
+     * @param enterpriseOther
+     */
+    BaseResponse saveEnterpriseOtherInfo(EnterpriseOther enterpriseOther);
+    /**
+     * 查询商户其他信息
+     * @param memberId
+     */
+    BaseResponse queryEnterpriseOtherInfo(String memberId);
+    /**
+     * 删除商户其他信息
+     * @param memberId
+     */
+    BaseResponse deleteEnterpriseOtherInfo(String memberId);
 }

@@ -3,6 +3,7 @@ package com.rechenggit.core.domainservice.service.impl;
 import com.rechenggit.core.common.BaseResponse;
 import com.rechenggit.core.domain.EnterpriseBasic;
 import com.rechenggit.core.domain.EnterpriseMemberServiceDomain;
+import com.rechenggit.core.domain.EnterpriseOther;
 import com.rechenggit.core.domainservice.mongodbrepository.MongoMemberRespository;
 import com.rechenggit.core.domainservice.repository.EnterpriseMemberRepository;
 import com.rechenggit.core.domainservice.service.EnterpriseMemberService;
@@ -28,7 +29,7 @@ public class EnterpriseMemberServiceImpl implements EnterpriseMemberService {
     }
 
     @Override
-    public EnterpriseBasic queryEnterpriseBasicInfo(String memberId) {
+    public BaseResponse queryEnterpriseBasicInfo(String memberId) {
         return enterpriseMemberRepository.queryEnterpriseBasicInfo(memberId);
     }
 
@@ -45,5 +46,20 @@ public class EnterpriseMemberServiceImpl implements EnterpriseMemberService {
     @Override
     public EnterpriseMemberServiceDomain queryEnterpriseServiceInfoById(String memberId) {
         return mongoMemberRespository.findOne(memberId);
+    }
+
+    @Override
+    public BaseResponse saveEnterpriseOtherInfo(EnterpriseOther enterpriseOther) {
+        return enterpriseMemberRepository.saveEnterpriseOtherInfo(enterpriseOther);
+    }
+
+    @Override
+    public BaseResponse queryEnterpriseOtherInfo(String memberId) {
+        return enterpriseMemberRepository.queryEnterpriseOtherInfo(memberId);
+    }
+
+    @Override
+    public BaseResponse deleteEnterpriseOtherInfo(String memberId) {
+        return enterpriseMemberRepository.deleteEnterpriseOtherInfo(memberId);
     }
 }

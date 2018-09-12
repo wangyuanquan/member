@@ -3,12 +3,15 @@ package com.rechenggit.core.domainservice.repository.impl;
 import com.rechenggit.core.common.BaseResponse;
 import com.rechenggit.core.dal.dataobject.CompanyInfo;
 import com.rechenggit.core.dal.dataobject.EnterpriseBasicInfo;
+import com.rechenggit.core.dal.dataobject.EnterpriseOtherInfo;
 import com.rechenggit.core.dal.dataobject.StoreInfo;
 import com.rechenggit.core.dal.mapper.CompanyInfoMapper;
 import com.rechenggit.core.dal.mapper.EnterpriseBasicInfoMapper;
+import com.rechenggit.core.dal.mapper.EnterpriseOtherInfoMapper;
 import com.rechenggit.core.dal.mapper.StoreInfoMapper;
 import com.rechenggit.core.domain.EnterpriseBasic;
 import com.rechenggit.core.domain.EnterpriseCompany;
+import com.rechenggit.core.domain.EnterpriseOther;
 import com.rechenggit.core.domain.EnterpriseStore;
 import com.rechenggit.core.domainservice.repository.EnterpriseMemberRepository;
 import org.springframework.beans.BeanUtils;
@@ -30,6 +33,8 @@ public class EnterpriseMemberRepositoryImpl implements EnterpriseMemberRepositor
     private StoreInfoMapper storeInfoMapper;
     @Autowired
     private CompanyInfoMapper companyInfoMapper;
+    @Autowired
+    private EnterpriseOtherInfoMapper enterpriseOtherInfoMapper;
 
     @Override
     public BaseResponse saveEnterpriseBasicInfo(EnterpriseBasic enterpriseBasic) {
@@ -123,12 +128,16 @@ public class EnterpriseMemberRepositoryImpl implements EnterpriseMemberRepositor
     }
 
     @Override
-    public EnterpriseBasic queryEnterpriseBasicInfo(String memberId) {
+    public BaseResponse queryEnterpriseBasicInfo(String memberId) {
+        BaseResponse baseResponse = new BaseResponse();
         EnterpriseBasic enterpriseBasic = new EnterpriseBasic();
         //基本信息
         Example exampleBasicInfo = new Example(EnterpriseBasicInfo.class);
         exampleBasicInfo.createCriteria().andEqualTo("memberId", memberId);
         List<EnterpriseBasicInfo> basicInfo = enterpriseBasicInfoMapper.selectByExample(exampleBasicInfo);
+        if(basicInfo.isEmpty()){
+            return new BaseResponse(504,"参数无效，无相关信息");
+        }
         BeanUtils.copyProperties(basicInfo.get(0),enterpriseBasic);
         //商店
         Example exampleStore = new Example(StoreInfo.class);
@@ -152,7 +161,8 @@ public class EnterpriseMemberRepositoryImpl implements EnterpriseMemberRepositor
             enterpriseCompanyList.add(enterpriseCompany);
         }
         enterpriseBasic.setCompanyInfo(enterpriseCompanyList);
-        return enterpriseBasic;
+        baseResponse.setData(enterpriseBasic);
+        return baseResponse;
     }
 
     @Override
@@ -170,7 +180,54 @@ public class EnterpriseMemberRepositoryImpl implements EnterpriseMemberRepositor
         exampleCompany.createCriteria().andEqualTo("memberId", memberId);
         num += companyInfoMapper.deleteByExample(exampleCompany);
         if(num < 1){
-            return new BaseResponse(503,"无相关信息");
+            return new BaseResponse(503,"参数无效，无相关信息");
+        }
+        return new BaseResponse();
+    }
+
+    @Override
+    public BaseResponse saveEnterpriseOtherInfo(EnterpriseOther enterpriseOther) {
+        String memberId = enterpriseOther.getMemberId();
+        if(memberId == null || "".equals(memberId) ){
+            return new BaseResponse(501,"没有商户ID，添加相关信息失败");
+        }
+        //保存其他信息
+        Example exampleOther = new Example(EnterpriseOtherInfo.class);
+        exampleOther.createCriteria().andEqualTo("memberId", memberId);
+        List<EnterpriseOtherInfo> basicOtherList = enterpriseOtherInfoMapper.selectByExample(exampleOther);
+        EnterpriseOtherInfo basicOther = new EnterpriseOtherInfo();
+        BeanUtils.copyProperties(enterpriseOther,basicOther);
+        if(basicOtherList.isEmpty()){
+            basicOther.setCreateTime(new Date());
+            enterpriseOtherInfoMapper.insertSelective(basicOther);
+        }else{
+            enterpriseOtherInfoMapper.updateByExample(basicOther,exampleOther);
+        }
+        return new BaseResponse();
+    }
+
+    @Override
+    public BaseResponse queryEnterpriseOtherInfo(String memberId) {
+        BaseResponse baseResponse = new BaseResponse();
+        EnterpriseOther enterpriseOther = new EnterpriseOther();
+        Example exampleBasicOther = new Example(EnterpriseOtherInfo.class);
+        exampleBasicOther.createCriteria().andEqualTo("memberId", memberId);
+        List<EnterpriseOtherInfo> basicOther = enterpriseOtherInfoMapper.selectByExample(exampleBasicOther);
+        if(basicOther.isEmpty()){
+            return new BaseResponse(504,"参数无效，无相关信息");
+        }
+        BeanUtils.copyProperties(basicOther.get(0),enterpriseOther);
+        baseResponse.setData(enterpriseOther);
+        return baseResponse;
+    }
+
+    @Override
+    public BaseResponse deleteEnterpriseOtherInfo(String memberId) {
+        Example exampleOtherInfo = new Example(EnterpriseOtherInfo.class);
+        exampleOtherInfo.createCriteria().andEqualTo("memberId", memberId);
+        int num = enterpriseOtherInfoMapper.deleteByExample(exampleOtherInfo);
+        if(num < 1){
+            return new BaseResponse(503,"参数无效，无相关信息");
         }
         return new BaseResponse();
     }

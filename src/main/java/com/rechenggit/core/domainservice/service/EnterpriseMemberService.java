@@ -3,6 +3,7 @@ package com.rechenggit.core.domainservice.service;
 import com.rechenggit.core.common.BaseResponse;
 import com.rechenggit.core.domain.EnterpriseBasic;
 import com.rechenggit.core.domain.EnterpriseMemberServiceDomain;
+import com.rechenggit.core.domain.EnterpriseOther;
 
 public interface EnterpriseMemberService {
     /**
@@ -19,7 +20,7 @@ public interface EnterpriseMemberService {
      * 查询商户基本信息
      * @param memberId
      */
-    EnterpriseBasic queryEnterpriseBasicInfo(String memberId);
+    BaseResponse queryEnterpriseBasicInfo(String memberId);
     /**
      * 删除商户基本信息
      * @param memberId
@@ -29,4 +30,19 @@ public interface EnterpriseMemberService {
     void saveEnterpriseServiceInfo(EnterpriseMemberServiceDomain enterpriseMemberServiceDomain);
 
     EnterpriseMemberServiceDomain queryEnterpriseServiceInfoById(String memberId);
+    /**
+     * 保存商户其他信息
+     * @param enterpriseOther
+     */
+    BaseResponse saveEnterpriseOtherInfo(EnterpriseOther enterpriseOther);
+    /**
+     * 查询商户其他信息
+     * @param memberId
+     */
+    BaseResponse queryEnterpriseOtherInfo(String memberId);
+    /**
+     * 删除商户其他信息
+     * @param memberId
+     */
+    BaseResponse deleteEnterpriseOtherInfo(String memberId);
 }
