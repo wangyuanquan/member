@@ -66,33 +66,22 @@ public class EnterpriseBasic {
     /**
      * 账单：用户名
      */
-    private String billName;
+    private String accountName;
 
     /**
      * 账单：银行名称
      */
-    private String billBank;
+    private String bankName;
 
     /**
      * 账单：BSB账号
      */
-    private String billBbsAccount;
+    private String bbsNumber;
 
     /**
      * 账单：上传文件信息
      */
-    private String billFilePath;
-
-    /**
-     * 商店信息
-     */
-    private List<EnterpriseStore> storeInfo;
-
-    /**
-     * 公司信息
-     */
-    private List<EnterpriseCompany> companyInfo;
-
+    private String filePath;
     /**
      * 商店信息id
      */
@@ -141,4 +130,13 @@ public class EnterpriseBasic {
      * 注册地址-邮政编码
      */
     private String companyPostcode;
+    /**
+     * 商店信息
+     */
+    private List<EnterpriseStore> storeInfo;
+
+    /**
+     * 公司信息
+     */
+    private List<EnterpriseCompany> companyInfo;
 }
