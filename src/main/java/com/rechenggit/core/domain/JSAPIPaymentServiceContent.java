@@ -11,7 +11,7 @@ public class JSAPIPaymentServiceContent {
 
     private Boolean openJSAPIDocument;
 
-    private Boolean wechatPay;
+    private Boolean jsapWechatPay;
 
     private Boolean verifyOfficialAccountsPlatform;
 
