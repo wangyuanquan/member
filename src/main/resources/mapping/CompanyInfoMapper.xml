@@ -8,14 +8,6 @@
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="member_id" jdbcType="VARCHAR" property="memberId" />
     <result column="display_num" jdbcType="TINYINT" property="displayNum" />
-    <result column="company_name" jdbcType="VARCHAR" property="companyName" />
-    <result column="company_abn" jdbcType="VARCHAR" property="companyAbn" />
-    <result column="company_acn" jdbcType="VARCHAR" property="companyAcn" />
-    <result column="company_industry" jdbcType="VARCHAR" property="companyIndustry" />
-    <result column="company_address" jdbcType="VARCHAR" property="companyAddress" />
-    <result column="company_suburb" jdbcType="VARCHAR" property="companySuburb" />
-    <result column="company_state" jdbcType="VARCHAR" property="companyState" />
-    <result column="company_postcode" jdbcType="VARCHAR" property="companyPostcode" />
     <result column="directer_name" jdbcType="VARCHAR" property="directerName" />
     <result column="photo_id" jdbcType="VARCHAR" property="photoId" />
     <result column="photo_id_type" jdbcType="TINYINT" property="photoIdType" />
@@ -26,8 +18,7 @@
     <!--
       WARNING - @mbggenerated
     -->
-    id, member_id, display_num, company_name, company_abn, company_acn, company_industry, 
-    company_address, company_suburb, company_state, company_postcode, directer_name, 
-    photo_id, photo_id_type, create_time, update_time
+    id, member_id, display_num, directer_name, photo_id, photo_id_type, create_time, 
+    update_time
   </sql>
 </mapper>

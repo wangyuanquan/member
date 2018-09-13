@@ -6,7 +6,7 @@ import javax.persistence.*;
 @Table(name = "tm_member")
 public class Member {
     /**
-     * 会员ID(由seq_member_id 生成, 个人1开头，企业2开头)
+     * 会员ID:由seq_member_id 生成, 个人1开头，企业2开头
      */
     @Id
     @Column(name = "MEMBER_ID")
@@ -19,25 +19,25 @@ public class Member {
     private String memberName;
 
     /**
-     * 会员缩略名,已注销的会被添加后缀
+     * 会员缩略名:已注销的会被添加后缀
      */
     @Column(name = "MEMBER_SHORT_NAME")
     private String memberShortName;
 
     /**
-     * 会员类型(1个人 2 公司 3 组织)
+     * 会员类型:1=个人,2=公司,3=组织
      */
     @Column(name = "MEMBER_TYPE")
     private Integer memberType;
 
     /**
-     * 会员状态(0未激活 1正常 2休眠 3注销)
+     * 会员状态:0=未激活,1=正常,2=休眠,3=注销
      */
     @Column(name = "STATUS")
     private Integer status;
 
     /**
-     * 会员锁定状态(0未锁定 1已锁定)
+     * 会员锁定状态:0=未锁定,1=已锁定
      */
     @Column(name = "LOCK_STATUS")
     private Integer lockStatus;
@@ -91,18 +91,18 @@ public class Member {
     private String securityLevel;
 
     /**
-     * 获取会员ID(由seq_member_id 生成, 个人1开头，企业2开头)
+     * 获取会员ID:由seq_member_id 生成, 个人1开头，企业2开头
      *
-     * @return MEMBER_ID - 会员ID(由seq_member_id 生成, 个人1开头，企业2开头)
+     * @return MEMBER_ID - 会员ID:由seq_member_id 生成, 个人1开头，企业2开头
      */
     public String getMemberId() {
         return memberId;
     }
 
     /**
-     * 设置会员ID(由seq_member_id 生成, 个人1开头，企业2开头)
+     * 设置会员ID:由seq_member_id 生成, 个人1开头，企业2开头
      *
-     * @param memberId 会员ID(由seq_member_id 生成, 个人1开头，企业2开头)
+     * @param memberId 会员ID:由seq_member_id 生成, 个人1开头，企业2开头
      */
     public void setMemberId(String memberId) {
         this.memberId = memberId == null ? null : memberId.trim();
@@ -127,72 +127,72 @@ public class Member {
     }
 
     /**
-     * 获取会员缩略名,已注销的会被添加后缀
+     * 获取会员缩略名:已注销的会被添加后缀
      *
-     * @return MEMBER_SHORT_NAME - 会员缩略名,已注销的会被添加后缀
+     * @return MEMBER_SHORT_NAME - 会员缩略名:已注销的会被添加后缀
      */
     public String getMemberShortName() {
         return memberShortName;
     }
 
     /**
-     * 设置会员缩略名,已注销的会被添加后缀
+     * 设置会员缩略名:已注销的会被添加后缀
      *
-     * @param memberShortName 会员缩略名,已注销的会被添加后缀
+     * @param memberShortName 会员缩略名:已注销的会被添加后缀
      */
     public void setMemberShortName(String memberShortName) {
         this.memberShortName = memberShortName == null ? null : memberShortName.trim();
     }
 
     /**
-     * 获取会员类型(1个人 2 公司 3 组织)
+     * 获取会员类型:1=个人,2=公司,3=组织
      *
-     * @return MEMBER_TYPE - 会员类型(1个人 2 公司 3 组织)
+     * @return MEMBER_TYPE - 会员类型:1=个人,2=公司,3=组织
      */
     public Integer getMemberType() {
         return memberType;
     }
 
     /**
-     * 设置会员类型(1个人 2 公司 3 组织)
+     * 设置会员类型:1=个人,2=公司,3=组织
      *
-     * @param memberType 会员类型(1个人 2 公司 3 组织)
+     * @param memberType 会员类型:1=个人,2=公司,3=组织
      */
     public void setMemberType(Integer memberType) {
         this.memberType = memberType;
     }
 
     /**
-     * 获取会员状态(0未激活 1正常 2休眠 3注销)
+     * 获取会员状态:0=未激活,1=正常,2=休眠,3=注销
      *
-     * @return STATUS - 会员状态(0未激活 1正常 2休眠 3注销)
+     * @return STATUS - 会员状态:0=未激活,1=正常,2=休眠,3=注销
      */
     public Integer getStatus() {
         return status;
     }
 
     /**
-     * 设置会员状态(0未激活 1正常 2休眠 3注销)
+     * 设置会员状态:0=未激活,1=正常,2=休眠,3=注销
      *
-     * @param status 会员状态(0未激活 1正常 2休眠 3注销)
+     * @param status 会员状态:0=未激活,1=正常,2=休眠,3=注销
      */
     public void setStatus(Integer status) {
         this.status = status;
     }
 
     /**
-     * 获取会员锁定状态(0未锁定 1已锁定)
+     * 获取会员锁定状态:0=未锁定,1=已锁定
      *
-     * @return LOCK_STATUS - 会员锁定状态(0未锁定 1已锁定)
+     * @return LOCK_STATUS - 会员锁定状态:0=未锁定,1=已锁定
      */
     public Integer getLockStatus() {
         return lockStatus;
     }
 
     /**
-     * 设置会员锁定状态(0未锁定 1已锁定)
+     * 设置会员锁定状态:0=未锁定,1=已锁定
      *
-     * @param lockStatus 会员锁定状态(0未锁定 1已锁定)
+     * @param lockStatus 会员锁定状态:0=未锁定,1=已锁定
      */
     public void setLockStatus(Integer lockStatus) {
         this.lockStatus = lockStatus;

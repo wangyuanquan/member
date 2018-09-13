@@ -8,6 +8,9 @@ public class CompanyInfo {
     @Id
     private Integer id;
 
+    /**
+     * 商户ID
+     */
     @Column(name = "member_id")
     private String memberId;
 
@@ -18,74 +21,32 @@ public class CompanyInfo {
     private Byte displayNum;
 
     /**
-     * 公司注册：名称
-     */
-    @Column(name = "company_name")
-    private String companyName;
-
-    /**
-     * 公司注册支持票据（ABN）
-     */
-    @Column(name = "company_abn")
-    private String companyAbn;
-
-    /**
-     * 公司注册：税号（ACN）
-     */
-    @Column(name = "company_acn")
-    private String companyAcn;
-
-    /**
-     * 公司注册：行业
-     */
-    @Column(name = "company_industry")
-    private String companyIndustry;
-
-    /**
-     * 公司注册：地址
-     */
-    @Column(name = "company_address")
-    private String companyAddress;
-
-    /**
-     * 注册地址：市郊
-     */
-    @Column(name = "company_suburb")
-    private String companySuburb;
-
-    /**
-     * 注册地址：州
-     */
-    @Column(name = "company_state")
-    private String companyState;
-
-    /**
-     * 注册地址：邮政编码
-     */
-    @Column(name = "company_postcode")
-    private String companyPostcode;
-
-    /**
-     * 注册信息：直接名称
+     * 注册信息-经理姓名
      */
     @Column(name = "directer_name")
     private String directerName;
 
     /**
-     * 图片（照片，执照，驾照）
+     * 证件ID
      */
     @Column(name = "photo_id")
     private String photoId;
 
     /**
-     * 图片类型
+     * 证件类型:1=照片,2=执照,3=驾照,0=其他
      */
     @Column(name = "photo_id_type")
     private Byte photoIdType;
 
+    /**
+     * 创建时间
+     */
     @Column(name = "create_time")
     private Date createTime;
 
+    /**
+     * 更新时间
+     */
     @Column(name = "update_time")
     private Date updateTime;
 
@@ -104,14 +65,18 @@ public class CompanyInfo {
     }
 
     /**
-     * @return member_id
+     * 获取商户ID
+     *
+     * @return member_id - 商户ID
      */
     public String getMemberId() {
         return memberId;
     }
 
     /**
-     * @param memberId
+     * 设置商户ID
+     *
+     * @param memberId 商户ID
      */
     public void setMemberId(String memberId) {
         this.memberId = memberId == null ? null : memberId.trim();
@@ -136,226 +101,90 @@ public class CompanyInfo {
     }
 
     /**
-     * 获取公司注册：名称
+     * 获取注册信息-经理姓名
      *
-     * @return company_name - 公司注册：名称
-     */
-    public String getCompanyName() {
-        return companyName;
-    }
-
-    /**
-     * 设置公司注册：名称
-     *
-     * @param companyName 公司注册：名称
-     */
-    public void setCompanyName(String companyName) {
-        this.companyName = companyName == null ? null : companyName.trim();
-    }
-
-    /**
-     * 获取公司注册支持票据（ABN）
-     *
-     * @return company_abn - 公司注册支持票据（ABN）
-     */
-    public String getCompanyAbn() {
-        return companyAbn;
-    }
-
-    /**
-     * 设置公司注册支持票据（ABN）
-     *
-     * @param companyAbn 公司注册支持票据（ABN）
-     */
-    public void setCompanyAbn(String companyAbn) {
-        this.companyAbn = companyAbn == null ? null : companyAbn.trim();
-    }
-
-    /**
-     * 获取公司注册：税号（ACN）
-     *
-     * @return company_acn - 公司注册：税号（ACN）
-     */
-    public String getCompanyAcn() {
-        return companyAcn;
-    }
-
-    /**
-     * 设置公司注册：税号（ACN）
-     *
-     * @param companyAcn 公司注册：税号（ACN）
-     */
-    public void setCompanyAcn(String companyAcn) {
-        this.companyAcn = companyAcn == null ? null : companyAcn.trim();
-    }
-
-    /**
-     * 获取公司注册：行业
-     *
-     * @return company_industry - 公司注册：行业
-     */
-    public String getCompanyIndustry() {
-        return companyIndustry;
-    }
-
-    /**
-     * 设置公司注册：行业
-     *
-     * @param companyIndustry 公司注册：行业
-     */
-    public void setCompanyIndustry(String companyIndustry) {
-        this.companyIndustry = companyIndustry == null ? null : companyIndustry.trim();
-    }
-
-    /**
-     * 获取公司注册：地址
-     *
-     * @return company_address - 公司注册：地址
-     */
-    public String getCompanyAddress() {
-        return companyAddress;
-    }
-
-    /**
-     * 设置公司注册：地址
-     *
-     * @param companyAddress 公司注册：地址
-     */
-    public void setCompanyAddress(String companyAddress) {
-        this.companyAddress = companyAddress == null ? null : companyAddress.trim();
-    }
-
-    /**
-     * 获取注册地址：市郊
-     *
-     * @return company_suburb - 注册地址：市郊
-     */
-    public String getCompanySuburb() {
-        return companySuburb;
-    }
-
-    /**
-     * 设置注册地址：市郊
-     *
-     * @param companySuburb 注册地址：市郊
-     */
-    public void setCompanySuburb(String companySuburb) {
-        this.companySuburb = companySuburb == null ? null : companySuburb.trim();
-    }
-
-    /**
-     * 获取注册地址：州
-     *
-     * @return company_state - 注册地址：州
-     */
-    public String getCompanyState() {
-        return companyState;
-    }
-
-    /**
-     * 设置注册地址：州
-     *
-     * @param companyState 注册地址：州
-     */
-    public void setCompanyState(String companyState) {
-        this.companyState = companyState == null ? null : companyState.trim();
-    }
-
-    /**
-     * 获取注册地址：邮政编码
-     *
-     * @return company_postcode - 注册地址：邮政编码
-     */
-    public String getCompanyPostcode() {
-        return companyPostcode;
-    }
-
-    /**
-     * 设置注册地址：邮政编码
-     *
-     * @param companyPostcode 注册地址：邮政编码
-     */
-    public void setCompanyPostcode(String companyPostcode) {
-        this.companyPostcode = companyPostcode == null ? null : companyPostcode.trim();
-    }
-
-    /**
-     * 获取注册信息：直接名称
-     *
-     * @return directer_name - 注册信息：直接名称
+     * @return directer_name - 注册信息-经理姓名
      */
     public String getDirecterName() {
         return directerName;
     }
 
     /**
-     * 设置注册信息：直接名称
+     * 设置注册信息-经理姓名
      *
-     * @param directerName 注册信息：直接名称
+     * @param directerName 注册信息-经理姓名
      */
     public void setDirecterName(String directerName) {
         this.directerName = directerName == null ? null : directerName.trim();
     }
 
     /**
-     * 获取图片（照片，执照，驾照）
+     * 获取证件ID
      *
-     * @return photo_id - 图片（照片，执照，驾照）
+     * @return photo_id - 证件ID
      */
     public String getPhotoId() {
         return photoId;
     }
 
     /**
-     * 设置图片（照片，执照，驾照）
+     * 设置证件ID
      *
-     * @param photoId 图片（照片，执照，驾照）
+     * @param photoId 证件ID
      */
     public void setPhotoId(String photoId) {
         this.photoId = photoId == null ? null : photoId.trim();
     }
 
     /**
-     * 获取图片类型
+     * 获取证件类型:1=照片,2=执照,3=驾照,0=其他
      *
-     * @return photo_id_type - 图片类型
+     * @return photo_id_type - 证件类型:1=照片,2=执照,3=驾照,0=其他
      */
     public Byte getPhotoIdType() {
         return photoIdType;
     }
 
     /**
-     * 设置图片类型
+     * 设置证件类型:1=照片,2=执照,3=驾照,0=其他
      *
-     * @param photoIdType 图片类型
+     * @param photoIdType 证件类型:1=照片,2=执照,3=驾照,0=其他
      */
     public void setPhotoIdType(Byte photoIdType) {
         this.photoIdType = photoIdType;
     }
 
     /**
-     * @return create_time
+     * 获取创建时间
+     *
+     * @return create_time - 创建时间
      */
     public Date getCreateTime() {
         return createTime;
     }
 
     /**
-     * @param createTime
+     * 设置创建时间
+     *
+     * @param createTime 创建时间
      */
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
 
     /**
-     * @return update_time
+     * 获取更新时间
+     *
+     * @return update_time - 更新时间
      */
     public Date getUpdateTime() {
         return updateTime;
     }
 
     /**
-     * @param updateTime
+     * 设置更新时间
+     *
+     * @param updateTime 更新时间
      */
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;

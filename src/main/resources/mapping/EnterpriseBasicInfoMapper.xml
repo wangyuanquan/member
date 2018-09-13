@@ -7,19 +7,19 @@
     -->
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="member_id" jdbcType="VARCHAR" property="memberId" />
-    <result column="address" jdbcType="VARCHAR" property="address" />
-    <result column="suburb" jdbcType="VARCHAR" property="suburb" />
-    <result column="state" jdbcType="VARCHAR" property="state" />
-    <result column="post_code" jdbcType="VARCHAR" property="postCode" />
-    <result column="phone" jdbcType="VARCHAR" property="phone" />
-    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="mer_address" jdbcType="VARCHAR" property="merAddress" />
+    <result column="mer_suburb" jdbcType="VARCHAR" property="merSuburb" />
+    <result column="mer_state" jdbcType="VARCHAR" property="merState" />
+    <result column="mer_post_code" jdbcType="VARCHAR" property="merPostCode" />
+    <result column="mer_phone" jdbcType="VARCHAR" property="merPhone" />
+    <result column="mer_email" jdbcType="VARCHAR" property="merEmail" />
     <result column="contact_name" jdbcType="VARCHAR" property="contactName" />
     <result column="contact_phone" jdbcType="VARCHAR" property="contactPhone" />
     <result column="contact_title" jdbcType="VARCHAR" property="contactTitle" />
-    <result column="bill_name" jdbcType="VARCHAR" property="billName" />
-    <result column="bill_bank" jdbcType="VARCHAR" property="billBank" />
-    <result column="bill_bbs_account" jdbcType="VARCHAR" property="billBbsAccount" />
-    <result column="bill_file_path" jdbcType="VARCHAR" property="billFilePath" />
+    <result column="account_name" jdbcType="VARCHAR" property="accountName" />
+    <result column="bank_name" jdbcType="VARCHAR" property="bankName" />
+    <result column="bbs_number" jdbcType="VARCHAR" property="bbsNumber" />
+    <result column="file_path" jdbcType="VARCHAR" property="filePath" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="type" jdbcType="VARCHAR" property="type" />
@@ -27,13 +27,23 @@
     <result column="profit_distribution" jdbcType="INTEGER" property="profitDistribution" />
     <result column="settlement_cycle" jdbcType="VARCHAR" property="settlementCycle" />
     <result column="uploading_files" jdbcType="VARCHAR" property="uploadingFiles" />
+    <result column="company_name" jdbcType="VARCHAR" property="companyName" />
+    <result column="company_abn" jdbcType="VARCHAR" property="companyAbn" />
+    <result column="company_acn" jdbcType="VARCHAR" property="companyAcn" />
+    <result column="company_industry" jdbcType="VARCHAR" property="companyIndustry" />
+    <result column="company_address" jdbcType="VARCHAR" property="companyAddress" />
+    <result column="company_suburb" jdbcType="VARCHAR" property="companySuburb" />
+    <result column="company_state" jdbcType="VARCHAR" property="companyState" />
+    <result column="company_postcode" jdbcType="VARCHAR" property="companyPostcode" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbggenerated
     -->
-    id, member_id, address, suburb, state, post_code, phone, email, contact_name, contact_phone, 
-    contact_title, bill_name, bill_bank, bill_bbs_account, bill_file_path, create_time, 
-    update_time, type, rate, profit_distribution, settlement_cycle, uploading_files
+    id, member_id, mer_address, mer_suburb, mer_state, mer_post_code, mer_phone, mer_email, 
+    contact_name, contact_phone, contact_title, account_name, bank_name, bbs_number, 
+    file_path, create_time, update_time, type, rate, profit_distribution, settlement_cycle, 
+    uploading_files, company_name, company_abn, company_acn, company_industry, company_address, 
+    company_suburb, company_state, company_postcode
   </sql>
 </mapper>
