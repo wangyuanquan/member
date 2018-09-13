@@ -49,7 +49,7 @@ public class LoginRepositoryImpl implements LoginRepository {
     public BaseResponse enterpriseService(EnterpriseServiceInfo serviceInfo) {
         //验证identity标识是否存在 tm_member_identity
         Example exampleMember = new Example(MemberIdentity.class);
-        exampleMember.createCriteria().andEqualTo("IDENTITY", serviceInfo.getIdentity());
+        exampleMember.createCriteria().andEqualTo("identity", serviceInfo.getIdentity());
         List<MemberIdentity> memberIdentityList = memberIdentityMapper.selectByExample(exampleMember);
         if(!memberIdentityList.isEmpty()){
             return new BaseResponse(502,"该信息已存在，重复注册");
@@ -63,6 +63,8 @@ public class LoginRepositoryImpl implements LoginRepository {
             memberIdentity.setMemberId(memberId.toString());
             memberIdentity.setStatus(0);
             memberIdentity.setIdentity(serviceInfo.getIdentity());
+            /////////////////////////////////////外鍵
+            memberIdentity.setPid(0);
             if(identityList.isEmpty()){
                 memberIdentity.setCreateTime(new Date());
                 memberIdentityMapper.insertSelective(memberIdentity);
@@ -94,6 +96,8 @@ public class LoginRepositoryImpl implements LoginRepository {
             //String password = UesUtils.hashSignContent(serviceInfo.getPassword());
             String password = serviceInfo.getPassword();
             operator.setPassword(password);
+            //外鍵pppppppppppppppppppppppppppppp
+            operator.setOperatorId("sassd");
             if(operatorList.isEmpty()){
                 operator.setCreateTime(new Date());
                 operatorMapper.insertSelective(operator);

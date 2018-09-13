@@ -17,6 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 public class LoginServiceImpl implements LoginService {
@@ -52,6 +53,7 @@ public class LoginServiceImpl implements LoginService {
     }
 
     @Override
+    @Transactional
     public BaseResponse enterpriseService(EnterpriseServiceInfo serviceInfo) {
         return loginRepository.enterpriseService(serviceInfo);
     }
