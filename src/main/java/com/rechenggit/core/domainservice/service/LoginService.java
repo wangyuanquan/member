@@ -1,7 +1,9 @@
 package com.rechenggit.core.domainservice.service;
 
 import com.netfinworks.common.domain.OperationEnvironment;
+import com.rechenggit.core.common.BaseResponse;
 import com.rechenggit.core.common.LoginRequest;
+import com.rechenggit.core.domain.login.EnterpriseServiceInfo;
 import com.rechenggit.core.domain.login.OperatorLoginPwdRequest;
 
 public interface LoginService {
@@ -13,4 +15,9 @@ public interface LoginService {
      */
     LoginRequest checkOperatorLoginPwd(OperationEnvironment environment,
                                        OperatorLoginPwdRequest request);
+    /**
+     * 注册
+     * @return
+     */
+    BaseResponse enterpriseService(EnterpriseServiceInfo serviceInfo);
 }

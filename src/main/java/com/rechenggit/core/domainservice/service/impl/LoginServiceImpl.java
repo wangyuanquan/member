@@ -2,9 +2,11 @@ package com.rechenggit.core.domainservice.service.impl;
 
 
 import com.netfinworks.common.domain.OperationEnvironment;
+import com.rechenggit.core.common.BaseResponse;
 import com.rechenggit.core.common.LoginRequest;
 import com.rechenggit.core.dal.dataobject.Member;
 import com.rechenggit.core.dal.dataobject.Operator;
+import com.rechenggit.core.domain.login.EnterpriseServiceInfo;
 import com.rechenggit.core.domain.login.OperatorLoginPwdRequest;
 import com.rechenggit.core.domainservice.repository.LoginRepository;
 import com.rechenggit.core.domainservice.service.LoginService;
@@ -47,5 +49,10 @@ public class LoginServiceImpl implements LoginService {
         }
 
         return response;
+    }
+
+    @Override
+    public BaseResponse enterpriseService(EnterpriseServiceInfo serviceInfo) {
+        return loginRepository.enterpriseService(serviceInfo);
     }
 }

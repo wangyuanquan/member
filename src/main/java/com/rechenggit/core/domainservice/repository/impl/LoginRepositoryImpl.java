@@ -7,6 +7,7 @@ import com.rechenggit.core.dal.mapper.EnterpriseBasicInfoMapper;
 import com.rechenggit.core.dal.mapper.MemberMapper;
 import com.rechenggit.core.domain.AccountDomain;
 import com.rechenggit.core.domain.enums.AccountCategoryEnum;
+import com.rechenggit.core.domain.login.EnterpriseServiceInfo;
 import com.rechenggit.core.domain.login.OperatorLoginPwdRequest;
 import com.rechenggit.core.domainservice.repository.AccountRepository;
 import com.rechenggit.core.domainservice.repository.LoginRepository;
@@ -30,6 +31,16 @@ public class LoginRepositoryImpl implements LoginRepository {
 
     @Override
     public Operator getOperatorByPwd(String memberId , OperatorLoginPwdRequest request) {
+        return null;
+    }
+
+    @Override
+    public BaseResponse enterpriseService(EnterpriseServiceInfo serviceInfo) {
+        //验证identity标识是否存在
+        Example exampleMember = new Example(Member.class);
+        exampleMember.createCriteria().andEqualTo("IDENTITY", serviceInfo.getIdentity());
+        List<Member> memberList = memberMapper.selectByExample(exampleMember);
+        //注册
         return null;
     }
 }

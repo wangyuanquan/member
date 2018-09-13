@@ -5,6 +5,7 @@ import com.rechenggit.core.dal.dataobject.Member;
 import com.rechenggit.core.dal.dataobject.Operator;
 import com.rechenggit.core.domain.AccountDomain;
 import com.rechenggit.core.domain.enums.AccountCategoryEnum;
+import com.rechenggit.core.domain.login.EnterpriseServiceInfo;
 import com.rechenggit.core.domain.login.OperatorLoginPwdRequest;
 import com.rechenggit.core.exception.MaBizException;
 
@@ -22,4 +23,9 @@ public interface LoginRepository {
      * @param request
      */
     Operator getOperatorByPwd(String memberId , OperatorLoginPwdRequest request);
+    /**
+     * 注册
+     * @return
+     */
+    BaseResponse enterpriseService(EnterpriseServiceInfo serviceInfo);
 }
