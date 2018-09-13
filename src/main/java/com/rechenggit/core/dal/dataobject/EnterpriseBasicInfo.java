@@ -20,9 +20,6 @@ public class EnterpriseBasicInfo {
     @Column(name = "mer_address")
     private String merAddress;
 
-    @Column(name = "mer_name")
-    private String merName;
-
     /**
      * 商家地址-市郊
      */
@@ -210,20 +207,6 @@ public class EnterpriseBasicInfo {
      */
     public void setMerAddress(String merAddress) {
         this.merAddress = merAddress == null ? null : merAddress.trim();
-    }
-
-    /**
-     * @return mer_name
-     */
-    public String getMerName() {
-        return merName;
-    }
-
-    /**
-     * @param merName
-     */
-    public void setMerName(String merName) {
-        this.merName = merName == null ? null : merName.trim();
     }
 
     /**

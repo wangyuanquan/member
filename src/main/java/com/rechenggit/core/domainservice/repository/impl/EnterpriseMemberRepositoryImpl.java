@@ -1,14 +1,8 @@
 package com.rechenggit.core.domainservice.repository.impl;
 
 import com.rechenggit.core.common.BaseResponse;
-import com.rechenggit.core.dal.dataobject.CompanyInfo;
-import com.rechenggit.core.dal.dataobject.EnterpriseBasicInfo;
-import com.rechenggit.core.dal.dataobject.EnterpriseOtherInfo;
-import com.rechenggit.core.dal.dataobject.StoreInfo;
-import com.rechenggit.core.dal.mapper.CompanyInfoMapper;
-import com.rechenggit.core.dal.mapper.EnterpriseBasicInfoMapper;
-import com.rechenggit.core.dal.mapper.EnterpriseOtherInfoMapper;
-import com.rechenggit.core.dal.mapper.StoreInfoMapper;
+import com.rechenggit.core.dal.dataobject.*;
+import com.rechenggit.core.dal.mapper.*;
 import com.rechenggit.core.domain.EnterpriseBasic;
 import com.rechenggit.core.domain.EnterpriseCompany;
 import com.rechenggit.core.domain.EnterpriseOther;
@@ -35,12 +29,25 @@ public class EnterpriseMemberRepositoryImpl implements EnterpriseMemberRepositor
     private CompanyInfoMapper companyInfoMapper;
     @Autowired
     private EnterpriseOtherInfoMapper enterpriseOtherInfoMapper;
+    @Autowired
+    private MemberMapper memberMapper;
 
     @Override
     public BaseResponse saveEnterpriseBasicInfo(EnterpriseBasic enterpriseBasic) {
         String memberId = enterpriseBasic.getMemberId();
         if(memberId == null || "".equals(memberId) ){
             return new BaseResponse(501,"没有商户ID，添加相关信息失败");
+        }
+        //保存商家名称tm_member
+        Example exampleMember = new Example(Member.class);
+        exampleMember.createCriteria().andEqualTo("memberId", memberId);
+        List<Member> memberList = memberMapper.selectByExample(exampleMember);
+        if(memberList.isEmpty()){
+            return new BaseResponse(501,"商户ID没有建立，保存信息失败");
+        }else{
+            Member member = new Member();
+            member.setMemberName(enterpriseBasic.getMerName());
+            memberMapper.updateByExampleSelective(member,exampleMember);
         }
         //保存基本信息
         Example exampleBasic = new Example(EnterpriseBasicInfo.class);
@@ -119,6 +126,7 @@ public class EnterpriseMemberRepositoryImpl implements EnterpriseMemberRepositor
     public BaseResponse queryEnterpriseBasicInfo(String memberId) {
         BaseResponse baseResponse = new BaseResponse();
         EnterpriseBasic enterpriseBasic = new EnterpriseBasic();
+
         //基本信息
         Example exampleBasicInfo = new Example(EnterpriseBasicInfo.class);
         exampleBasicInfo.createCriteria().andEqualTo("memberId", memberId);
@@ -149,6 +157,11 @@ public class EnterpriseMemberRepositoryImpl implements EnterpriseMemberRepositor
             enterpriseCompanyList.add(enterpriseCompany);
         }
         enterpriseBasic.setCompanyInfo(enterpriseCompanyList);
+        //商家名称
+        Example exampleMember = new Example(Member.class);
+        exampleMember.createCriteria().andEqualTo("memberId", memberId);
+        List<Member> memberList = memberMapper.selectByExample(exampleMember);
+        enterpriseBasic.setMerName(memberList.get(0).getMemberName());
         baseResponse.setData(enterpriseBasic);
         return baseResponse;
     }

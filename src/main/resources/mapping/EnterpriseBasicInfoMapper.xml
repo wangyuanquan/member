@@ -8,7 +8,6 @@
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="member_id" jdbcType="VARCHAR" property="memberId" />
     <result column="mer_address" jdbcType="VARCHAR" property="merAddress" />
-    <result column="mer_name" jdbcType="VARCHAR" property="merName" />
     <result column="mer_suburb" jdbcType="VARCHAR" property="merSuburb" />
     <result column="mer_state" jdbcType="VARCHAR" property="merState" />
     <result column="mer_post_code" jdbcType="VARCHAR" property="merPostCode" />
@@ -41,8 +40,8 @@
     <!--
       WARNING - @mbggenerated
     -->
-    id, member_id, mer_address, mer_name, mer_suburb, mer_state, mer_post_code, mer_phone, 
-    mer_email, contact_name, contact_phone, contact_title, account_name, bank_name, bbs_number, 
+    id, member_id, mer_address, mer_suburb, mer_state, mer_post_code, mer_phone, mer_email, 
+    contact_name, contact_phone, contact_title, account_name, bank_name, bbs_number, 
     file_path, create_time, update_time, type, rate, profit_distribution, settlement_cycle, 
     uploading_files, company_name, company_abn, company_acn, company_industry, company_address, 
     company_suburb, company_state, company_postcode
