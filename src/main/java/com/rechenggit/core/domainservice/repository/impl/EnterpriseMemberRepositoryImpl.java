@@ -126,14 +126,18 @@ public class EnterpriseMemberRepositoryImpl implements EnterpriseMemberRepositor
     public BaseResponse queryEnterpriseBasicInfo(String memberId) {
         BaseResponse baseResponse = new BaseResponse();
         EnterpriseBasic enterpriseBasic = new EnterpriseBasic();
-
+        //商家名称
+        Example exampleMember = new Example(Member.class);
+        exampleMember.createCriteria().andEqualTo("memberId", memberId);
+        List<Member> memberList = memberMapper.selectByExample(exampleMember);
+        if(memberList.isEmpty()){
+            return new BaseResponse(504,"参数无效，无相关memberId");
+        }
+        enterpriseBasic.setMerName(memberList.get(0).getMemberName());
         //基本信息
         Example exampleBasicInfo = new Example(EnterpriseBasicInfo.class);
         exampleBasicInfo.createCriteria().andEqualTo("memberId", memberId);
         List<EnterpriseBasicInfo> basicInfo = enterpriseBasicInfoMapper.selectByExample(exampleBasicInfo);
-        if(basicInfo.isEmpty()){
-            return new BaseResponse(504,"参数无效，无相关信息");
-        }
         BeanUtils.copyProperties(basicInfo.get(0),enterpriseBasic);
         //商店
         Example exampleStore = new Example(StoreInfo.class);
@@ -157,11 +161,6 @@ public class EnterpriseMemberRepositoryImpl implements EnterpriseMemberRepositor
             enterpriseCompanyList.add(enterpriseCompany);
         }
         enterpriseBasic.setCompanyInfo(enterpriseCompanyList);
-        //商家名称
-        Example exampleMember = new Example(Member.class);
-        exampleMember.createCriteria().andEqualTo("memberId", memberId);
-        List<Member> memberList = memberMapper.selectByExample(exampleMember);
-        enterpriseBasic.setMerName(memberList.get(0).getMemberName());
         baseResponse.setData(enterpriseBasic);
         return baseResponse;
     }
