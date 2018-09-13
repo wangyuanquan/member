@@ -54,41 +54,27 @@ public class EnterpriseMemberRepositoryImpl implements EnterpriseMemberRepositor
         }else{
             enterpriseBasicInfoMapper.updateByExample(basicInfo,exampleBasic);
         }
-        //保存商店信息
+        //保存商店信息 先删后添
+        Example exampleStore = new Example(StoreInfo.class);
+        exampleStore.createCriteria().andEqualTo("memberId", memberId);
+        storeInfoMapper.deleteByExample(exampleStore);
         int StoreSize = enterpriseBasic.getStoreInfo().size();
         for (int i=0;i<StoreSize;i++){
-            /*
-            if(enterpriseBasic.getStoreInfo().get(i).getDisplayNum() == null){
-                return new BaseResponse(504,"参数错误");
-            }*/
-            Example exampleStore = new Example(StoreInfo.class);
-            exampleStore.createCriteria().andEqualTo("memberId", memberId).andEqualTo("displayNum",
-                    enterpriseBasic.getStoreInfo().get(i).getDisplayNum());
-            List<StoreInfo> storeInfoList = storeInfoMapper.selectByExample(exampleStore);
             StoreInfo storeInfo = new StoreInfo();
             BeanUtils.copyProperties(enterpriseBasic.getStoreInfo().get(i),storeInfo);
-            if(storeInfoList.isEmpty()){
-                storeInfo.setCreateTime(new Date());
-                storeInfoMapper.insertSelective(storeInfo);
-            }else{
-                storeInfoMapper.updateByExample(storeInfo,exampleStore);
-            }
+            storeInfo.setMemberId(memberId);
+            storeInfoMapper.insertSelective(storeInfo);
         }
-        //保存公司信息
+        //保存公司信息 先删后添
+        Example exampleCompany = new Example(CompanyInfo.class);
+        exampleCompany.createCriteria().andEqualTo("memberId", memberId);
+        companyInfoMapper.deleteByExample(exampleCompany);
         int companySize = enterpriseBasic.getCompanyInfo().size();
         for (int i=0;i<companySize;i++){
-            Example exampleCompany = new Example(CompanyInfo.class);
-            exampleCompany.createCriteria().andEqualTo("memberId", memberId).andEqualTo("displayNum",
-                    enterpriseBasic.getCompanyInfo().get(i).getDisplayNum());
-            List<CompanyInfo> companyInfoList = companyInfoMapper.selectByExample(exampleCompany);
             CompanyInfo companyInfo = new CompanyInfo();
             BeanUtils.copyProperties(enterpriseBasic.getCompanyInfo().get(i),companyInfo);
-            if(companyInfoList.isEmpty()){
-                companyInfo.setCreateTime(new Date());
-                companyInfoMapper.insertSelective(companyInfo);
-            }else{
-                companyInfoMapper.updateByExample(companyInfo,exampleCompany);
-            }
+            companyInfo.setMemberId(memberId);
+            companyInfoMapper.insertSelective(companyInfo);
         }
         return new BaseResponse();
     }
