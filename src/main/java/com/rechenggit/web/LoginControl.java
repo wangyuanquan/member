@@ -9,6 +9,8 @@ import com.rechenggit.core.domainservice.service.LoginService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -33,10 +35,11 @@ public class LoginControl extends BaseControl {
         }
     }
     @PostMapping("/service")
-    public BaseResponse service(EnterpriseServiceInfo serviceInfo){
+    public BaseResponse service(@RequestBody @Validated EnterpriseServiceInfo serviceInfo , BindingResult result){
         BaseResponse<EnterpriseServiceInfo> response = new BaseResponse();
         try {
-           loginService.enterpriseService(serviceInfo);
+            validate(result);
+            response = loginService.enterpriseService(serviceInfo);
         } catch (Exception e) {
             logger.error("注册信息异常 : ", e);
         }
