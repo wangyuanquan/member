@@ -59,11 +59,6 @@
                enableUpdateByExample="false" enableDeleteByExample="false"
                enableSelectByExample="false" selectByExampleQueryId="false">
         </table>-->
-        <!--<table tableName="tm_member"
-               domainObjectName="Member" enableCountByExample="false"
-               enableUpdateByExample="false" enableDeleteByExample="false"
-               enableSelectByExample="false" selectByExampleQueryId="false">
-        </table>-->
         <table tableName="tm_enterprise_basic_info"
                domainObjectName="EnterpriseBasicInfo" enableCountByExample="false"
                enableUpdateByExample="false" enableDeleteByExample="false"
@@ -86,6 +81,11 @@
         </table>
         <table tableName="tm_member"
                domainObjectName="Member" enableCountByExample="false"
+               enableUpdateByExample="false" enableDeleteByExample="false"
+               enableSelectByExample="false" selectByExampleQueryId="false">
+        </table>
+        <table tableName="tm_operator"
+               domainObjectName="Operator" enableCountByExample="false"
                enableUpdateByExample="false" enableDeleteByExample="false"
                enableSelectByExample="false" selectByExampleQueryId="false">
         </table>
