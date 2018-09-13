@@ -66,7 +66,7 @@ public class EnterpriseBasicInfo {
     /**
      * 账单-用户名
      */
-    @Column(name = "`account _name`")
+    @Column(name = "account_name")
     private String accountName;
 
     /**
@@ -351,7 +351,7 @@ public class EnterpriseBasicInfo {
     /**
      * 获取账单-用户名
      *
-     * @return account _name - 账单-用户名
+     * @return account_name - 账单-用户名
      */
     public String getAccountName() {
         return accountName;

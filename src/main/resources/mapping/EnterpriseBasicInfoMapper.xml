@@ -16,7 +16,7 @@
     <result column="contact_name" jdbcType="VARCHAR" property="contactName" />
     <result column="contact_phone" jdbcType="VARCHAR" property="contactPhone" />
     <result column="contact_title" jdbcType="VARCHAR" property="contactTitle" />
-    <result column="account _name" jdbcType="VARCHAR" property="accountName" />
+    <result column="account_name" jdbcType="VARCHAR" property="accountName" />
     <result column="bank_name" jdbcType="VARCHAR" property="bankName" />
     <result column="bbs_number" jdbcType="VARCHAR" property="bbsNumber" />
     <result column="file_path" jdbcType="VARCHAR" property="filePath" />
@@ -41,7 +41,7 @@
       WARNING - @mbggenerated
     -->
     id, member_id, address, suburb, state, post_code, phone, email, contact_name, contact_phone, 
-    contact_title, `account _name`, bank_name, bbs_number, file_path, create_time, update_time, 
+    contact_title, account_name, bank_name, bbs_number, file_path, create_time, update_time, 
     type, rate, profit_distribution, settlement_cycle, uploading_files, company_name, 
     company_abn, company_acn, company_industry, company_address, company_suburb, company_state, 
     company_postcode
