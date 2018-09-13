@@ -9,20 +9,17 @@ import com.rechenggit.core.dal.mapper.EnterpriseBasicInfoMapper;
 import com.rechenggit.core.dal.mapper.MemberIdentityMapper;
 import com.rechenggit.core.dal.mapper.MemberMapper;
 import com.rechenggit.core.dal.mapper.OperatorMapper;
-import com.rechenggit.core.domain.AccountDomain;
-import com.rechenggit.core.domain.enums.AccountCategoryEnum;
 import com.rechenggit.core.domain.login.EnterpriseServiceInfo;
 import com.rechenggit.core.domain.login.OperatorLoginPwdRequest;
-import com.rechenggit.core.domainservice.repository.AccountRepository;
 import com.rechenggit.core.domainservice.repository.LoginRepository;
-import com.rechenggit.core.exception.MaBizException;
-import org.springframework.beans.BeanUtils;
+import com.rechenggit.core.domainservice.repository.SequenceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 import tk.mybatis.mapper.entity.Example;
 
 import java.util.Date;
 import java.util.List;
-
+@Repository
 public class LoginRepositoryImpl implements LoginRepository {
     @Autowired
     private MemberMapper memberMapper;
@@ -32,6 +29,8 @@ public class LoginRepositoryImpl implements LoginRepository {
     private EnterpriseBasicInfoMapper enterpriseBasicInfoMapper;
     @Autowired
     private OperatorMapper operatorMapper;
+    @Autowired
+    private SequenceRepository sequenceRepository;
     @Override
     public Member getMemberByIdentity(OperatorLoginPwdRequest request) {
         //返回会员对象基本信息 （会员标识 平台类型）
@@ -55,14 +54,13 @@ public class LoginRepositoryImpl implements LoginRepository {
         if(!memberIdentityList.isEmpty()){
             return new BaseResponse(502,"该信息已存在，重复注册");
         }else{
-            //****
-            String memberId = "";
+            Long memberId = sequenceRepository.next("seq_member_id");
             //tm_member_identity 新增 member_id identity status(0：无效)
             Example exampleMemberIdentity = new Example(MemberIdentity .class);
             exampleMemberIdentity.createCriteria().andEqualTo("memberId", memberId);
             List<MemberIdentity> identityList = memberIdentityMapper.selectByExample(exampleMemberIdentity);
             MemberIdentity memberIdentity = new MemberIdentity();
-            memberIdentity.setMemberId(memberId);
+            memberIdentity.setMemberId(memberId.toString());
             memberIdentity.setStatus(0);
             memberIdentity.setIdentity(serviceInfo.getIdentity());
             if(identityList.isEmpty()){
@@ -76,7 +74,7 @@ public class LoginRepositoryImpl implements LoginRepository {
             exampleMember2.createCriteria().andEqualTo("memberId", memberId);
             List<Member> memberList = memberMapper.selectByExample(exampleMember2);
             Member member = new Member();
-            member.setMemberId(memberId);
+            member.setMemberId(memberId.toString());
             member.setStatus(0);
             member.setMemberName(serviceInfo.getMemberName());
             if(memberList.isEmpty()){
@@ -90,10 +88,11 @@ public class LoginRepositoryImpl implements LoginRepository {
             exampleOperator.createCriteria().andEqualTo("memberId", memberId);
             List<Operator> operatorList = operatorMapper.selectByExample(exampleOperator);
             Operator operator = new Operator();
-            operator.setMemberId(memberId);
+            operator.setMemberId(memberId.toString());
             operator.setStatus(0);
             //****
-            String password = "";
+            //String password = UesUtils.hashSignContent(serviceInfo.getPassword());
+            String password = serviceInfo.getPassword();
             operator.setPassword(password);
             if(operatorList.isEmpty()){
                 operator.setCreateTime(new Date());
@@ -106,7 +105,7 @@ public class LoginRepositoryImpl implements LoginRepository {
             exampleBasic.createCriteria().andEqualTo("memberId", memberId);
             List<EnterpriseBasicInfo> basicInfoList = enterpriseBasicInfoMapper.selectByExample(exampleBasic);
             EnterpriseBasicInfo basicInfo = new EnterpriseBasicInfo();
-            basicInfo.setMemberId(memberId);
+            basicInfo.setMemberId(memberId.toString());
             basicInfo.setContactName(serviceInfo.getContactName());
             basicInfo.setContactPhone(serviceInfo.getContactPhone());
             basicInfo.setMerEmail(serviceInfo.getIdentity());
