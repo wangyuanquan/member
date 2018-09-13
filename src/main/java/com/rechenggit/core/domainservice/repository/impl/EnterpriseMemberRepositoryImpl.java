@@ -63,6 +63,7 @@ public class EnterpriseMemberRepositoryImpl implements EnterpriseMemberRepositor
             StoreInfo storeInfo = new StoreInfo();
             BeanUtils.copyProperties(enterpriseBasic.getStoreInfo().get(i),storeInfo);
             storeInfo.setMemberId(memberId);
+            storeInfo.setCreateTime(new Date());
             storeInfoMapper.insertSelective(storeInfo);
         }
         //保存公司信息 先删后添
@@ -74,6 +75,7 @@ public class EnterpriseMemberRepositoryImpl implements EnterpriseMemberRepositor
             CompanyInfo companyInfo = new CompanyInfo();
             BeanUtils.copyProperties(enterpriseBasic.getCompanyInfo().get(i),companyInfo);
             companyInfo.setMemberId(memberId);
+            companyInfo.setCreateTime(new Date());
             companyInfoMapper.insertSelective(companyInfo);
         }
         return new BaseResponse();
