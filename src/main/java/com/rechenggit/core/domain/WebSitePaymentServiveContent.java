@@ -12,6 +12,6 @@ public class WebSitePaymentServiveContent {
     private  Boolean ecommercePlatformPlugIns;
     private List<String> EcommercePlatformPlugInsList;
     private  String  ecommercePlatformPlugInsVersion;
-    private  Boolean  alipay;
-    private  Boolean  wechatPay;
+    private  Boolean  websiteAlipay;
+    private  Boolean  websiteWechatPay;
 }
