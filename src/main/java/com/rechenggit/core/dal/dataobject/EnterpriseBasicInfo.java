@@ -17,33 +17,41 @@ public class EnterpriseBasicInfo {
     /**
      * 商家地址
      */
-    private String address;
+    @Column(name = "mer_address")
+    private String merAddress;
+
+    @Column(name = "mer_name")
+    private String merName;
 
     /**
      * 商家地址-市郊
      */
-    private String suburb;
+    @Column(name = "mer_suburb")
+    private String merSuburb;
 
     /**
      * 商家地址-州
      */
-    private String state;
+    @Column(name = "mer_state")
+    private String merState;
 
     /**
      * 商家地址-邮编
      */
-    @Column(name = "post_code")
-    private String postCode;
+    @Column(name = "mer_post_code")
+    private String merPostCode;
 
     /**
      * 商家-联系电话
      */
-    private String phone;
+    @Column(name = "mer_phone")
+    private String merPhone;
 
     /**
      * 商家-电子邮件地址
      */
-    private String email;
+    @Column(name = "mer_email")
+    private String merEmail;
 
     /**
      * 主要联系人-全名
@@ -189,109 +197,123 @@ public class EnterpriseBasicInfo {
     /**
      * 获取商家地址
      *
-     * @return address - 商家地址
+     * @return mer_address - 商家地址
      */
-    public String getAddress() {
-        return address;
+    public String getMerAddress() {
+        return merAddress;
     }
 
     /**
      * 设置商家地址
      *
-     * @param address 商家地址
+     * @param merAddress 商家地址
      */
-    public void setAddress(String address) {
-        this.address = address == null ? null : address.trim();
+    public void setMerAddress(String merAddress) {
+        this.merAddress = merAddress == null ? null : merAddress.trim();
+    }
+
+    /**
+     * @return mer_name
+     */
+    public String getMerName() {
+        return merName;
+    }
+
+    /**
+     * @param merName
+     */
+    public void setMerName(String merName) {
+        this.merName = merName == null ? null : merName.trim();
     }
 
     /**
      * 获取商家地址-市郊
      *
-     * @return suburb - 商家地址-市郊
+     * @return mer_suburb - 商家地址-市郊
      */
-    public String getSuburb() {
-        return suburb;
+    public String getMerSuburb() {
+        return merSuburb;
     }
 
     /**
      * 设置商家地址-市郊
      *
-     * @param suburb 商家地址-市郊
+     * @param merSuburb 商家地址-市郊
      */
-    public void setSuburb(String suburb) {
-        this.suburb = suburb == null ? null : suburb.trim();
+    public void setMerSuburb(String merSuburb) {
+        this.merSuburb = merSuburb == null ? null : merSuburb.trim();
     }
 
     /**
      * 获取商家地址-州
      *
-     * @return state - 商家地址-州
+     * @return mer_state - 商家地址-州
      */
-    public String getState() {
-        return state;
+    public String getMerState() {
+        return merState;
     }
 
     /**
      * 设置商家地址-州
      *
-     * @param state 商家地址-州
+     * @param merState 商家地址-州
      */
-    public void setState(String state) {
-        this.state = state == null ? null : state.trim();
+    public void setMerState(String merState) {
+        this.merState = merState == null ? null : merState.trim();
     }
 
     /**
      * 获取商家地址-邮编
      *
-     * @return post_code - 商家地址-邮编
+     * @return mer_post_code - 商家地址-邮编
      */
-    public String getPostCode() {
-        return postCode;
+    public String getMerPostCode() {
+        return merPostCode;
     }
 
     /**
      * 设置商家地址-邮编
      *
-     * @param postCode 商家地址-邮编
+     * @param merPostCode 商家地址-邮编
      */
-    public void setPostCode(String postCode) {
-        this.postCode = postCode == null ? null : postCode.trim();
+    public void setMerPostCode(String merPostCode) {
+        this.merPostCode = merPostCode == null ? null : merPostCode.trim();
     }
 
     /**
      * 获取商家-联系电话
      *
-     * @return phone - 商家-联系电话
+     * @return mer_phone - 商家-联系电话
      */
-    public String getPhone() {
-        return phone;
+    public String getMerPhone() {
+        return merPhone;
     }
 
     /**
      * 设置商家-联系电话
      *
-     * @param phone 商家-联系电话
+     * @param merPhone 商家-联系电话
      */
-    public void setPhone(String phone) {
-        this.phone = phone == null ? null : phone.trim();
+    public void setMerPhone(String merPhone) {
+        this.merPhone = merPhone == null ? null : merPhone.trim();
     }
 
     /**
      * 获取商家-电子邮件地址
      *
-     * @return email - 商家-电子邮件地址
+     * @return mer_email - 商家-电子邮件地址
      */
-    public String getEmail() {
-        return email;
+    public String getMerEmail() {
+        return merEmail;
     }
 
     /**
      * 设置商家-电子邮件地址
      *
-     * @param email 商家-电子邮件地址
+     * @param merEmail 商家-电子邮件地址
      */
-    public void setEmail(String email) {
-        this.email = email == null ? null : email.trim();
+    public void setMerEmail(String merEmail) {
+        this.merEmail = merEmail == null ? null : merEmail.trim();
     }
 
     /**

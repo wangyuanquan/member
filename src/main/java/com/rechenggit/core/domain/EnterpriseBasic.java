@@ -20,32 +20,36 @@ public class EnterpriseBasic {
     /**
      * 商家地址
      */
-    private String address;
+    private String merAddress;
+    /**
+     * 商家名称
+     */
+    private String merName;
 
     /**
      * 商家地址：市郊
      */
-    private String suburb;
+    private String merSuburb;
 
     /**
      * 商家地址：州
      */
-    private String state;
+    private String merState;
 
     /**
      * 商家地址：邮编
      */
-    private String postCode;
+    private String merPostCode;
 
     /**
      * 商家：联系电话
      */
-    private String phone;
+    private String merPhone;
 
     /**
      * 商家：电子邮件地址
      */
-    private String email;
+    private String merEmail;
 
     /**
      * 主要联系人：全名
