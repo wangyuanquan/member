@@ -56,7 +56,7 @@ public class BaseControl {
         if (result.hasErrors()) {
             StringBuffer errorMsg = new StringBuffer();
             for (ObjectError objectError : result.getAllErrors()) {
-                errorMsg.append(",").append(objectError.getDefaultMessage());
+                errorMsg.append(" ").append(objectError.getDefaultMessage());
             }
             logger.info("{}参数不合法：{}",errorMsg);
             throw new ValidateException(message.append(errorMsg).toString());

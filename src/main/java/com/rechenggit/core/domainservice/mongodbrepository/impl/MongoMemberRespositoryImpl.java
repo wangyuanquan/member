@@ -29,7 +29,7 @@ public class MongoMemberRespositoryImpl implements MongoMemberRespository {
 
     @Override
     public void update(EnterpriseMemberServiceDomain enterpriseMemberServiceDomain) {
-        Criteria criteria = Criteria.where("memberId").is(enterpriseMemberServiceDomain.getMemberId());
+/*        Criteria criteria = Criteria.where("memberId").is(enterpriseMemberServiceDomain.getMemberId());
         Query query = new Query(criteria);
         Update update = Update.update("instorePaymentServie", enterpriseMemberServiceDomain.getInstorePaymentServie())
                 .set("jsapiPaymentService",enterpriseMemberServiceDomain.getJsapiPaymentService())
@@ -37,15 +37,15 @@ public class MongoMemberRespositoryImpl implements MongoMemberRespository {
                 .set("instorePaymentServie",enterpriseMemberServiceDomain.getInstorePaymentServie())
                 .set("weChatMallPaymentService",enterpriseMemberServiceDomain.getWeChatMallPaymentService()
         );
-        mongoTemplate.updateMulti(query, update, EnterpriseMemberServiceDomain.class);
+        mongoTemplate.updateMulti(query, update, EnterpriseMemberServiceDomain.class);*/
     }
 
     @Override
     public void insert(EnterpriseMemberServiceDomain enterpriseMemberServiceDomain) {
-        Criteria criteria = Criteria.where("memberId").is(enterpriseMemberServiceDomain.getMemberId());
-        Query query = new Query(criteria);
+      /*  Criteria criteria = Criteria.where("memberId").is(enterpriseMemberServiceDomain.getMemberId());
+        Query query = new Query(criteria);*/
 
-        if (mongoTemplate.findOne(query,EnterpriseMemberServiceDomain.class)!=null){
+    /*    if (mongoTemplate.findOne(query,EnterpriseMemberServiceDomain.class)!=null){
 
             Update update = Update.update("instorePaymentServie", enterpriseMemberServiceDomain.getInstorePaymentServie())
                     .set("webSitePaymentService",enterpriseMemberServiceDomain.getWebSitePaymentService())
@@ -55,9 +55,12 @@ public class MongoMemberRespositoryImpl implements MongoMemberRespository {
                     .set("instorePaymentServie",enterpriseMemberServiceDomain.getInstorePaymentServie())
                     .set("weChatMallPaymentService",enterpriseMemberServiceDomain.getWeChatMallPaymentService()
                     );
-        }else {
+        }else {*/
+            if (findOne(enterpriseMemberServiceDomain.getMemberId()) != null){
+                remove(enterpriseMemberServiceDomain.getMemberId());
+            }
             mongoTemplate.insert(enterpriseMemberServiceDomain);
-        }
+      //  }
 
 
     }
@@ -68,8 +71,10 @@ public class MongoMemberRespositoryImpl implements MongoMemberRespository {
     }
 
     @Override
-    public void remove(String id) {
-
+    public void remove(String memberId) {
+        Criteria criteria = Criteria.where("memberId").is(memberId);
+        Query query = new Query(criteria);
+        mongoTemplate.remove(query,EnterpriseMemberServiceDomain.class);
     }
 
     @Override

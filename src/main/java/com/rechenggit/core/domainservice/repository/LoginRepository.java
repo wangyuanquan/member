@@ -15,7 +15,7 @@ public interface LoginRepository {
      * 查询会员 通过标识
      * @param request
      */
-    Member getMemberByIdentity(OperatorLoginPwdRequest request);
+    Member validateMemberExistAndNormal(String identity,int platformType);
 
     /**
      * 查询操作员 通过用户 密码

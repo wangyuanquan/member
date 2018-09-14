@@ -6,13 +6,14 @@ import com.rechenggit.core.domain.EnterpriseMemberServiceDomain;
 import com.rechenggit.core.domain.EnterpriseOther;
 import com.rechenggit.core.domainservice.mongodbrepository.MongoMemberRespository;
 import com.rechenggit.core.domainservice.repository.EnterpriseMemberRepository;
-import com.rechenggit.core.domainservice.service.EnterpriseMemberService;
+import com.rechenggit.core.domainservice.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 
 
-@Repository
-public class EnterpriseMemberServiceImpl implements EnterpriseMemberService {
+@Service
+public class MemberServiceImpl implements MemberService {
 
     @Autowired
     private EnterpriseMemberRepository enterpriseMemberRepository;
