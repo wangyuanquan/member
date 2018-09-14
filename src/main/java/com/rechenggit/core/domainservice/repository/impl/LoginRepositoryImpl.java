@@ -12,25 +12,27 @@ import com.rechenggit.core.dal.mapper.EnterpriseBasicInfoMapper;
 import com.rechenggit.core.dal.mapper.MemberIdentityMapper;
 import com.rechenggit.core.dal.mapper.MemberMapper;
 import com.rechenggit.core.dal.mapper.OperatorMapper;
-import com.rechenggit.core.domain.AccountDomain;
-import com.rechenggit.core.domain.enums.AccountCategoryEnum;
 import com.rechenggit.core.domain.login.EnterpriseServiceInfo;
 import com.rechenggit.core.domain.login.OperatorLoginPwdRequest;
-import com.rechenggit.core.domainservice.repository.AccountRepository;
 import com.rechenggit.core.domainservice.repository.LoginRepository;
 import com.rechenggit.core.domainservice.repository.SequenceRepository;
-import com.rechenggit.core.exception.MaBizException;
 import com.rechenggit.util.FieldLength;
+import com.rechenggit.web.LoginControl;
+import org.apache.commons.codec.digest.DigestUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.stereotype.Repository;
 import tk.mybatis.mapper.entity.Example;
 
+import java.io.UnsupportedEncodingException;
 import java.util.Date;
 import java.util.List;
 @Service
 @Repository
 public class LoginRepositoryImpl implements LoginRepository {
+    private final static Logger logger = LoggerFactory.getLogger(LoginControl.class);
     @Autowired
     private MemberMapper memberMapper;
     @Autowired
@@ -106,9 +108,8 @@ public class LoginRepositoryImpl implements LoginRepository {
             Operator operator = new Operator();
             operator.setMemberId(memberId.toString());
             operator.setStatus(0);
-            //****
-            //String password = UesUtils.hashSignContent(serviceInfo.getPassword());
-            String password = serviceInfo.getPassword();
+            //密码
+            String password = hashSignContent(serviceInfo.getPassword());
             operator.setPassword(password);
             //operatorId
             operator.setOperatorId(operatorId);
@@ -168,5 +169,16 @@ public class LoginRepositoryImpl implements LoginRepository {
                 + StringUtil.alignRight(seq, MaConstant.MEMBER_ID_SEQ_LENGTH,
                 MaConstant.ID_FIX_CHAR);
         return memberId;
+    }
+    /*
+     * 生成密码
+     */
+    public static String hashSignContent(String txt) {
+        try {
+            return DigestUtils.sha256Hex(txt.getBytes("UTF-8"));
+        } catch (UnsupportedEncodingException var2) {
+            logger.error(var2.getMessage(), var2);
+            return null;
+        }
     }
 }
