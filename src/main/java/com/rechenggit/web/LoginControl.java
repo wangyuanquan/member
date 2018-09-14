@@ -5,6 +5,7 @@ import com.rechenggit.core.common.BaseResponse;
 import com.rechenggit.core.common.LoginRequest;
 import com.rechenggit.core.dal.dataobject.Member;
 import com.rechenggit.core.domain.BaseMember;
+import com.rechenggit.core.domain.login.EnterpriseServiceInfo;
 import com.rechenggit.core.domain.login.OperatorLoginPwdRequest;
 import com.rechenggit.core.domainservice.service.LoginService;
 import com.rechenggit.core.domainservice.validator.MemberValidator;
@@ -16,12 +17,13 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(value="/login")
+@RequestMapping(value="/member")
 public class LoginControl extends BaseControl {
     private final static Logger logger = LoggerFactory.getLogger(LoginControl.class);
     @Autowired
     private MemberValidator memberValidator;
-
+    @Autowired
+    private LoginService loginService;
     @PostMapping("/enterpriseLogin")
     public BaseResponse enterpriselogin(OperationEnvironment environment,
                               OperatorLoginPwdRequest request){
