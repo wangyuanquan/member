@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.rechenggit.core.dal.mapper.OperatorMapper" >
+  <resultMap id="BaseResultMap" type="com.rechenggit.core.dal.dataobject.Operator" >
+    <!--
+      WARNING - @mbggenerated
+    -->
+    <id column="OPERATOR_ID" property="operatorId" jdbcType="VARCHAR" />
+    <result column="MEMBER_ID" property="memberId" jdbcType="VARCHAR" />
+    <result column="NICKNAME" property="nickname" jdbcType="VARCHAR" />
+    <result column="OPERATOR_TYPE" property="operatorType" jdbcType="DECIMAL" />
+    <result column="IS_DEFAULT" property="isDefault" jdbcType="DECIMAL" />
+    <result column="STATUS" property="status" jdbcType="DECIMAL" />
+    <result column="ACTIVE_TIME" property="activeTime" jdbcType="TIMESTAMP" />
+    <result column="LOCK_STATUS" property="lockStatus" jdbcType="DECIMAL" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="CREATE_USER" property="createUser" jdbcType="VARCHAR" />
+    <result column="UPDATE_USER" property="updateUser" jdbcType="VARCHAR" />
+    <result column="MEMO" property="memo" jdbcType="VARCHAR" />
+    <result column="SECURITY_FLAG" property="securityFlag" jdbcType="DECIMAL" />
+    <result column="PASSWORD" property="password" jdbcType="VARCHAR" />
+    <result column="GESTURE_PWD" property="gesturePwd" jdbcType="VARCHAR" />
+    <result column="FACE_MARK_URL" property="faceMarkUrl" jdbcType="VARCHAR" />
+    <result column="ANTI_FAKE_MARK" property="antiFakeMark" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    <!--
+      WARNING - @mbggenerated
+    -->
+    OPERATOR_ID, MEMBER_ID, NICKNAME, OPERATOR_TYPE, IS_DEFAULT, STATUS, ACTIVE_TIME, 
+    LOCK_STATUS, CREATE_TIME, UPDATE_TIME, CREATE_USER, UPDATE_USER, MEMO, SECURITY_FLAG, 
+    PASSWORD, GESTURE_PWD, FACE_MARK_URL, ANTI_FAKE_MARK
+  </sql>
+</mapper>
