@@ -109,8 +109,8 @@ public class LoginRepositoryImpl implements LoginRepository {
             operator.setMemberId(memberId.toString());
             operator.setStatus(0);
             //密码
-            String password = hashSignContent(serviceInfo.getPassword());
-            operator.setPassword(password);
+            //String password = hashSignContent(serviceInfo.getPassword());
+            //operator.setPassword(password);
             //operatorId
             operator.setOperatorId(operatorId);
             if(operatorList.isEmpty()){

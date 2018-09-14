@@ -4,6 +4,7 @@ import com.rechenggit.core.domain.enums.MemberTypeEnum;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.validator.constraints.NotBlank;
 
 @Setter
 @Getter
@@ -12,31 +13,32 @@ public class EnterpriseServiceInfo {
     /**
      * 商户邮箱
      */
+    @NotBlank
     private String identity;
     /**
      * 姓名
      */
+    @NotBlank
     private String memberName;
     /**
      * 地址
      */
+    @NotBlank
     private String address;
-
     /**
      * 联系人
      */
+    @NotBlank
     private String  contactName;
     /**
      * 联系人手机号
      */
+    @NotBlank
     private String  contactPhone;
-    /**
-     * 密码
-     */
-    private String  password;
     /**
      * 平台类型：1:企业 2：个人
      */
+    @NotBlank
     private Integer pid;
 
 }

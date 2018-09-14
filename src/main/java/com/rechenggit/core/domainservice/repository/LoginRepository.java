@@ -14,7 +14,6 @@ import java.util.List;
 public interface LoginRepository {
     /**
      * 查询会员 通过标识
-     * @param request
      */
     Member validateMemberExistAndNormal(String identity,int platformType);
 
