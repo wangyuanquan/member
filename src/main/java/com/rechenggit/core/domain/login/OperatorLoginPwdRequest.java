@@ -9,11 +9,11 @@ import lombok.ToString;
 @ToString
 public class OperatorLoginPwdRequest{
 
-    private String loginName;
+    private String identity;
 
     private Integer platFormType;
 
-    private String username;
+    private String loginName;
 
     private String password;
 

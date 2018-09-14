@@ -9,7 +9,7 @@ public class LoginPwdFacadeValidator {
      */
     public  static void validator(OperatorLoginPwdRequest request){
         //验证用户名
-        CommonFacadeValidator.checkLoginName(request.getUsername());
+        CommonFacadeValidator.checkLoginName(request.getLoginName());
         //验证密码
         CommonFacadeValidator.checkLoginPwd(request.getPassword(), true);
     }

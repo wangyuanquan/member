@@ -1,8 +1,12 @@
 package com.rechenggit.core.common;
 
+import com.alibaba.fastjson.annotation.JSONField;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
 
 @Getter
 @Setter
@@ -19,8 +23,7 @@ public class BaseResponse<T> {
     * */
     private int status =200;
 
-    private String message = "成功";
-
+    private String message = "success";
     private T data;
 
     public BaseResponse() {
@@ -40,5 +43,9 @@ public class BaseResponse<T> {
     public BaseResponse(String message, T data) {
         this.message = message;
         this.data = data;
+    }
+    @Override
+    public  String  toString(){
+        return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
     }
 }

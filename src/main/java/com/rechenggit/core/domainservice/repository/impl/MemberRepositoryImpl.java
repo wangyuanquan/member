@@ -36,7 +36,7 @@ public class MemberRepositoryImpl implements MemberRepository {
     public Member queryBaseMember(MemberIntegratedQuery query) {
         Example example =new Example(MemberIdentity.class);
         example.createCriteria()
-                .andEqualTo("memberIdentity",query.getMemberIdentity())
+                .andEqualTo("identity",query.getMemberIdentity())
                 .andEqualTo("pid",query.getPlatformType());
         MemberIdentity memberIdentity=  memberIdentityMapper.selectOneByExample(example);
         return load(memberIdentity.getMemberId());

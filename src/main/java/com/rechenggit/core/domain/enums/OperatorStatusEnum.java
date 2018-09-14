@@ -6,14 +6,14 @@ package com.rechenggit.core.domain.enums;
  * @version $Id: OperatorStatusEnum.java 24517 2012-11-16 06:31:05Z malianhao $
  */
 public enum OperatorStatusEnum {
-    UNACTIVE(0L, "未激活"), NORMAL(1L, "正常"), CANCEL(2L, "注销");
+    UNACTIVE(0, "未激活"), NORMAL(1, "正常"), CANCEL(2, "注销");
 
     /** 代码 */
-    private final Long   code;
+    private final Integer   code;
     /** 信息 */
     private final String message;
 
-    OperatorStatusEnum(Long code, String message) {
+    OperatorStatusEnum(Integer code, String message) {
         this.code = code;
         this.message = message;
     }
@@ -23,7 +23,7 @@ public enum OperatorStatusEnum {
      * @param code
      * @return
      */
-    public static OperatorStatusEnum getByCode(Long code) {
+    public static OperatorStatusEnum getByCode(Integer code) {
         if (code == null) {
             return null;
         }
@@ -37,7 +37,7 @@ public enum OperatorStatusEnum {
         return null;
     }
 
-    public Long getCode() {
+    public Integer getCode() {
         return code;
     }
 

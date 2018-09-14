@@ -4,11 +4,13 @@ import com.netfinworks.common.domain.OperationEnvironment;
 import com.rechenggit.core.common.BaseResponse;
 import com.rechenggit.core.common.LoginRequest;
 import com.rechenggit.core.dal.dataobject.Member;
+import com.rechenggit.core.dal.dataobject.Operator;
 import com.rechenggit.core.domain.BaseMember;
 import com.rechenggit.core.domain.login.EnterpriseServiceInfo;
 import com.rechenggit.core.domain.login.OperatorLoginPwdRequest;
 import com.rechenggit.core.domainservice.service.LoginService;
 import com.rechenggit.core.domainservice.validator.MemberValidator;
+import com.rechenggit.core.domainservice.validator.OperatorValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,22 +25,29 @@ public class LoginControl extends BaseControl {
     @Autowired
     private MemberValidator memberValidator;
     @Autowired
+    private OperatorValidator operatorValidator;
+    @Autowired
     private LoginService loginService;
     @PostMapping("/enterpriseLogin")
-    public BaseResponse enterpriselogin(OperationEnvironment environment,
-                              OperatorLoginPwdRequest request){
+    public BaseResponse enterpriselogin(@RequestBody OperatorLoginPwdRequest request){
         BaseResponse response =new BaseResponse();
         try {
             Member member =memberValidator.validateMemberExistAndNormal(
-                    request.getLoginName(), request.getPlatFormType());
-
+                    request.getIdentity(), request.getPlatFormType());
+            Operator operator = operatorValidator.validateOperatorExistAndNormal(
+                    member.getMemberId(), request.getLoginName(), request.getPlatFormType());
+            operatorValidator.validateLoginPassWord(operator.getPassword());
+            loginService.checkLoginPwd(operator, request.getPassword());
             if (logger.isInfoEnabled()) {
                 logger.info("验证操作员登陆密码返回对象 : " + response.toString());
             }
-            return response;
+            response.setMessage("");
+            return success(response);
         } catch (Exception e) {
-            logger.error("验证操作员登陆密码异常 : ", e);
-            throw new RuntimeException("调用checkOperatorLoginPwd接口异常");
+            logger.error("验证操作员登陆密码异常 : {}", e);
+            response.setStatus(500);
+            response.setMessage(e.getMessage());
+            return fail(response);
         }
     }
     @PostMapping("/service")
