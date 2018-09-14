@@ -1,5 +1,6 @@
 package com.rechenggit.web;
 
+import com.alibaba.druid.util.StringUtils;
 import com.alibaba.fastjson.JSONObject;
 import com.netfinworks.common.domain.OperationEnvironment;
 import com.rechenggit.core.common.BaseResponse;
@@ -20,6 +21,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @RestController
 @RequestMapping(value="/member")
 public class LoginControl extends BaseControl {
@@ -37,12 +41,17 @@ public class LoginControl extends BaseControl {
             Member member =memberValidator.validateMemberExistAndNormal(
                     request.getIdentity(), request.getPlatFormType());
             Operator operator = operatorValidator.validateOperatorExistAndNormal(
-                    member.getMemberId(), request.getLoginName(), request.getPlatFormType());
+                    member.getMemberId(), StringUtils.isEmpty(request.getLoginName())?"Admin":request.getLoginName(),
+                    request.getPlatFormType() == null?1:request.getPlatFormType());
             operatorValidator.validateLoginPassWord(operator.getPassword());
             loginService.checkLoginPwd(operator, request.getPassword());
             if (logger.isInfoEnabled()) {
                 logger.info("验证操作员登陆密码返回对象 : " + response.toString());
             }
+            Map<String,String> data=new HashMap<>();
+            data.put("operatorId",operator.getOperatorId());
+            data.put("memberId",member.getMemberId());
+
             response.setMessage("");
             return success(response);
         } catch (Exception e) {

@@ -1,6 +1,7 @@
 package com.rechenggit.core.domainservice.service.impl;
 
 
+import com.alibaba.druid.util.StringUtils;
 import com.netfinworks.common.domain.OperationEnvironment;
 import com.rechenggit.core.common.BaseResponse;
 import com.rechenggit.core.common.LoginRequest;
@@ -93,7 +94,7 @@ public class LoginServiceImpl implements LoginService {
                 }
             }
         }
-        if (StringUtil.equalsIgnoreCase(getPwd(operator), validatePwd)) {
+        if (StringUtils.equalsIgnoreCase(getPwd(operator), validatePwd)) {
             //如果存在锁定记录，则清除之前的纪录，重新统计
             if (isLockTracking) {
                 this.resetLock(operator);
