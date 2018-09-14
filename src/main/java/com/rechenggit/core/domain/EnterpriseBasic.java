@@ -3,6 +3,7 @@ package com.rechenggit.core.domain;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.validator.constraints.NotBlank;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;
@@ -14,16 +15,18 @@ public class EnterpriseBasic {
     /**
      * 商家id
      */
-    @NotNull()
+    @NotBlank(message ="{memberId.empty.error}")
     private String memberId;
 
     /**
      * 商家地址
      */
+    @NotBlank
     private String merAddress;
     /**
      * 商家名称
      */
+    @NotBlank
     private String merName;
 
     /**
@@ -49,17 +52,19 @@ public class EnterpriseBasic {
     /**
      * 商家：电子邮件地址
      */
+    @NotBlank
     private String merEmail;
 
     /**
      * 主要联系人：全名
      */
+    @NotBlank
     private String contactName;
 
     /**
      * 主要联系人：手机号
      */
-
+    @NotBlank
     private String contactPhone;
 
     /**

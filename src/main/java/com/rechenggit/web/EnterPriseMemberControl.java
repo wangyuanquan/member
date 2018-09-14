@@ -79,7 +79,8 @@ public class EnterPriseMemberControl extends BaseControl {
             response = memberService.saveEnterpriseBasicInfo(enterpriseBasic);
         }catch (Exception e){
             logger.error("保存基本信息错误：{}",e);
-            return  fail(response);
+            response.setStatus(504);
+            response.setMessage(e.getMessage());
         }
         return response;
     }
