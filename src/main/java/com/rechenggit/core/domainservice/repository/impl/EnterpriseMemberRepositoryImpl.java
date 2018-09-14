@@ -60,7 +60,7 @@ public class EnterpriseMemberRepositoryImpl implements EnterpriseMemberRepositor
             basicInfo.setCreateTime(new Date());
             enterpriseBasicInfoMapper.insertSelective(basicInfo);
         }else{
-            enterpriseBasicInfoMapper.updateByExample(basicInfo,exampleBasic);
+            enterpriseBasicInfoMapper.updateByExampleSelective(basicInfo,exampleBasic);
         }
         //保存商店信息 先删后添
         Example exampleStore = new Example(StoreInfo.class);
@@ -108,7 +108,7 @@ public class EnterpriseMemberRepositoryImpl implements EnterpriseMemberRepositor
             Example exampleStore = new Example(StoreInfo.class);
             exampleStore.createCriteria().andEqualTo("memberId", memberId).andEqualTo("displayNum",
                     enterpriseBasic.getStoreInfo().get(i).getDisplayNum());
-            storeInfoMapper.updateByExample(storeInfo,exampleStore);
+            storeInfoMapper.updateByExampleSelective(storeInfo,exampleStore);
         }
         //公司信息
         int companySize = enterpriseBasic.getCompanyInfo().size();
@@ -118,7 +118,7 @@ public class EnterpriseMemberRepositoryImpl implements EnterpriseMemberRepositor
             Example exampleCompany = new Example(CompanyInfo.class);
             exampleCompany.createCriteria().andEqualTo("memberId", memberId).andEqualTo("displayNum",
                     enterpriseBasic.getCompanyInfo().get(i).getDisplayNum());
-            companyInfoMapper.updateByExample(companyInfo,exampleCompany);
+            companyInfoMapper.updateByExampleSelective(companyInfo,exampleCompany);
         }
         return new BaseResponse();
     }
@@ -202,7 +202,7 @@ public class EnterpriseMemberRepositoryImpl implements EnterpriseMemberRepositor
             basicOther.setCreateTime(new Date());
             enterpriseOtherInfoMapper.insertSelective(basicOther);
         }else{
-            enterpriseOtherInfoMapper.updateByExample(basicOther,exampleOther);
+            enterpriseOtherInfoMapper.updateByExampleSelective(basicOther,exampleOther);
         }
         return new BaseResponse();
     }

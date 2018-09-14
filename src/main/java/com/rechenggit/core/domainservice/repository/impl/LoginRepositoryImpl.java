@@ -85,7 +85,7 @@ public class LoginRepositoryImpl implements LoginRepository {
                 memberIdentity.setCreateTime(new Date());
                 memberIdentityMapper.insertSelective(memberIdentity);
             }else{
-                memberIdentityMapper.updateByExample(memberIdentity,exampleMemberIdentity);
+                memberIdentityMapper.updateByExampleSelective(memberIdentity,exampleMemberIdentity);
             }
             //tm_member 新增 member_id member_name status(0:未激活)
             Example exampleMember2 = new Example(Member .class);
@@ -99,7 +99,7 @@ public class LoginRepositoryImpl implements LoginRepository {
                 member.setCreateTime(new Date());
                 memberMapper.insertSelective(member);
             }else{
-                memberMapper.updateByExample(member,exampleMember2);
+                memberMapper.updateByExampleSelective(member,exampleMember2);
             }
             //tm_operator 新增 member_id password status(0:未激活）
             Example exampleOperator = new Example(Operator.class);
@@ -117,7 +117,7 @@ public class LoginRepositoryImpl implements LoginRepository {
                 operator.setCreateTime(new Date());
                 operatorMapper.insertSelective(operator);
             }else{
-                operatorMapper.updateByExample(operator,exampleOperator);
+                operatorMapper.updateByExampleSelective(operator,exampleOperator);
             }
             //tm_enterprise_basic_info 新增 member_id contact_name contact_phone email（identity）address
             Example exampleBasic = new Example(EnterpriseBasicInfo.class);
@@ -133,7 +133,7 @@ public class LoginRepositoryImpl implements LoginRepository {
                 basicInfo.setCreateTime(new Date());
                 enterpriseBasicInfoMapper.insertSelective(basicInfo);
             }else{
-                enterpriseBasicInfoMapper.updateByExample(basicInfo,exampleBasic);
+                enterpriseBasicInfoMapper.updateByExampleSelective(basicInfo,exampleBasic);
             }
             BaseResponse baseResponse = new BaseResponse();
             baseResponse.setData(memberId);
