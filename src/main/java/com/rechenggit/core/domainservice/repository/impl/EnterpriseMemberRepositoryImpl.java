@@ -139,6 +139,9 @@ public class EnterpriseMemberRepositoryImpl implements EnterpriseMemberRepositor
         Example exampleBasicInfo = new Example(EnterpriseBasicInfo.class);
         exampleBasicInfo.createCriteria().andEqualTo("memberId", memberId);
         List<EnterpriseBasicInfo> basicInfo = enterpriseBasicInfoMapper.selectByExample(exampleBasicInfo);
+        if(basicInfo.isEmpty()){
+            return new BaseResponse(504,"参数无效，无相关memberId");
+        }
         BeanUtils.copyProperties(basicInfo.get(0),enterpriseBasic);
         //商店
         Example exampleStore = new Example(StoreInfo.class);
