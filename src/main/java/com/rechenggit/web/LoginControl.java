@@ -1,5 +1,6 @@
 package com.rechenggit.web;
 
+import com.alibaba.fastjson.JSONObject;
 import com.netfinworks.common.domain.OperationEnvironment;
 import com.rechenggit.core.common.BaseResponse;
 import com.rechenggit.core.common.LoginRequest;
@@ -8,6 +9,7 @@ import com.rechenggit.core.dal.dataobject.Operator;
 import com.rechenggit.core.domain.BaseMember;
 import com.rechenggit.core.domain.login.EnterpriseServiceInfo;
 import com.rechenggit.core.domain.login.OperatorLoginPwdRequest;
+import com.rechenggit.core.domain.login.ServicePasswordInfo;
 import com.rechenggit.core.domainservice.service.LoginService;
 import com.rechenggit.core.domainservice.validator.MemberValidator;
 import com.rechenggit.core.domainservice.validator.OperatorValidator;
@@ -50,14 +52,33 @@ public class LoginControl extends BaseControl {
             return fail(response);
         }
     }
+    //注册
     @PostMapping("/service")
     public BaseResponse service(@RequestBody @Validated EnterpriseServiceInfo serviceInfo , BindingResult result){
         BaseResponse<EnterpriseServiceInfo> response = new BaseResponse();
         try {
             validate(result);
+            logger.info("注册serviceInfo:"+ JSONObject.toJSONString(serviceInfo));
             response = loginService.enterpriseService(serviceInfo);
         } catch (Exception e) {
             logger.error("注册信息异常 : ", e);
+            response.setStatus(504);
+            response.setMessage(e.getMessage());
+        }
+        return response;
+    }
+    //注册
+    @PostMapping("/servicePassword")
+    public BaseResponse servicePassword(@RequestBody @Validated ServicePasswordInfo servicePasswordInfo , BindingResult result){
+        BaseResponse<ServicePasswordInfo> response = new BaseResponse();
+        try {
+            validate(result);
+            logger.info("提交密码:"+ JSONObject.toJSONString(servicePasswordInfo));
+            response = loginService.saveServicePasswordInfo(servicePasswordInfo);
+        } catch (Exception e) {
+            logger.error("注册信息异常 : ", e);
+            response.setStatus(504);
+            response.setMessage(e.getMessage());
         }
         return response;
     }

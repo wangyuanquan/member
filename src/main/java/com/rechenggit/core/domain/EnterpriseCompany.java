@@ -9,9 +9,6 @@ import lombok.ToString;
 @Getter
 @ToString
 public class EnterpriseCompany {
-
-    private String memberId;
-
     /**
      * 公司注册：名称
      */

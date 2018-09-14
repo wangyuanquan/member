@@ -7,6 +7,7 @@ import com.rechenggit.core.domain.AccountDomain;
 import com.rechenggit.core.domain.enums.AccountCategoryEnum;
 import com.rechenggit.core.domain.login.EnterpriseServiceInfo;
 import com.rechenggit.core.domain.login.OperatorLoginPwdRequest;
+import com.rechenggit.core.domain.login.ServicePasswordInfo;
 import com.rechenggit.core.exception.MaBizException;
 
 import java.util.List;
@@ -14,7 +15,6 @@ import java.util.List;
 public interface LoginRepository {
     /**
      * 查询会员 通过标识
-     * @param request
      */
     Member validateMemberExistAndNormal(String identity,int platformType);
 
@@ -28,4 +28,9 @@ public interface LoginRepository {
      * @return
      */
     BaseResponse enterpriseService(EnterpriseServiceInfo serviceInfo);
+    /**
+     * 保存登录密码，交易密码
+     * @return
+     */
+    BaseResponse saveServicePasswordInfo(ServicePasswordInfo servicePasswordInfo);
 }

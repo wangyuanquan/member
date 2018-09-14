@@ -11,13 +11,14 @@ import com.rechenggit.core.domainservice.repository.EnterpriseMemberRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-
+@Service
 @Repository
 public class EnterpriseMemberRepositoryImpl implements EnterpriseMemberRepository {
 
@@ -59,7 +60,7 @@ public class EnterpriseMemberRepositoryImpl implements EnterpriseMemberRepositor
             basicInfo.setCreateTime(new Date());
             enterpriseBasicInfoMapper.insertSelective(basicInfo);
         }else{
-            enterpriseBasicInfoMapper.updateByExample(basicInfo,exampleBasic);
+            enterpriseBasicInfoMapper.updateByExampleSelective(basicInfo,exampleBasic);
         }
         //保存商店信息 先删后添
         Example exampleStore = new Example(StoreInfo.class);
@@ -107,7 +108,7 @@ public class EnterpriseMemberRepositoryImpl implements EnterpriseMemberRepositor
             Example exampleStore = new Example(StoreInfo.class);
             exampleStore.createCriteria().andEqualTo("memberId", memberId).andEqualTo("displayNum",
                     enterpriseBasic.getStoreInfo().get(i).getDisplayNum());
-            storeInfoMapper.updateByExample(storeInfo,exampleStore);
+            storeInfoMapper.updateByExampleSelective(storeInfo,exampleStore);
         }
         //公司信息
         int companySize = enterpriseBasic.getCompanyInfo().size();
@@ -117,7 +118,7 @@ public class EnterpriseMemberRepositoryImpl implements EnterpriseMemberRepositor
             Example exampleCompany = new Example(CompanyInfo.class);
             exampleCompany.createCriteria().andEqualTo("memberId", memberId).andEqualTo("displayNum",
                     enterpriseBasic.getCompanyInfo().get(i).getDisplayNum());
-            companyInfoMapper.updateByExample(companyInfo,exampleCompany);
+            companyInfoMapper.updateByExampleSelective(companyInfo,exampleCompany);
         }
         return new BaseResponse();
     }
@@ -138,6 +139,9 @@ public class EnterpriseMemberRepositoryImpl implements EnterpriseMemberRepositor
         Example exampleBasicInfo = new Example(EnterpriseBasicInfo.class);
         exampleBasicInfo.createCriteria().andEqualTo("memberId", memberId);
         List<EnterpriseBasicInfo> basicInfo = enterpriseBasicInfoMapper.selectByExample(exampleBasicInfo);
+        if(basicInfo.isEmpty()){
+            return new BaseResponse(504,"参数无效，无相关memberId");
+        }
         BeanUtils.copyProperties(basicInfo.get(0),enterpriseBasic);
         //商店
         Example exampleStore = new Example(StoreInfo.class);
@@ -201,7 +205,7 @@ public class EnterpriseMemberRepositoryImpl implements EnterpriseMemberRepositor
             basicOther.setCreateTime(new Date());
             enterpriseOtherInfoMapper.insertSelective(basicOther);
         }else{
-            enterpriseOtherInfoMapper.updateByExample(basicOther,exampleOther);
+            enterpriseOtherInfoMapper.updateByExampleSelective(basicOther,exampleOther);
         }
         return new BaseResponse();
     }

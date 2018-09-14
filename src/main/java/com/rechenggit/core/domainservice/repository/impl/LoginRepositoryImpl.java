@@ -2,35 +2,36 @@ package com.rechenggit.core.domainservice.repository.impl;
 
 import com.netfinworks.common.lang.StringUtil;
 import com.rechenggit.core.common.BaseResponse;
-import com.rechenggit.core.dal.dataobject.EnterpriseBasicInfo;
-import com.rechenggit.core.dal.dataobject.Member;
-import com.rechenggit.core.dal.dataobject.MemberIdentity;
-import com.rechenggit.core.dal.dataobject.Operator;
+import com.rechenggit.core.dal.dataobject.*;
 import com.rechenggit.core.dal.mapper.*;
 import com.rechenggit.core.domain.enums.MemberTypeEnum;
 import com.rechenggit.core.dal.mapper.EnterpriseBasicInfoMapper;
 import com.rechenggit.core.dal.mapper.MemberIdentityMapper;
 import com.rechenggit.core.dal.mapper.MemberMapper;
 import com.rechenggit.core.dal.mapper.OperatorMapper;
-import com.rechenggit.core.domain.AccountDomain;
-import com.rechenggit.core.domain.enums.AccountCategoryEnum;
 import com.rechenggit.core.domain.login.EnterpriseServiceInfo;
 import com.rechenggit.core.domain.login.OperatorLoginPwdRequest;
-import com.rechenggit.core.domainservice.repository.AccountRepository;
+import com.rechenggit.core.domain.login.ServicePasswordInfo;
 import com.rechenggit.core.domainservice.repository.LoginRepository;
 import com.rechenggit.core.domainservice.repository.SequenceRepository;
-import com.rechenggit.core.exception.MaBizException;
 import com.rechenggit.util.FieldLength;
+import com.rechenggit.web.LoginControl;
+import org.apache.commons.codec.digest.DigestUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.stereotype.Repository;
+import sun.security.util.Password;
 import tk.mybatis.mapper.entity.Example;
 
+import java.io.UnsupportedEncodingException;
 import java.util.Date;
 import java.util.List;
 @Service
 @Repository
 public class LoginRepositoryImpl implements LoginRepository {
+    private final static Logger logger = LoggerFactory.getLogger(LoginControl.class);
     @Autowired
     private MemberMapper memberMapper;
     @Autowired
@@ -41,6 +42,8 @@ public class LoginRepositoryImpl implements LoginRepository {
     private OperatorMapper operatorMapper;
     @Autowired
     private SequenceRepository sequenceRepository;
+    @Autowired
+    private TrPasswordMapper trPasswordMapper;
     @Override
     public Member validateMemberExistAndNormal(String identity,int platformType) {
        /* //返回会员对象基本信息 （会员标识 平台类型）
@@ -83,7 +86,7 @@ public class LoginRepositoryImpl implements LoginRepository {
                 memberIdentity.setCreateTime(new Date());
                 memberIdentityMapper.insertSelective(memberIdentity);
             }else{
-                memberIdentityMapper.updateByExample(memberIdentity,exampleMemberIdentity);
+                memberIdentityMapper.updateByExampleSelective(memberIdentity,exampleMemberIdentity);
             }
             //tm_member 新增 member_id member_name status(0:未激活)
             Example exampleMember2 = new Example(Member .class);
@@ -97,26 +100,21 @@ public class LoginRepositoryImpl implements LoginRepository {
                 member.setCreateTime(new Date());
                 memberMapper.insertSelective(member);
             }else{
-                memberMapper.updateByExample(member,exampleMember2);
+                memberMapper.updateByExampleSelective(member,exampleMember2);
             }
-            //tm_operator 新增 member_id password status(0:未激活）
+            //tm_operator 新增 member_id status(0:未激活）
             Example exampleOperator = new Example(Operator.class);
             exampleOperator.createCriteria().andEqualTo("memberId", memberId);
             List<Operator> operatorList = operatorMapper.selectByExample(exampleOperator);
             Operator operator = new Operator();
             operator.setMemberId(memberId.toString());
             operator.setStatus(0);
-            //****
-            //String password = UesUtils.hashSignContent(serviceInfo.getPassword());
-            String password = serviceInfo.getPassword();
-            operator.setPassword(password);
-            //operatorId
             operator.setOperatorId(operatorId);
             if(operatorList.isEmpty()){
                 operator.setCreateTime(new Date());
                 operatorMapper.insertSelective(operator);
             }else{
-                operatorMapper.updateByExample(operator,exampleOperator);
+                operatorMapper.updateByExampleSelective(operator,exampleOperator);
             }
             //tm_enterprise_basic_info 新增 member_id contact_name contact_phone email（identity）address
             Example exampleBasic = new Example(EnterpriseBasicInfo.class);
@@ -132,13 +130,74 @@ public class LoginRepositoryImpl implements LoginRepository {
                 basicInfo.setCreateTime(new Date());
                 enterpriseBasicInfoMapper.insertSelective(basicInfo);
             }else{
-                enterpriseBasicInfoMapper.updateByExample(basicInfo,exampleBasic);
+                enterpriseBasicInfoMapper.updateByExampleSelective(basicInfo,exampleBasic);
             }
             BaseResponse baseResponse = new BaseResponse();
-            baseResponse.setData(memberId);
+            ServicePasswordInfo servicePasswordInfo = new ServicePasswordInfo();
+            servicePasswordInfo.setMemberId(memberId);
+            servicePasswordInfo.setOperatorId(operatorId);
             return baseResponse;
         }
     }
+
+    @Override
+    public BaseResponse saveServicePasswordInfo(ServicePasswordInfo servicePasswordInfo) {
+        BaseResponse baseResponse = new BaseResponse();
+        //密码
+        String loginPassword = hashSignContent(servicePasswordInfo.getLoginPassword());
+        String paymentPassword = hashSignContent(servicePasswordInfo.getPaymentPassword());
+        //tm_operator 更新 password
+        Example exampleOperator = new Example(Operator.class);
+        exampleOperator.createCriteria().andEqualTo("memberId", servicePasswordInfo.getMemberId());
+        List<Operator> operatorList = operatorMapper.selectByExample(exampleOperator);
+        Operator operator = new Operator();
+        operator.setPassword(loginPassword);
+        operator.setStatus(1);
+        if(operatorList.isEmpty()){
+            operator.setCreateTime(new Date());
+            operatorMapper.insertSelective(operator);
+        }else{
+            operatorMapper.updateByExampleSelective(operator,exampleOperator);
+        }
+        //tr_password 更新 password 交易密码
+        Example examplePassword = new Example(TrPassword.class);
+        examplePassword.createCriteria().andEqualTo("operatorId", servicePasswordInfo.getOperatorId());
+        List<TrPassword> trPasswordList = trPasswordMapper.selectByExample(examplePassword);
+        TrPassword trPassword = new TrPassword();
+        trPassword.setPassword(paymentPassword);
+        if(trPasswordList.isEmpty()){
+            trPassword.setCreateTime(new Date());
+            trPasswordMapper.insertSelective(trPassword);
+        }else{
+            trPasswordMapper.updateByExampleSelective(trPassword,examplePassword);
+        }
+        //tm_member_identity 激活
+        Example exampleMemberIdentity = new Example(MemberIdentity .class);
+        exampleMemberIdentity.createCriteria().andEqualTo("memberId", servicePasswordInfo.getMemberId());
+        List<MemberIdentity> identityList = memberIdentityMapper.selectByExample(exampleMemberIdentity);
+        MemberIdentity memberIdentity = new MemberIdentity();
+        memberIdentity.setStatus(1);
+        if(identityList.isEmpty()){
+            memberIdentity.setCreateTime(new Date());
+            memberIdentityMapper.insertSelective(memberIdentity);
+        }else{
+            memberIdentityMapper.updateByExampleSelective(memberIdentity,exampleMemberIdentity);
+        }
+        //tm_member 激活
+        Example exampleMember2 = new Example(Member .class);
+        exampleMember2.createCriteria().andEqualTo("memberId", servicePasswordInfo.getMemberId());
+        List<Member> memberList = memberMapper.selectByExample(exampleMember2);
+        Member member = new Member();
+        member.setStatus(1);
+        if(memberList.isEmpty()){
+            member.setCreateTime(new Date());
+            memberMapper.insertSelective(member);
+        }else{
+            memberMapper.updateByExampleSelective(member,exampleMember2);
+        }
+        return baseResponse;
+    }
+
     /*
      * 生成操作员id
      */
@@ -168,5 +227,16 @@ public class LoginRepositoryImpl implements LoginRepository {
                 + StringUtil.alignRight(seq, MaConstant.MEMBER_ID_SEQ_LENGTH,
                 MaConstant.ID_FIX_CHAR);
         return memberId;
+    }
+    /*
+     * 生成密码
+     */
+    public static String hashSignContent(String txt) {
+        try {
+            return DigestUtils.sha256Hex(txt.getBytes("UTF-8"));
+        } catch (UnsupportedEncodingException var2) {
+            logger.error(var2.getMessage(), var2);
+            return null;
+        }
     }
 }

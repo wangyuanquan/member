@@ -2,7 +2,6 @@ package com.rechenggit.core.domainservice.service.impl;
 
 
 import com.netfinworks.common.domain.OperationEnvironment;
-import com.netfinworks.common.lang.StringUtil;
 import com.rechenggit.core.common.BaseResponse;
 import com.rechenggit.core.common.LoginRequest;
 import com.rechenggit.core.dal.dataobject.Member;
@@ -15,6 +14,7 @@ import com.rechenggit.core.domain.enums.PassWordLockFlagEnum;
 import com.rechenggit.core.domain.enums.ResponseCode;
 import com.rechenggit.core.domain.login.EnterpriseServiceInfo;
 import com.rechenggit.core.domain.login.OperatorLoginPwdRequest;
+import com.rechenggit.core.domain.login.ServicePasswordInfo;
 import com.rechenggit.core.domainservice.repository.LoginRepository;
 import com.rechenggit.core.domainservice.repository.OperatorLockRepository;
 import com.rechenggit.core.domainservice.service.LoginService;
@@ -203,5 +203,17 @@ public class LoginServiceImpl implements LoginService {
                 throw new MaBizException(ResponseCode.PASSWORD_FLAG_NULL);
         }
 
+    }
+
+    @Override
+    @Transactional
+    public BaseResponse saveServicePasswordInfo(ServicePasswordInfo servicePasswordInfo) {
+        if(!servicePasswordInfo.getLoginPassword().equals(servicePasswordInfo.getEnterLoginPassword())){
+            return new BaseResponse(505,"两次登录密码不一致");
+        }
+        if(!servicePasswordInfo.getPaymentPassword().equals(servicePasswordInfo.getEnterPaymentPassword())){
+            return new BaseResponse(505,"两次交易密码不一致");
+        }
+        return loginRepository.saveServicePasswordInfo(servicePasswordInfo);
     }
 }

@@ -4,7 +4,14 @@ import java.util.Date;
 import javax.persistence.*;
 
 @Table(name = "tm_member_identity")
-public class MemberIdentity extends MemberIdentityKey {
+public class MemberIdentity {
+    /**
+     * 会员标识
+     */
+    @Id
+    @Column(name = "IDENTITY")
+    private String identity;
+
     /**
      * 会员编号
      */
@@ -46,6 +53,30 @@ public class MemberIdentity extends MemberIdentityKey {
      */
     @Column(name = "MEMO")
     private String memo;
+
+    /**
+     * 平台类型：1:个人 2：企业
+     */
+    @Column(name = "PID")
+    private Integer pid;
+
+    /**
+     * 获取会员标识
+     *
+     * @return IDENTITY - 会员标识
+     */
+    public String getIdentity() {
+        return identity;
+    }
+
+    /**
+     * 设置会员标识
+     *
+     * @param identity 会员标识
+     */
+    public void setIdentity(String identity) {
+        this.identity = identity == null ? null : identity.trim();
+    }
 
     /**
      * 获取会员编号
@@ -171,5 +202,23 @@ public class MemberIdentity extends MemberIdentityKey {
      */
     public void setMemo(String memo) {
         this.memo = memo == null ? null : memo.trim();
+    }
+
+    /**
+     * 获取平台类型：1:个人 2：企业
+     *
+     * @return PID - 平台类型：1:个人 2：企业
+     */
+    public Integer getPid() {
+        return pid;
+    }
+
+    /**
+     * 设置平台类型：1:个人 2：企业
+     *
+     * @param pid 平台类型：1:个人 2：企业
+     */
+    public void setPid(Integer pid) {
+        this.pid = pid;
     }
 }
