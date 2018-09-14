@@ -49,6 +49,8 @@ public class LoginControl extends BaseControl {
             response = loginService.enterpriseService(serviceInfo);
         } catch (Exception e) {
             logger.error("注册信息异常 : ", e);
+            response.setStatus(504);
+            response.setMessage(e.getMessage());
         }
         return response;
     }
