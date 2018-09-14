@@ -59,7 +59,7 @@
                enableUpdateByExample="false" enableDeleteByExample="false"
                enableSelectByExample="false" selectByExampleQueryId="false">
         </table>-->
-<!--        <table tableName="tm_enterprise_basic_info"
+        <table tableName="tm_enterprise_basic_info"
                domainObjectName="EnterpriseBasicInfo" enableCountByExample="false"
                enableUpdateByExample="false" enableDeleteByExample="false"
                enableSelectByExample="false" selectByExampleQueryId="false">

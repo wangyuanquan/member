@@ -2,9 +2,11 @@ package com.rechenggit.core.domainservice.service.impl;
 
 
 import com.netfinworks.common.domain.OperationEnvironment;
+import com.rechenggit.core.common.BaseResponse;
 import com.rechenggit.core.common.LoginRequest;
 import com.rechenggit.core.dal.dataobject.Member;
 import com.rechenggit.core.dal.dataobject.Operator;
+import com.rechenggit.core.domain.login.EnterpriseServiceInfo;
 import com.rechenggit.core.domain.login.OperatorLoginPwdRequest;
 import com.rechenggit.core.domainservice.repository.LoginRepository;
 import com.rechenggit.core.domainservice.service.LoginService;
@@ -15,6 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 public class LoginServiceImpl implements LoginService {
@@ -45,5 +48,11 @@ public class LoginServiceImpl implements LoginService {
         }
 
         return response;
+    }
+
+    @Override
+    @Transactional
+    public BaseResponse enterpriseService(EnterpriseServiceInfo serviceInfo) {
+        return loginRepository.enterpriseService(serviceInfo);
     }
 }
