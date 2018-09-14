@@ -1,18 +1,18 @@
 package com.rechenggit.core.domainservice.repository.impl;
 
+import com.netfinworks.common.lang.StringUtil;
 import com.rechenggit.core.common.BaseResponse;
 import com.rechenggit.core.dal.dataobject.EnterpriseBasicInfo;
 import com.rechenggit.core.dal.dataobject.Member;
 import com.rechenggit.core.dal.dataobject.MemberIdentity;
 import com.rechenggit.core.dal.dataobject.Operator;
-import com.rechenggit.core.dal.mapper.EnterpriseBasicInfoMapper;
-import com.rechenggit.core.dal.mapper.MemberIdentityMapper;
-import com.rechenggit.core.dal.mapper.MemberMapper;
-import com.rechenggit.core.dal.mapper.OperatorMapper;
+import com.rechenggit.core.dal.mapper.*;
+import com.rechenggit.core.domain.enums.MemberTypeEnum;
 import com.rechenggit.core.domain.login.EnterpriseServiceInfo;
 import com.rechenggit.core.domain.login.OperatorLoginPwdRequest;
 import com.rechenggit.core.domainservice.repository.LoginRepository;
 import com.rechenggit.core.domainservice.repository.SequenceRepository;
+import com.rechenggit.util.FieldLength;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import tk.mybatis.mapper.entity.Example;
@@ -54,7 +54,9 @@ public class LoginRepositoryImpl implements LoginRepository {
         if(!memberIdentityList.isEmpty()){
             return new BaseResponse(502,"该信息已存在，重复注册");
         }else{
-            Long memberId = sequenceRepository.next("seq_member_id");
+            MemberTypeEnum memberType = MemberTypeEnum.getByCode(serviceInfo.getPid());
+            String memberId = genMemberId(memberType);
+            String operatorId = genOperatorId();
             //tm_member_identity 新增 member_id identity status(0：无效)
             Example exampleMemberIdentity = new Example(MemberIdentity .class);
             exampleMemberIdentity.createCriteria().andEqualTo("memberId", memberId);
@@ -63,8 +65,7 @@ public class LoginRepositoryImpl implements LoginRepository {
             memberIdentity.setMemberId(memberId.toString());
             memberIdentity.setStatus(0);
             memberIdentity.setIdentity(serviceInfo.getIdentity());
-            /////////////////////////////////////外鍵
-            memberIdentity.setPid(0);
+            memberIdentity.setPid(serviceInfo.getPid());
             if(identityList.isEmpty()){
                 memberIdentity.setCreateTime(new Date());
                 memberIdentityMapper.insertSelective(memberIdentity);
@@ -96,8 +97,8 @@ public class LoginRepositoryImpl implements LoginRepository {
             //String password = UesUtils.hashSignContent(serviceInfo.getPassword());
             String password = serviceInfo.getPassword();
             operator.setPassword(password);
-            //外鍵pppppppppppppppppppppppppppppp
-            operator.setOperatorId("sassd");
+            //operatorId
+            operator.setOperatorId(operatorId);
             if(operatorList.isEmpty()){
                 operator.setCreateTime(new Date());
                 operatorMapper.insertSelective(operator);
@@ -124,5 +125,35 @@ public class LoginRepositoryImpl implements LoginRepository {
             baseResponse.setData(memberId);
             return baseResponse;
         }
+    }
+    /*
+     * 生成操作员id
+     */
+    private String genOperatorId() {
+        String prefix = MaConstant.PRE_OPERATOR_ID;
+        int seqLen = FieldLength.OPERATOR_ID - prefix.length();
+        String operatorId = prefix
+                + StringUtil.alignRight(
+                String.valueOf(sequenceRepository.next(MaConstant.SEQ_OPERATOR_ID)), seqLen,
+                MaConstant.ID_FIX_CHAR);
+        return operatorId;
+    }
+    /*
+     * 生成memberId
+     */
+    public String genMemberId(MemberTypeEnum memberType) {
+        String pre = null;
+        String seq = String.valueOf(sequenceRepository.next(MaConstant.SEQ_MEMBER_ID));
+        if (memberType == MemberTypeEnum.COMPANY) {
+            pre = MaConstant.PRE_MEMBER_COMPANY_ID;
+        } else if (memberType == MemberTypeEnum.PERSONAL) {
+            pre = MaConstant.PRE_MEMBER_PERSONAL_ID;
+        } else {
+            pre = MaConstant.PRE_MEMBER_INSTITUTION_ID;
+        }
+        String memberId = pre
+                + StringUtil.alignRight(seq, MaConstant.MEMBER_ID_SEQ_LENGTH,
+                MaConstant.ID_FIX_CHAR);
+        return memberId;
     }
 }

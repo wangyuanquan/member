@@ -1,5 +1,6 @@
 package com.rechenggit.core.domain.login;
 
+import com.rechenggit.core.domain.enums.MemberTypeEnum;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -33,5 +34,9 @@ public class EnterpriseServiceInfo {
      * 密码
      */
     private String  password;
+    /**
+     * 平台类型：1:企业 2：个人
+     */
+    private Integer pid;
 
 }

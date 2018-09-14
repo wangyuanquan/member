@@ -6,14 +6,14 @@ package com.rechenggit.core.domain.enums;
  * @version $Id: MemberTypeEnum.java 33158 2013-01-08 10:31:39Z fangjilue $
  */
 public enum MemberTypeEnum {
-    PERSONAL(1L, "个人"), COMPANY(2L, "企业");
+    PERSONAL(1, "个人"), COMPANY(2, "企业");
 
     /** 代码 */
-    private final Long   code;
+    private final Integer   code;
     /** 信息 */
     private final String message;
 
-    MemberTypeEnum(Long code, String message) {
+    MemberTypeEnum(Integer code, String message) {
         this.code = code;
         this.message = message;
     }
@@ -23,7 +23,7 @@ public enum MemberTypeEnum {
      * @param code
      * @return
      */
-    public static MemberTypeEnum getByCode(Long code) {
+    public static MemberTypeEnum getByCode(Integer code) {
         if (code == null) {
             return null;
         }
@@ -37,7 +37,7 @@ public enum MemberTypeEnum {
         return null;
     }
 
-    public Long getCode() {
+    public Integer getCode() {
         return code;
     }
 
