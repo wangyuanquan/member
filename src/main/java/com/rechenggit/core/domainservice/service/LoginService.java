@@ -5,6 +5,7 @@ import com.rechenggit.core.common.BaseResponse;
 import com.rechenggit.core.common.LoginRequest;
 import com.rechenggit.core.domain.login.EnterpriseServiceInfo;
 import com.rechenggit.core.domain.login.OperatorLoginPwdRequest;
+import com.rechenggit.core.domain.login.ServicePasswordInfo;
 
 public interface LoginService {
     /**
@@ -19,4 +20,10 @@ public interface LoginService {
      * @return
      */
     BaseResponse enterpriseService(EnterpriseServiceInfo serviceInfo);
+    /**
+     * 保存登录密码，交易密码.激活账号
+     * @return
+     */
+    BaseResponse saveServicePasswordInfo(ServicePasswordInfo servicePasswordInfo);
+
 }

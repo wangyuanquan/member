@@ -2,10 +2,7 @@ package com.rechenggit.core.domainservice.repository.impl;
 
 import com.netfinworks.common.lang.StringUtil;
 import com.rechenggit.core.common.BaseResponse;
-import com.rechenggit.core.dal.dataobject.EnterpriseBasicInfo;
-import com.rechenggit.core.dal.dataobject.Member;
-import com.rechenggit.core.dal.dataobject.MemberIdentity;
-import com.rechenggit.core.dal.dataobject.Operator;
+import com.rechenggit.core.dal.dataobject.*;
 import com.rechenggit.core.dal.mapper.*;
 import com.rechenggit.core.domain.enums.MemberTypeEnum;
 import com.rechenggit.core.dal.mapper.EnterpriseBasicInfoMapper;
@@ -14,6 +11,7 @@ import com.rechenggit.core.dal.mapper.MemberMapper;
 import com.rechenggit.core.dal.mapper.OperatorMapper;
 import com.rechenggit.core.domain.login.EnterpriseServiceInfo;
 import com.rechenggit.core.domain.login.OperatorLoginPwdRequest;
+import com.rechenggit.core.domain.login.ServicePasswordInfo;
 import com.rechenggit.core.domainservice.repository.LoginRepository;
 import com.rechenggit.core.domainservice.repository.SequenceRepository;
 import com.rechenggit.util.FieldLength;
@@ -24,6 +22,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.stereotype.Repository;
+import sun.security.util.Password;
 import tk.mybatis.mapper.entity.Example;
 
 import java.io.UnsupportedEncodingException;
@@ -43,6 +42,8 @@ public class LoginRepositoryImpl implements LoginRepository {
     private OperatorMapper operatorMapper;
     @Autowired
     private SequenceRepository sequenceRepository;
+    @Autowired
+    private TrPasswordMapper trPasswordMapper;
     @Override
     public Member validateMemberExistAndNormal(String identity,int platformType) {
        /* //返回会员对象基本信息 （会员标识 平台类型）
@@ -101,17 +102,13 @@ public class LoginRepositoryImpl implements LoginRepository {
             }else{
                 memberMapper.updateByExampleSelective(member,exampleMember2);
             }
-            //tm_operator 新增 member_id password status(0:未激活）
+            //tm_operator 新增 member_id status(0:未激活）
             Example exampleOperator = new Example(Operator.class);
             exampleOperator.createCriteria().andEqualTo("memberId", memberId);
             List<Operator> operatorList = operatorMapper.selectByExample(exampleOperator);
             Operator operator = new Operator();
             operator.setMemberId(memberId.toString());
             operator.setStatus(0);
-            //密码
-            //String password = hashSignContent(serviceInfo.getPassword());
-            //operator.setPassword(password);
-            //operatorId
             operator.setOperatorId(operatorId);
             if(operatorList.isEmpty()){
                 operator.setCreateTime(new Date());
@@ -136,10 +133,71 @@ public class LoginRepositoryImpl implements LoginRepository {
                 enterpriseBasicInfoMapper.updateByExampleSelective(basicInfo,exampleBasic);
             }
             BaseResponse baseResponse = new BaseResponse();
-            baseResponse.setData(memberId);
+            ServicePasswordInfo servicePasswordInfo = new ServicePasswordInfo();
+            servicePasswordInfo.setMemberId(memberId);
+            servicePasswordInfo.setOperatorId(operatorId);
             return baseResponse;
         }
     }
+
+    @Override
+    public BaseResponse saveServicePasswordInfo(ServicePasswordInfo servicePasswordInfo) {
+        BaseResponse baseResponse = new BaseResponse();
+        //密码
+        String loginPassword = hashSignContent(servicePasswordInfo.getLoginPassword());
+        String paymentPassword = hashSignContent(servicePasswordInfo.getPaymentPassword());
+        //tm_operator 更新 password
+        Example exampleOperator = new Example(Operator.class);
+        exampleOperator.createCriteria().andEqualTo("memberId", servicePasswordInfo.getMemberId());
+        List<Operator> operatorList = operatorMapper.selectByExample(exampleOperator);
+        Operator operator = new Operator();
+        operator.setPassword(loginPassword);
+        operator.setStatus(1);
+        if(operatorList.isEmpty()){
+            operator.setCreateTime(new Date());
+            operatorMapper.insertSelective(operator);
+        }else{
+            operatorMapper.updateByExampleSelective(operator,exampleOperator);
+        }
+        //tr_password 更新 password 交易密码
+        Example examplePassword = new Example(TrPassword.class);
+        examplePassword.createCriteria().andEqualTo("operatorId", servicePasswordInfo.getOperatorId());
+        List<TrPassword> trPasswordList = trPasswordMapper.selectByExample(examplePassword);
+        TrPassword trPassword = new TrPassword();
+        trPassword.setPassword(paymentPassword);
+        if(trPasswordList.isEmpty()){
+            trPassword.setCreateTime(new Date());
+            trPasswordMapper.insertSelective(trPassword);
+        }else{
+            trPasswordMapper.updateByExampleSelective(trPassword,examplePassword);
+        }
+        //tm_member_identity 激活
+        Example exampleMemberIdentity = new Example(MemberIdentity .class);
+        exampleMemberIdentity.createCriteria().andEqualTo("memberId", servicePasswordInfo.getMemberId());
+        List<MemberIdentity> identityList = memberIdentityMapper.selectByExample(exampleMemberIdentity);
+        MemberIdentity memberIdentity = new MemberIdentity();
+        memberIdentity.setStatus(1);
+        if(identityList.isEmpty()){
+            memberIdentity.setCreateTime(new Date());
+            memberIdentityMapper.insertSelective(memberIdentity);
+        }else{
+            memberIdentityMapper.updateByExampleSelective(memberIdentity,exampleMemberIdentity);
+        }
+        //tm_member 激活
+        Example exampleMember2 = new Example(Member .class);
+        exampleMember2.createCriteria().andEqualTo("memberId", servicePasswordInfo.getMemberId());
+        List<Member> memberList = memberMapper.selectByExample(exampleMember2);
+        Member member = new Member();
+        member.setStatus(1);
+        if(memberList.isEmpty()){
+            member.setCreateTime(new Date());
+            memberMapper.insertSelective(member);
+        }else{
+            memberMapper.updateByExampleSelective(member,exampleMember2);
+        }
+        return baseResponse;
+    }
+
     /*
      * 生成操作员id
      */

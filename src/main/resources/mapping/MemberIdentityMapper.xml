@@ -6,7 +6,6 @@
       WARNING - @mbggenerated
     -->
     <id column="IDENTITY" jdbcType="VARCHAR" property="identity" />
-    <id column="PID" jdbcType="DECIMAL" property="pid" />
     <result column="MEMBER_ID" jdbcType="VARCHAR" property="memberId" />
     <result column="STATUS" jdbcType="DECIMAL" property="status" />
     <result column="IS_RECV_ADDR" jdbcType="DECIMAL" property="isRecvAddr" />
@@ -14,12 +13,13 @@
     <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
     <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="MEMO" jdbcType="VARCHAR" property="memo" />
+    <result column="PID" jdbcType="DECIMAL" property="pid" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbggenerated
     -->
-    IDENTITY, PID, MEMBER_ID, STATUS, IS_RECV_ADDR, IDENTITY_TYPE, CREATE_TIME, UPDATE_TIME, 
-    MEMO
+    IDENTITY, MEMBER_ID, STATUS, IS_RECV_ADDR, IDENTITY_TYPE, CREATE_TIME, UPDATE_TIME, 
+    MEMO, PID
   </sql>
 </mapper>
