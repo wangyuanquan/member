@@ -38,7 +38,6 @@ public class EnterpriseServiceInfo {
     /**
      * 平台类型：1:企业 2：个人
      */
-    @NotBlank
     private Integer pid;
 
 }
