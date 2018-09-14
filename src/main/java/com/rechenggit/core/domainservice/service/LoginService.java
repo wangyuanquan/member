@@ -13,7 +13,7 @@ public interface LoginService {
      * @param request
      * @return
      */
-    LoginRequest checkOperatorLoginPwd(OperationEnvironment environment,
+    LoginRequest checkOperatorLoginPwd(
                                        OperatorLoginPwdRequest request);
     /**
      * 注册

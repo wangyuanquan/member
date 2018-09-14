@@ -1,6 +1,8 @@
 package com.rechenggit.core.domainservice.repository;
 
 import com.rechenggit.core.dal.dataobject.Member;
+import com.rechenggit.core.dal.dataobject.MemberIdentity;
+import com.rechenggit.core.domain.MemberIntegratedQuery;
 
 public interface MemberRepository {
 
@@ -21,4 +23,6 @@ public interface MemberRepository {
      * @return
      */
     Member load(String memberId);
+
+    Member queryBaseMember(MemberIntegratedQuery query);
 }

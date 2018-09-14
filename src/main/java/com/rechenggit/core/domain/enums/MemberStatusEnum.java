@@ -9,14 +9,14 @@ package com.rechenggit.core.domain.enums;
  * @version $Id: MemberStatusEnum.java 24517 2012-11-16 06:31:05Z malianhao $
  */
 public enum MemberStatusEnum {
-    UNACTIVE(0L, "未激活"), NORMAL(1L, "正常"), SLEEP(2L, "休眠"), CANCEL(3L, "销户");
+    UNACTIVE(0, "未激活"), NORMAL(1, "正常"), SLEEP(2, "休眠"), CANCEL(3, "销户");
 
     /** 代码 */
-    private final Long   code;
+    private final Integer   code;
     /** 信息 */
     private final String message;
 
-    MemberStatusEnum(Long code, String message) {
+    MemberStatusEnum(Integer code, String message) {
         this.code = code;
         this.message = message;
     }
@@ -26,7 +26,7 @@ public enum MemberStatusEnum {
      * @param code
      * @return
      */
-    public static MemberStatusEnum getByCode(Long code) {
+    public static MemberStatusEnum getByCode(Integer code) {
         if (code == null) {
             return null;
         }
@@ -40,7 +40,7 @@ public enum MemberStatusEnum {
         return null;
     }
 
-    public Long getCode() {
+    public Integer getCode() {
         return code;
     }
 

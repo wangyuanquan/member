@@ -1,29 +1,24 @@
 package com.rechenggit.core.domain;
 
+import com.alibaba.fastjson.JSONObject;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
-@Getter
 @Setter
-public class EnterpriseMemberServiceDomain extends BaseMember {
-    @NotNull(message="{instorePaymentServie.empty.error}")
-    private Boolean instorePaymentServie;
-
-    @NotNull(message="{webSitePaymentService.empty.error}")
-    private Boolean webSitePaymentService;
+public class EnterpriseMemberServiceDomain  extends JSONObject {
+    private String memberId;
 
 
-    @NotNull(message="{webSitePaymentServiveContent.empty.error}")
-    private WebSitePaymentServiveContent webSitePaymentServiveContent;
-    @NotNull(message="{jsapiPaymentService.empty.error}")
-    private Boolean jsapiPaymentService;
-    private JSAPIPaymentServiceContent jsapiPaymentServiceContent;
+    @NotEmpty(message ="{memberId.empty.error}")
+    public String getMemberId() {
+
+        return this.getString("memberId");
+    }
 
 
-    @NotNull(message="{weChatMallPaymentService.empty.error}")
-    private Boolean weChatMallPaymentService;
 }

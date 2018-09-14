@@ -15,11 +15,11 @@ public class JSAPIPaymentServiceContent {
 
     private Boolean verifyOfficialAccountsPlatform;
 
-    private String companyName;
+    private String jsapiCompanyName;
 
-    private String companyAddress;
+    private String jsapiCompanyAddress;
 
-    private String contactName;
+    private String jsapiContactName;
 
     private String phone;
 

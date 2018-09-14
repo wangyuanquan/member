@@ -88,11 +88,12 @@
                domainObjectName="Operator" enableCountByExample="false"
                enableUpdateByExample="false" enableDeleteByExample="false"
                enableSelectByExample="false" selectByExampleQueryId="false">
-        </table>
+        </table>-->
         <table tableName="tm_member_identity"
                domainObjectName="MemberIdentity" enableCountByExample="false"
                enableUpdateByExample="false" enableDeleteByExample="false"
                enableSelectByExample="false" selectByExampleQueryId="false">
         </table>
+
     </context>
 </generatorConfiguration>

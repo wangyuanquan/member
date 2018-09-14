@@ -25,25 +25,23 @@ public class LoginServiceImpl implements LoginService {
     @Autowired
     private LoginRepository loginRepository;
     @Override
-    public LoginRequest checkOperatorLoginPwd(OperationEnvironment environment, OperatorLoginPwdRequest request) {
+    public LoginRequest checkOperatorLoginPwd(OperatorLoginPwdRequest request) {
         if (logger.isInfoEnabled()) {
-            logger.info("[APP->MA_1]验证操作员登陆密码请求:request={},environment={}", request,
-                    Utils.toString(environment));
+            logger.info("[APP->MA_1]验证操作员登陆密码请求:request={},environment={}", request);
         }
         LoginRequest response = new LoginRequest();
         try {
             //验证信息是否有效
             LoginPwdFacadeValidator.validator(request);
             //查询会员
-            Member member = loginRepository.getMemberByIdentity(request);
+            Member member = loginRepository.validateMemberExistAndNormal(request.getLoginName(),request.getPlatFormType());
             //验证登录页登录密码
             Operator operator = loginRepository.getOperatorByPwd(member.getMemberId(),request);
             response.setMemberId(operator.getMemberId());
             //返回操作员编号
             response.setOperatorId(operator.getOperatorId());
             if (logger.isInfoEnabled()) {
-                logger.info("[APP<-MA_1]验证操作员登陆密码返回结果:response={},environment={}", response,
-                        Utils.toString(environment));
+                logger.info("[APP<-MA_1]验证操作员登陆密码返回结果:response={}", response);
             }
         } catch (Exception e) {
             logger.error("验证操作员登陆密码错误：",e);

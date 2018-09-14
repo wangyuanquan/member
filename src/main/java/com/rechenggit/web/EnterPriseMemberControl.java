@@ -5,7 +5,8 @@ import com.rechenggit.core.common.BaseResponse;
 import com.rechenggit.core.domain.EnterpriseBasic;
 import com.rechenggit.core.domain.EnterpriseMemberServiceDomain;
 import com.rechenggit.core.domain.EnterpriseOther;
-import com.rechenggit.core.domainservice.service.EnterpriseMemberService;
+import com.rechenggit.core.domainservice.service.MemberService;
+import com.rechenggit.core.exception.ValidateException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,7 @@ public class EnterPriseMemberControl extends BaseControl {
 
     private final static Logger logger = LoggerFactory.getLogger(EnterPriseMemberControl.class);
     @Autowired
-    private EnterpriseMemberService enterpriseMemberService;
+    private MemberService memberService;
 
 
     @PostMapping("/saveServiceInfo")
@@ -27,14 +28,16 @@ public class EnterPriseMemberControl extends BaseControl {
         BaseResponse<EnterpriseMemberServiceDomain> response=new BaseResponse();
         try{
             validate(result);
-            enterpriseMemberService.saveEnterpriseServiceInfo(enterpriseMemberServiceDomain);
+            memberService.saveEnterpriseServiceInfo(enterpriseMemberServiceDomain);
 
-        }catch (Exception e){
-            logger.error("保存会员服务信息错误：{}",e);
+        }catch (ValidateException e){
+            logger.error("保存会员服务信息错误：{}",e.getMessage());
             response.setStatus(501);
             response.setMessage(e.getMessage());
             return  fail(response);
 
+        }catch (Exception e){
+            return  fail();
         }
         return success();
 
@@ -43,7 +46,7 @@ public class EnterPriseMemberControl extends BaseControl {
     public BaseResponse queryEnterpriseServiceInfoById(String memberId) {
         BaseResponse<EnterpriseMemberServiceDomain> response=new BaseResponse();
         try{
-            EnterpriseMemberServiceDomain enterpriseMemberServiceDomain=    enterpriseMemberService.queryEnterpriseServiceInfoById(memberId);
+            EnterpriseMemberServiceDomain enterpriseMemberServiceDomain=    memberService.queryEnterpriseServiceInfoById(memberId);
             response.setData(enterpriseMemberServiceDomain);
         }catch (Exception e){
             logger.error("查询会员服务信息错误：{}",e);
@@ -59,7 +62,7 @@ public class EnterPriseMemberControl extends BaseControl {
         try{
             validate(result);
             logger.info("更新enterpriseBasic:"+ JSONObject.toJSONString(enterpriseBasic));
-            response = enterpriseMemberService.updateEnterpriseBasicInfo(enterpriseBasic);
+            response = memberService.updateEnterpriseBasicInfo(enterpriseBasic);
         }catch (Exception e){
             logger.error("更新基本信息错误：{}",e);
             return  fail(response);
@@ -73,7 +76,7 @@ public class EnterPriseMemberControl extends BaseControl {
         try{
             validate(result);
             logger.info("保存enterpriseBasic:"+ JSONObject.toJSONString(enterpriseBasic));
-            response = enterpriseMemberService.saveEnterpriseBasicInfo(enterpriseBasic);
+            response = memberService.saveEnterpriseBasicInfo(enterpriseBasic);
         }catch (Exception e){
             logger.error("保存基本信息错误：{}",e);
             return  fail(response);
@@ -88,7 +91,7 @@ public class EnterPriseMemberControl extends BaseControl {
             return new BaseResponse(501,"没有商户ID，操作失败");
         }
         try{
-            response = enterpriseMemberService.queryEnterpriseBasicInfo(memberId);
+            response = memberService.queryEnterpriseBasicInfo(memberId);
         }catch (Exception e){
             logger.error("查询商户信息失败：{}",e);
             return  fail();
@@ -100,7 +103,7 @@ public class EnterPriseMemberControl extends BaseControl {
         BaseResponse<EnterpriseBasic> response = new BaseResponse();
         try{
             logger.info("删除基本信息 memberId:"+ memberId);
-            response = enterpriseMemberService.deleteEnterpriseBasicInfo(memberId);
+            response = memberService.deleteEnterpriseBasicInfo(memberId);
         }catch (Exception e){
             logger.error("删除基本信息错误：{}",e);
             return  fail(response);
@@ -113,7 +116,7 @@ public class EnterPriseMemberControl extends BaseControl {
         try{
             validate(result);
             logger.info("保存enterpriseOther:"+ JSONObject.toJSONString(enterpriseOther));
-            response = enterpriseMemberService.saveEnterpriseOtherInfo(enterpriseOther);
+            response = memberService.saveEnterpriseOtherInfo(enterpriseOther);
         }catch (Exception e){
             logger.error("保存信息错误：{}",e);
             return  fail(response);
@@ -128,7 +131,7 @@ public class EnterPriseMemberControl extends BaseControl {
             return new BaseResponse(501,"没有商户ID，操作失败");
         }
         try{
-            response = enterpriseMemberService.queryEnterpriseOtherInfo(memberId);
+            response = memberService.queryEnterpriseOtherInfo(memberId);
         }catch (Exception e){
             logger.error("查询商户信息失败：{}",e);
             return  fail();
@@ -140,7 +143,7 @@ public class EnterPriseMemberControl extends BaseControl {
         BaseResponse<EnterpriseOther> response = new BaseResponse();
         try{
             logger.info("删除基本信息 memberId:"+ memberId);
-            response = enterpriseMemberService.deleteEnterpriseOtherInfo(memberId);
+            response = memberService.deleteEnterpriseOtherInfo(memberId);
         }catch (Exception e){
             logger.error("删除基本信息错误：{}",e);
             return  fail(response);
