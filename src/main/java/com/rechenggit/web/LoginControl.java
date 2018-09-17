@@ -78,7 +78,7 @@ public class LoginControl extends BaseControl {
     }
     //激活邮箱
     @RequestMapping("/verifyingMailbox")
-    public BaseResponse servicePassword(@RequestBody String code){
+    public BaseResponse servicePassword(String code){
         BaseResponse<ServicePasswordInfo> response = new BaseResponse();
         loginService.verifyingMailbox(code);
 
