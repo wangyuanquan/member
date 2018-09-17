@@ -14,6 +14,9 @@ import com.rechenggit.core.domain.login.ServicePasswordInfo;
 import com.rechenggit.core.domainservice.service.LoginService;
 import com.rechenggit.core.domainservice.validator.MemberValidator;
 import com.rechenggit.core.domainservice.validator.OperatorValidator;
+import com.rechengit.cheng.cloud.auth.client.util.JwtTokenUtil;
+import com.rechengit.cheng.core.util.jwt.JWTInfo;
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +24,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -34,6 +38,8 @@ public class LoginControl extends BaseControl {
     private OperatorValidator operatorValidator;
     @Autowired
     private LoginService loginService;
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
     @PostMapping("/enterpriseLogin")
     public BaseResponse enterpriselogin(@RequestBody OperatorLoginPwdRequest request){
         BaseResponse response =new BaseResponse();
@@ -51,8 +57,11 @@ public class LoginControl extends BaseControl {
             Map<String,String> data=new HashMap<>();
             data.put("operatorId",operator.getOperatorId());
             data.put("memberId",member.getMemberId());
-
-            response.setMessage("");
+            Map<String, String> map = new HashMap<>();
+            JWTInfo jwtInfo = new JWTInfo(request.getLoginName(), member.getMemberId(), operator.getOperatorId());
+            Date expireTime = DateTime.now().plusSeconds(jwtTokenUtil.getExpire()).toDate();
+            String token = jwtTokenUtil.generateToken(jwtInfo, map, expireTime);
+            response.setData(token);
             return success(response);
         } catch (Exception e) {
             logger.error("验证操作员登陆密码异常 : {}", e);
