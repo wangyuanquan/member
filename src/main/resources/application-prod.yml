@@ -54,3 +54,9 @@ spring:
     data:
          mongodb:
            uri: mongodb://localhost:27017/member
+oss:
+    upload:
+        url: http://oss-cn-hangzhou.aliyuncs.com
+        accesskeyid: LTAIZ4cUbZRTYoSB
+        accesskeysecret: aX3TnUGHrHOCJDRMqYrCO7obuYBZ9C
+        bucketname: super-app

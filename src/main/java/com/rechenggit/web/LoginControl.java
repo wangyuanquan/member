@@ -76,7 +76,14 @@ public class LoginControl extends BaseControl {
         }
         return response;
     }
-    //注册
+    //验证邮箱
+    @RequestMapping("/verifyingMailbox")
+    public BaseResponse servicePassword(@RequestBody @Validated  BindingResult result){
+        BaseResponse<ServicePasswordInfo> response = new BaseResponse();
+
+        return response;
+    }
+    //注册密码
     @PostMapping("/servicePassword")
     public BaseResponse servicePassword(@RequestBody @Validated ServicePasswordInfo servicePasswordInfo , BindingResult result){
         BaseResponse<ServicePasswordInfo> response = new BaseResponse();

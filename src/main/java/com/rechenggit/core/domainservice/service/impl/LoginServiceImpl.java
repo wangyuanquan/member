@@ -67,6 +67,15 @@ public class LoginServiceImpl implements LoginService {
     @Override
     @Transactional
     public BaseResponse enterpriseService(EnterpriseServiceInfo serviceInfo) {
+        BaseResponse baseResponse = loginRepository.enterpriseService(serviceInfo);
+        if(baseResponse.getStatus() == 200){
+            //成功保存用户信息后，邮箱验证
+
+        }else{
+            baseResponse.setStatus(500);
+            baseResponse.setMessage("注册保存信息失败");
+            return  baseResponse;
+        }
         return loginRepository.enterpriseService(serviceInfo);
     }
 
