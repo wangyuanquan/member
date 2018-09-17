@@ -2,12 +2,10 @@ package com.rechenggit.core.domainservice.service.impl;
 
 
 import com.alibaba.druid.util.StringUtils;
-import com.netfinworks.common.domain.OperationEnvironment;
 import com.rechenggit.core.common.BaseResponse;
 import com.rechenggit.core.common.LoginRequest;
 import com.rechenggit.core.dal.dataobject.Member;
 import com.rechenggit.core.dal.dataobject.Operator;
-import com.rechenggit.core.dal.dataobject.PwdOperatorLock;
 import com.rechenggit.core.dal.mapper.MaConstant;
 import com.rechenggit.core.domain.PassWordLock;
 import com.rechenggit.core.domain.PayPwdLockInfo;
@@ -20,6 +18,7 @@ import com.rechenggit.core.domainservice.repository.LoginRepository;
 import com.rechenggit.core.domainservice.repository.OperatorLockRepository;
 import com.rechenggit.core.domainservice.service.LoginService;
 import com.rechenggit.core.exception.MaBizException;
+import com.rechenggit.util.MailUtil;
 import com.rechenggit.util.LoginPwdFacadeValidator;
 import com.rechenggit.util.Utils;
 import com.rechenggit.web.EnterPriseMemberControl;
@@ -29,7 +28,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
+import java.util.UUID;
 
 @Repository
 public class LoginServiceImpl implements LoginService {
@@ -68,15 +67,7 @@ public class LoginServiceImpl implements LoginService {
     @Transactional
     public BaseResponse enterpriseService(EnterpriseServiceInfo serviceInfo) {
         BaseResponse baseResponse = loginRepository.enterpriseService(serviceInfo);
-        if(baseResponse.getStatus() == 200){
-            //成功保存用户信息后，邮箱验证
-
-        }else{
-            baseResponse.setStatus(500);
-            baseResponse.setMessage("注册保存信息失败");
-            return  baseResponse;
-        }
-        return loginRepository.enterpriseService(serviceInfo);
+        return baseResponse;
     }
 
     @Override
@@ -225,5 +216,10 @@ public class LoginServiceImpl implements LoginService {
             return new BaseResponse(505,"两次交易密码不一致");
         }
         return loginRepository.saveServicePasswordInfo(servicePasswordInfo);
+    }
+
+    @Override
+    public BaseResponse verifyingMailbox(String code) {
+        return loginRepository.verifyingMailbox(code);
     }
 }

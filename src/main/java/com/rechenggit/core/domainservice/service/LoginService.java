@@ -12,7 +12,6 @@ import com.rechenggit.core.domain.login.ServicePasswordInfo;
 public interface LoginService {
     /**
      * 验证操作员登陆密码，本接口只适用企业会员，个人商户
-     * @param environment
      * @param request
      * @return
      */
@@ -39,4 +38,9 @@ public interface LoginService {
      */
     BaseResponse saveServicePasswordInfo(ServicePasswordInfo servicePasswordInfo);
 
+    /**
+     * 激活账号
+     * @return
+     */
+    BaseResponse verifyingMailbox(String code);
 }

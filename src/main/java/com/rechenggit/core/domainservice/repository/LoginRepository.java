@@ -33,4 +33,9 @@ public interface LoginRepository {
      * @return
      */
     BaseResponse saveServicePasswordInfo(ServicePasswordInfo servicePasswordInfo);
+    /**
+     * 激活账号
+     * @return
+     */
+    BaseResponse verifyingMailbox(String code);
 }

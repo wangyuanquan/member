@@ -60,6 +60,10 @@ oss:
         accesskeyid: LTAIZ4cUbZRTYoSB
         accesskeysecret: aX3TnUGHrHOCJDRMqYrCO7obuYBZ9C
         bucketname: super-app
-
+email:
+    mail:
+        username: 15902137921@163.com
+        password: wang0921
+        homeUrl: www.supay.com
 
 

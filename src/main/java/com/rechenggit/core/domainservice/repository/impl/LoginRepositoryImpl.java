@@ -15,6 +15,7 @@ import com.rechenggit.core.domain.login.ServicePasswordInfo;
 import com.rechenggit.core.domainservice.repository.LoginRepository;
 import com.rechenggit.core.domainservice.repository.SequenceRepository;
 import com.rechenggit.util.FieldLength;
+import com.rechenggit.util.MailUtil;
 import com.rechenggit.web.LoginControl;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.slf4j.Logger;
@@ -22,12 +23,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.stereotype.Repository;
-import sun.security.util.Password;
 import tk.mybatis.mapper.entity.Example;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
+
 @Service
 @Repository
 public class LoginRepositoryImpl implements LoginRepository {
@@ -44,6 +46,8 @@ public class LoginRepositoryImpl implements LoginRepository {
     private SequenceRepository sequenceRepository;
     @Autowired
     private TrPasswordMapper trPasswordMapper;
+    @Autowired
+    private MailboxActivationMapper mailboxActivationMapper;
     @Override
     public Member validateMemberExistAndNormal(String identity,int platformType) {
        /* //返回会员对象基本信息 （会员标识 平台类型）
@@ -132,6 +136,23 @@ public class LoginRepositoryImpl implements LoginRepository {
             }else{
                 enterpriseBasicInfoMapper.updateByExampleSelective(basicInfo,exampleBasic);
             }
+            //tm_mailbox_activation 新增 member_id mailbox_name activation_code status
+            Example exampleMailboxActivation = new Example(MailboxActivation .class);
+            exampleMailboxActivation.createCriteria().andEqualTo("memberId", memberId);
+            List<MailboxActivation> mailboxActivationList = mailboxActivationMapper.selectByExample(exampleMailboxActivation);
+            MailboxActivation mailboxActivation = new MailboxActivation();
+            mailboxActivation.setStatus(0);
+            mailboxActivation.setMemberId(memberId.toString());
+            mailboxActivation.setMailboxName(serviceInfo.getIdentity());
+            String code= UUID.randomUUID().toString().replaceAll("-", "");
+            mailboxActivation.setActivationCode(code);
+            new Thread(new MailUtil(serviceInfo.getIdentity(), code)).start();
+            if(mailboxActivationList.isEmpty()){
+                basicInfo.setCreateTime(new Date());
+                mailboxActivationMapper.insertSelective(mailboxActivation);
+            }else{
+                mailboxActivationMapper.updateByExampleSelective(mailboxActivation,exampleMailboxActivation);
+            }
             BaseResponse baseResponse = new BaseResponse();
             ServicePasswordInfo servicePasswordInfo = new ServicePasswordInfo();
             servicePasswordInfo.setMemberId(memberId);
@@ -195,6 +216,17 @@ public class LoginRepositoryImpl implements LoginRepository {
         }else{
             memberMapper.updateByExampleSelective(member,exampleMember2);
         }
+        return baseResponse;
+    }
+
+    @Override
+    public BaseResponse verifyingMailbox(String code) {
+        BaseResponse baseResponse = new BaseResponse();
+        Example exampleMailboxActivation = new Example(MailboxActivation .class);
+        exampleMailboxActivation.createCriteria().andEqualTo("activationCode", code);
+        MailboxActivation mailboxActivation = new MailboxActivation();
+        mailboxActivation.setStatus(1);
+        mailboxActivationMapper.updateByExampleSelective(mailboxActivation,exampleMailboxActivation);
         return baseResponse;
     }
 

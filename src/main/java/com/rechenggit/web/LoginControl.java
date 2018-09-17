@@ -76,10 +76,11 @@ public class LoginControl extends BaseControl {
         }
         return response;
     }
-    //验证邮箱
+    //激活邮箱
     @RequestMapping("/verifyingMailbox")
-    public BaseResponse servicePassword(@RequestBody @Validated  BindingResult result){
+    public BaseResponse servicePassword(@RequestBody String code){
         BaseResponse<ServicePasswordInfo> response = new BaseResponse();
+        loginService.verifyingMailbox(code);
 
         return response;
     }
