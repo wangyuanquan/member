@@ -61,6 +61,7 @@ public class MailUtil implements Runnable {
                     "<h3>Thank you for choosing Supay cross-border payment solution.</h3>" +
                     "<h3>Please click<a href='http://10.10.60.102:8050/mapi/mas/member/verifyingMailbox?code="
                     + code + "'>http://10.10.60.102:8050/RegisterDemo/ActiveServlet?code=" + code
+                    +"&email="+email
                     + "</href> to verify your email.</h3></body></html>"+
                     "<h1>&nbsp; &nbsp; Best regards,</h1>"+
                     "<h1>&nbsp; &nbsp; www.supay.com</h1>";

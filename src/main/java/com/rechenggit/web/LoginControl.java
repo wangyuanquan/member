@@ -24,6 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -88,11 +89,11 @@ public class LoginControl extends BaseControl {
     }
     //激活邮箱
     @RequestMapping("/verifyingMailbox")
-    public BaseResponse servicePassword(String code){
+    public ModelAndView servicePassword(String code){
         BaseResponse<ServicePasswordInfo> response = new BaseResponse();
         loginService.verifyingMailbox(code);
 
-        return response;
+        return new ModelAndView("http://localhost:8000/user/password");
     }
     //注册密码
     @PostMapping("/servicePassword")
