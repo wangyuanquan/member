@@ -39,7 +39,7 @@ public class OperatorValidatorImpl implements OperatorValidator {
     }
     /**
      * 验证操作员状态，非正常都抛异常
-     * @param operatorStatus
+     * @param operator
      * @throws MaBizException
      */
     private void validateOperatorStatus(Operator operator) throws MaBizException {

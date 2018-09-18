@@ -4,6 +4,7 @@ import com.rechenggit.core.domain.enums.MemberTypeEnum;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
 @Setter
@@ -14,6 +15,7 @@ public class EnterpriseServiceInfo {
      * 商户邮箱
      */
     @NotBlank
+    @Email
     private String identity;
     /**
      * 姓名

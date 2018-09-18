@@ -37,5 +37,5 @@ public interface LoginRepository {
      * 激活账号
      * @return
      */
-    BaseResponse verifyingMailbox(String code);
+    BaseResponse verifyingMailbox(String code,String email);
 }

@@ -192,9 +192,27 @@ public class LoginRepositoryImpl implements LoginRepository {
         }else{
             trPasswordMapper.updateByExampleSelective(trPassword,examplePassword);
         }
+
+        return baseResponse;
+    }
+
+    @Override
+    public BaseResponse verifyingMailbox(String code,String email) {
+        BaseResponse baseResponse = new BaseResponse();
+        Example exampleMailboxActivation = new Example(MailboxActivation .class);
+        exampleMailboxActivation.createCriteria().andEqualTo("activationCode", code)
+                .andEqualTo("mailbox_name", email);
+        List<MailboxActivation> mailboxActivationList = mailboxActivationMapper.selectByExample(exampleMailboxActivation);
+        if(mailboxActivationList.isEmpty()){
+            return new BaseResponse(501,"没有相关信息，激活失败");
+        }
+        MailboxActivation mailboxActivation = new MailboxActivation();
+        mailboxActivation.setStatus(1);
+        mailboxActivationMapper.updateByExampleSelective(mailboxActivation,exampleMailboxActivation);
+        String memberId = mailboxActivationList.get(0).getMemberId();
         //tm_member_identity 激活
         Example exampleMemberIdentity = new Example(MemberIdentity .class);
-        exampleMemberIdentity.createCriteria().andEqualTo("memberId", servicePasswordInfo.getMemberId());
+        exampleMemberIdentity.createCriteria().andEqualTo("memberId", memberId);
         List<MemberIdentity> identityList = memberIdentityMapper.selectByExample(exampleMemberIdentity);
         MemberIdentity memberIdentity = new MemberIdentity();
         memberIdentity.setStatus(1);
@@ -206,7 +224,7 @@ public class LoginRepositoryImpl implements LoginRepository {
         }
         //tm_member 激活
         Example exampleMember2 = new Example(Member .class);
-        exampleMember2.createCriteria().andEqualTo("memberId", servicePasswordInfo.getMemberId());
+        exampleMember2.createCriteria().andEqualTo("memberId", memberId);
         List<Member> memberList = memberMapper.selectByExample(exampleMember2);
         Member member = new Member();
         member.setStatus(1);
@@ -216,17 +234,6 @@ public class LoginRepositoryImpl implements LoginRepository {
         }else{
             memberMapper.updateByExampleSelective(member,exampleMember2);
         }
-        return baseResponse;
-    }
-
-    @Override
-    public BaseResponse verifyingMailbox(String code) {
-        BaseResponse baseResponse = new BaseResponse();
-        Example exampleMailboxActivation = new Example(MailboxActivation .class);
-        exampleMailboxActivation.createCriteria().andEqualTo("activationCode", code);
-        MailboxActivation mailboxActivation = new MailboxActivation();
-        mailboxActivation.setStatus(1);
-        mailboxActivationMapper.updateByExampleSelective(mailboxActivation,exampleMailboxActivation);
         return baseResponse;
     }
 

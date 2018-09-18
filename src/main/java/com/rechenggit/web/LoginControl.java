@@ -89,11 +89,17 @@ public class LoginControl extends BaseControl {
     }
     //激活邮箱
     @RequestMapping("/verifyingMailbox")
-    public ModelAndView servicePassword(String code){
+    public BaseResponse servicePassword(String code,String email){
         BaseResponse<ServicePasswordInfo> response = new BaseResponse();
-        loginService.verifyingMailbox(code);
-
-        return new ModelAndView("http://localhost:8000/user/password");
+        try {
+            logger.info("激活邮箱:"+ email);
+            response = loginService.verifyingMailbox(code,email);
+        } catch (Exception e) {
+            logger.error("激活失败 : ", e);
+            response.setStatus(504);
+            response.setMessage(e.getMessage());
+        }
+        return response;
     }
     //注册密码
     @PostMapping("/servicePassword")
