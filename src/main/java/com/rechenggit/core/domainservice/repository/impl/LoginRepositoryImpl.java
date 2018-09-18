@@ -176,6 +176,7 @@ public class LoginRepositoryImpl implements LoginRepository {
         List<TrPassword> trPasswordList = trPasswordMapper.selectByExample(examplePassword);
         TrPassword trPassword = new TrPassword();
         trPassword.setPassword(paymentPassword);
+        trPassword.setOperatorId(servicePasswordInfo.getOperatorId());
         if(trPasswordList.isEmpty()){
             trPassword.setCreateTime(new Date());
             trPasswordMapper.insertSelective(trPassword);
