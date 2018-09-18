@@ -18,7 +18,6 @@ import com.rechenggit.util.FieldLength;
 import com.rechenggit.util.MailUtil;
 import com.rechenggit.util.Utils;
 import com.rechenggit.web.LoginControl;
-import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -248,14 +247,21 @@ public class LoginRepositoryImpl implements LoginRepository {
         }else{
             memberMapper.updateByExampleSelective(member,exampleMember2);
         }
+        //tm_Operator 激活
+        Example exampleOperator = new Example(Operator .class);
+        exampleOperator.createCriteria().andEqualTo("memberId", memberId);
+        List<Operator> operatorList = operatorMapper.selectByExample(exampleOperator);
+        Operator operator = new Operator();
+        operator.setStatus(1);
+        if(operatorList.isEmpty()){
+            return new BaseResponse(501,"平台信息（Member）未注册，激活失败");
+        }else{
+            operatorMapper.updateByExampleSelective(operator,exampleOperator);
+        }
         //添加 tr_login_name
         Example exampleLoginName = new Example(LoginName .class);
         exampleLoginName.createCriteria().andEqualTo("memberId", memberId);
         List<LoginName> loginNameList = loginNameMapper.selectByExample(exampleLoginName);
-        //Operator
-        Example exampleOperator = new Example(Operator.class);
-        exampleOperator.createCriteria().andEqualTo("memberId", memberId);
-        List<Operator> operatorList = operatorMapper.selectByExample(exampleOperator);
         LoginName loginName = new LoginName();
         if(operatorList.isEmpty() || memberList.isEmpty() || identityList.isEmpty()){
             return new BaseResponse(501,"注册信息不全，激活失败");
