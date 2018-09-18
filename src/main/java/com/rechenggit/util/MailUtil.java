@@ -86,6 +86,8 @@ public class MailUtil implements Runnable {
     }
 
     public static void main(String[] args) {
-        new Thread( new MailUtil("1101699612@qq.com", "asasas","http://localhost:8000")).start();
+        //new Thread( new MailUtil("1101699612@qq.com", "asasas","http://localhost:8000")).start();
+        String pwd = Utils.hashSignContent("111111");
+        System.out.println(pwd);
     }
 }

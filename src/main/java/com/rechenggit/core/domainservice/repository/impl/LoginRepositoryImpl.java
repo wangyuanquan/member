@@ -268,7 +268,7 @@ public class LoginRepositoryImpl implements LoginRepository {
         }else{
             loginName.setOperatorId(operatorList.get(0).getOperatorId());
             loginName.setMemberId(operatorList.get(0).getMemberId());
-            loginName.setLoginName(memberList.get(0).getMemberName());
+            loginName.setLoginName("admin");
             loginName.setSourceType(identityList.get(0).getPid());
             loginName.setLoginNameType(operatorList.get(0).getOperatorType());
         }
