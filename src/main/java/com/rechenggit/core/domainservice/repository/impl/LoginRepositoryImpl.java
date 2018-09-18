@@ -18,6 +18,7 @@ import com.rechenggit.util.FieldLength;
 import com.rechenggit.util.MailUtil;
 import com.rechenggit.web.LoginControl;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.stereotype.Repository;
 import tk.mybatis.mapper.entity.Example;
 
-import java.io.UnsupportedEncodingException;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -156,8 +156,8 @@ public class LoginRepositoryImpl implements LoginRepository {
             return new BaseResponse(503,"保存密码失败，无相关注册信息");
         }
         //密码
-        String loginPassword = hashSignContent(servicePasswordInfo.getLoginPassword());
-        String paymentPassword = hashSignContent(servicePasswordInfo.getPaymentPassword());
+        String loginPassword = SHA256(servicePasswordInfo.getLoginPassword());
+        String paymentPassword = SHA256(servicePasswordInfo.getPaymentPassword());
         //tm_operator 更新 password
         Example exampleOperator = new Example(Operator.class);
         exampleOperator.createCriteria().andEqualTo("memberId", servicePasswordInfo.getMemberId());
@@ -176,6 +176,7 @@ public class LoginRepositoryImpl implements LoginRepository {
         List<TrPassword> trPasswordList = trPasswordMapper.selectByExample(examplePassword);
         TrPassword trPassword = new TrPassword();
         trPassword.setPassword(paymentPassword);
+        trPassword.setOperatorId(servicePasswordInfo.getOperatorId());
         if(trPasswordList.isEmpty()){
             trPassword.setCreateTime(new Date());
             trPasswordMapper.insertSelective(trPassword);
@@ -278,12 +279,18 @@ public class LoginRepositoryImpl implements LoginRepository {
     /*
      * 生成密码
      */
-    public static String hashSignContent(String txt) {
-        try {
-            return DigestUtils.sha256Hex(txt.getBytes("UTF-8"));
-        } catch (UnsupportedEncodingException var2) {
-            logger.error(var2.getMessage(), var2);
-            return null;
-        }
+    //加密
+    public static String SHA256(String param) {
+        String pwd256=DigestUtils.sha256Hex(param);
+        StringBuffer pwd=new StringBuffer(pwd256);
+        return pwd.toString();
     }
+    //解密
+    public static String decryPwd(String param)
+    {
+        String pwd= StringUtils.substring(param,64);
+        return pwd;
+    }
+
+
 }
