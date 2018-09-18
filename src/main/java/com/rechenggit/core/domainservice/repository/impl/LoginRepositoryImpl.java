@@ -136,23 +136,6 @@ public class LoginRepositoryImpl implements LoginRepository {
             }else{
                 enterpriseBasicInfoMapper.updateByExampleSelective(basicInfo,exampleBasic);
             }
-            //tm_mailbox_activation 新增 member_id mailbox_name activation_code status
-            Example exampleMailboxActivation = new Example(MailboxActivation .class);
-            exampleMailboxActivation.createCriteria().andEqualTo("memberId", memberId);
-            List<MailboxActivation> mailboxActivationList = mailboxActivationMapper.selectByExample(exampleMailboxActivation);
-            MailboxActivation mailboxActivation = new MailboxActivation();
-            mailboxActivation.setStatus(0);
-            mailboxActivation.setMemberId(memberId.toString());
-            mailboxActivation.setMailboxName(serviceInfo.getIdentity());
-            String code= UUID.randomUUID().toString().replaceAll("-", "");
-            mailboxActivation.setActivationCode(code);
-            new Thread(new MailUtil(serviceInfo.getIdentity(), code)).start();
-            if(mailboxActivationList.isEmpty()){
-                basicInfo.setCreateTime(new Date());
-                mailboxActivationMapper.insertSelective(mailboxActivation);
-            }else{
-                mailboxActivationMapper.updateByExampleSelective(mailboxActivation,exampleMailboxActivation);
-            }
             BaseResponse baseResponse = new BaseResponse();
             ServicePasswordInfo servicePasswordInfo = new ServicePasswordInfo();
             servicePasswordInfo.setMemberId(memberId);
@@ -165,6 +148,13 @@ public class LoginRepositoryImpl implements LoginRepository {
     @Override
     public BaseResponse saveServicePasswordInfo(ServicePasswordInfo servicePasswordInfo) {
         BaseResponse baseResponse = new BaseResponse();
+        //验证identity标识是否存在 tm_member_identity （email）
+        Example exampleMember = new Example(MemberIdentity.class);
+        exampleMember.createCriteria().andEqualTo("memberId", servicePasswordInfo.getMemberId());
+        List<MemberIdentity> memberIdentityList = memberIdentityMapper.selectByExample(exampleMember);
+        if(memberIdentityList.isEmpty()){
+            return new BaseResponse(503,"保存密码失败，无相关注册信息");
+        }
         //密码
         String loginPassword = hashSignContent(servicePasswordInfo.getLoginPassword());
         String paymentPassword = hashSignContent(servicePasswordInfo.getPaymentPassword());
@@ -174,7 +164,6 @@ public class LoginRepositoryImpl implements LoginRepository {
         List<Operator> operatorList = operatorMapper.selectByExample(exampleOperator);
         Operator operator = new Operator();
         operator.setPassword(loginPassword);
-        operator.setStatus(1);
         if(operatorList.isEmpty()){
             operator.setCreateTime(new Date());
             operatorMapper.insertSelective(operator);
@@ -194,6 +183,24 @@ public class LoginRepositoryImpl implements LoginRepository {
             trPasswordMapper.updateByExampleSelective(trPassword,examplePassword);
         }
 
+        //tm_mailbox_activation 新增 member_id mailbox_name activation_code status
+        Example exampleMailboxActivation = new Example(MailboxActivation .class);
+        exampleMailboxActivation.createCriteria().andEqualTo("memberId", servicePasswordInfo.getMemberId());
+        List<MailboxActivation> mailboxActivationList = mailboxActivationMapper.selectByExample(exampleMailboxActivation);
+        MailboxActivation mailboxActivation = new MailboxActivation();
+        mailboxActivation.setStatus(0);
+        mailboxActivation.setMemberId(servicePasswordInfo.getMemberId());
+        String email = memberIdentityList.get(0).getIdentity();
+        mailboxActivation.setMailboxName(email);
+        String code= UUID.randomUUID().toString().replaceAll("-", "");
+        mailboxActivation.setActivationCode(code);
+        new Thread(new MailUtil(email, code)).start();
+        if(mailboxActivationList.isEmpty()){
+            mailboxActivation.setCreateTime(new Date());
+            mailboxActivationMapper.insertSelective(mailboxActivation);
+        }else{
+            mailboxActivationMapper.updateByExampleSelective(mailboxActivation,exampleMailboxActivation);
+        }
         return baseResponse;
     }
 
