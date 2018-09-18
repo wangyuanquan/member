@@ -48,6 +48,8 @@ public class LoginRepositoryImpl implements LoginRepository {
     private TrPasswordMapper trPasswordMapper;
     @Autowired
     private MailboxActivationMapper mailboxActivationMapper;
+    @Autowired
+    LoginNameMapper loginNameMapper;
     @Override
     public Member validateMemberExistAndNormal(String identity,int platformType) {
        /* //返回会员对象基本信息 （会员标识 平台类型）
@@ -243,6 +245,30 @@ public class LoginRepositoryImpl implements LoginRepository {
             memberMapper.insertSelective(member);
         }else{
             memberMapper.updateByExampleSelective(member,exampleMember2);
+        }
+        //添加 tr_login_name
+        Example exampleLoginName = new Example(LoginName .class);
+        exampleLoginName.createCriteria().andEqualTo("memberId", memberId);
+        List<LoginName> loginNameList = loginNameMapper.selectByExample(exampleLoginName);
+        //Operator
+        Example exampleOperator = new Example(Operator.class);
+        exampleOperator.createCriteria().andEqualTo("memberId", memberId);
+        List<Operator> operatorList = operatorMapper.selectByExample(exampleOperator);
+        LoginName loginName = new LoginName();
+        if(operatorList.isEmpty() || memberList.isEmpty() || identityList.isEmpty()){
+            return new BaseResponse(501,"注册信息不全，激活失败");
+        }else{
+            loginName.setOperatorId(operatorList.get(0).getOperatorId());
+            loginName.setMemberId(operatorList.get(0).getMemberId());
+            loginName.setLoginName(memberList.get(0).getMemberName());
+            loginName.setSourceType(identityList.get(0).getPid());
+            loginName.setLoginNameType(operatorList.get(0).getOperatorType());
+        }
+        if(loginNameList.isEmpty()){
+            loginName.setCreateTime(new Date());
+            loginNameMapper.insertSelective(loginName);
+        }else{
+            loginNameMapper.updateByExampleSelective(loginName,exampleLoginName);
         }
         return baseResponse;
     }
