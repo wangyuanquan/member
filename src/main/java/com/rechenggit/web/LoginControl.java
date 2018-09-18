@@ -75,7 +75,7 @@ public class LoginControl extends BaseControl {
     //注册
     @PostMapping("/service")
     public BaseResponse service(@RequestBody @Validated EnterpriseServiceInfo serviceInfo , BindingResult result){
-        BaseResponse<EnterpriseServiceInfo> response = new BaseResponse();
+        BaseResponse response = new BaseResponse();
         try {
             validate(result);
             logger.info("注册serviceInfo:"+ JSONObject.toJSONString(serviceInfo));
@@ -84,6 +84,7 @@ public class LoginControl extends BaseControl {
             logger.error("注册信息异常 : ", e);
             response.setStatus(504);
             response.setMessage(e.getMessage());
+            return  fail(response);
         }
         return response;
     }

@@ -157,6 +157,7 @@ public class LoginRepositoryImpl implements LoginRepository {
             ServicePasswordInfo servicePasswordInfo = new ServicePasswordInfo();
             servicePasswordInfo.setMemberId(memberId);
             servicePasswordInfo.setOperatorId(operatorId);
+            baseResponse.setData(servicePasswordInfo);
             return baseResponse;
         }
     }
