@@ -219,6 +219,7 @@ public class LoginServiceImpl implements LoginService {
     }
 
     @Override
+    @Transactional
     public BaseResponse verifyingMailbox(String email,String code) {
         return loginRepository.verifyingMailbox(email,code);
     }

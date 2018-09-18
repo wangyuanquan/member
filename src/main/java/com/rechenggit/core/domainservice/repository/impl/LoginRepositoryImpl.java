@@ -15,6 +15,7 @@ import com.rechenggit.core.domain.login.ServicePasswordInfo;
 import com.rechenggit.core.domainservice.repository.LoginRepository;
 import com.rechenggit.core.domainservice.repository.SequenceRepository;
 import com.rechenggit.util.FieldLength;
+import com.rechenggit.util.MaiSendUtil;
 import com.rechenggit.util.MailUtil;
 import com.rechenggit.util.Utils;
 import com.rechenggit.web.LoginControl;
@@ -201,7 +202,7 @@ public class LoginRepositoryImpl implements LoginRepository {
         mailboxActivation.setMailboxName(email);
         String code= UUID.randomUUID().toString().replaceAll("-", "");
         mailboxActivation.setActivationCode(code);
-        new Thread(new MailUtil(email,code,emailUrl)).start();
+        MaiSendUtil.verifyingMailbox(email,code,emailUrl);
         if(mailboxActivationList.isEmpty()){
             mailboxActivation.setCreateTime(new Date());
             mailboxActivationMapper.insertSelective(mailboxActivation);
@@ -222,6 +223,9 @@ public class LoginRepositoryImpl implements LoginRepository {
             return new BaseResponse(501,"没有相关信息，激活失败");
         }
         MailboxActivation mailboxActivation = new MailboxActivation();
+        if(mailboxActivationList.get(0).getStatus() == 1){
+            return new BaseResponse(502,"该账户已激活");
+        }
         mailboxActivation.setStatus(1);
         mailboxActivationMapper.updateByExampleSelective(mailboxActivation,exampleMailboxActivation);
         String memberId = mailboxActivationList.get(0).getMemberId();

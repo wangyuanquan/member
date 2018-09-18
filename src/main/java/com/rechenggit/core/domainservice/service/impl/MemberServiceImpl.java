@@ -10,6 +10,7 @@ import com.rechenggit.core.domainservice.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 
 @Service
@@ -20,11 +21,13 @@ public class MemberServiceImpl implements MemberService {
     @Autowired
     private MongoMemberRespository mongoMemberRespository;
     @Override
+    @Transactional
     public BaseResponse saveEnterpriseBasicInfo(EnterpriseBasic enterpriseBasic) {
         return enterpriseMemberRepository.saveEnterpriseBasicInfo(enterpriseBasic);
     }
 
     @Override
+    @Transactional
     public BaseResponse updateEnterpriseBasicInfo(EnterpriseBasic enterpriseBasic) {
         return enterpriseMemberRepository.updateEnterpriseBasicInfo(enterpriseBasic);
     }
@@ -35,11 +38,13 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
+    @Transactional
     public BaseResponse deleteEnterpriseBasicInfo(String memberId) {
         return enterpriseMemberRepository.deleteEnterpriseBasicInfo(memberId);
     }
 
     @Override
+    @Transactional
     public void saveEnterpriseServiceInfo(EnterpriseMemberServiceDomain enterpriseMemberServiceDomain) {
         mongoMemberRespository.insert(enterpriseMemberServiceDomain);
     }
@@ -55,11 +60,13 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
+    @Transactional
     public BaseResponse queryEnterpriseOtherInfo(String memberId) {
         return enterpriseMemberRepository.queryEnterpriseOtherInfo(memberId);
     }
 
     @Override
+    @Transactional
     public BaseResponse deleteEnterpriseOtherInfo(String memberId) {
         return enterpriseMemberRepository.deleteEnterpriseOtherInfo(memberId);
     }

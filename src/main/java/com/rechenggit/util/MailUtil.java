@@ -21,11 +21,15 @@ import javax.mail.internet.MimeMessage;
 public class MailUtil implements Runnable {
     private String email;// 收件人邮箱
     private String code;// 激活码
-    public static String url;//链接跳转地址
-    public MailUtil(String email, String code,String url) {
+    private  String url;//链接跳转地址
+    private String content;// 激活码
+    private String subject;// 主题
+    public MailUtil(String email, String code,String url,String content,String subject) {
         this.email = email;
         this.code = code;
         this.url = url;
+        this.content = content;
+        this.subject = subject;
     }
 
     public MailUtil() {
@@ -62,19 +66,8 @@ public class MailUtil implements Runnable {
             // 2.2设置接收人
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(email));
             // 2.3设置邮件主题
-            message.setSubject("Account activation");
+            message.setSubject(subject);
             // 2.4设置邮件内容
-            String content = "<html><head></head><body>" +
-                    "<h3>Please do not reply directly to this system-generated email.</h3>" +
-                    "<h3>Please Verify Your Mailbox</h3>" +
-                    "<br/>" +
-                    "<h3>Dear customer:</h3>" +
-                    "<h3>Thank you for choosing Supay cross-border payment solution.</h3>" +
-                    "<h2>Please click " +
-                    "<a href='"+url+"/user/verification?email="+email+"&code="+code+"'> here</a>"+
-                    "&nbsp;to verify your email. </h2></body></html>"+
-                    "<h3>&nbsp; &nbsp; Best regards</h3>"+
-                    "<h3>&nbsp; &nbsp; www.supay.com</h3>";
             message.setContent(content, "text/html;charset=UTF-8");
             // 3.发送邮件
             Transport.send(message);
