@@ -86,6 +86,7 @@ public class LoginRepositoryImpl implements LoginRepository {
             memberIdentity.setStatus(0);
             memberIdentity.setIdentity(serviceInfo.getIdentity());
             memberIdentity.setPid(serviceInfo.getPid());
+            memberIdentity.setIdentityType(memberType.getCode());
             if(identityList.isEmpty()){
                 memberIdentity.setCreateTime(new Date());
                 memberIdentityMapper.insertSelective(memberIdentity);
@@ -114,6 +115,7 @@ public class LoginRepositoryImpl implements LoginRepository {
             operator.setMemberId(memberId.toString());
             operator.setStatus(0);
             operator.setOperatorId(operatorId);
+            operator.setOperatorType(memberType.getCode());
             if(operatorList.isEmpty()){
                 operator.setCreateTime(new Date());
                 operatorMapper.insertSelective(operator);
