@@ -86,7 +86,6 @@ public class LoginRepositoryImpl implements LoginRepository {
             memberIdentity.setStatus(0);
             memberIdentity.setIdentity(serviceInfo.getIdentity());
             memberIdentity.setPid(serviceInfo.getPid());
-            memberIdentity.setIdentityType(memberType.getCode());
             if(identityList.isEmpty()){
                 memberIdentity.setCreateTime(new Date());
                 memberIdentityMapper.insertSelective(memberIdentity);
