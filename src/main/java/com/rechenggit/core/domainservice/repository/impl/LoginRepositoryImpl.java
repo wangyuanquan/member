@@ -16,6 +16,7 @@ import com.rechenggit.core.domainservice.repository.LoginRepository;
 import com.rechenggit.core.domainservice.repository.SequenceRepository;
 import com.rechenggit.util.FieldLength;
 import com.rechenggit.util.MailUtil;
+import com.rechenggit.util.Utils;
 import com.rechenggit.web.LoginControl;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.StringUtils;
@@ -159,8 +160,8 @@ public class LoginRepositoryImpl implements LoginRepository {
             return new BaseResponse(503,"保存密码失败，无相关注册信息");
         }
         //密码
-        String loginPassword = SHA256(servicePasswordInfo.getLoginPassword());
-        String paymentPassword = SHA256(servicePasswordInfo.getPaymentPassword());
+        String loginPassword = Utils.hashSignContent(servicePasswordInfo.getLoginPassword());
+        String paymentPassword = Utils.hashSignContent(servicePasswordInfo.getPaymentPassword());
         //tm_operator 更新 password
         Example exampleOperator = new Example(Operator.class);
         exampleOperator.createCriteria().andEqualTo("memberId", servicePasswordInfo.getMemberId());
@@ -306,12 +307,7 @@ public class LoginRepositoryImpl implements LoginRepository {
     /*
      * 生成密码
      */
-    //加密
-    public static String SHA256(String param) {
-        String pwd256=DigestUtils.sha256Hex(param);
-        StringBuffer pwd=new StringBuffer(pwd256);
-        return pwd.toString();
-    }
+
     //解密
     public static String decryPwd(String param)
     {
