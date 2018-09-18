@@ -213,11 +213,11 @@ public class LoginRepositoryImpl implements LoginRepository {
     }
 
     @Override
-    public BaseResponse verifyingMailbox(String code,String email) {
+    public BaseResponse verifyingMailbox(String email,String code) {
         BaseResponse baseResponse = new BaseResponse();
         Example exampleMailboxActivation = new Example(MailboxActivation .class);
         exampleMailboxActivation.createCriteria().andEqualTo("activationCode", code)
-                .andEqualTo("mailbox_name", email);
+                .andEqualTo("mailboxName", email);
         List<MailboxActivation> mailboxActivationList = mailboxActivationMapper.selectByExample(exampleMailboxActivation);
         if(mailboxActivationList.isEmpty()){
             return new BaseResponse(501,"没有相关信息，激活失败");
@@ -233,8 +233,7 @@ public class LoginRepositoryImpl implements LoginRepository {
         MemberIdentity memberIdentity = new MemberIdentity();
         memberIdentity.setStatus(1);
         if(identityList.isEmpty()){
-            memberIdentity.setCreateTime(new Date());
-            memberIdentityMapper.insertSelective(memberIdentity);
+            return new BaseResponse(501,"平台信息（MemberIdentity）未注册，激活失败");
         }else{
             memberIdentityMapper.updateByExampleSelective(memberIdentity,exampleMemberIdentity);
         }
@@ -245,8 +244,7 @@ public class LoginRepositoryImpl implements LoginRepository {
         Member member = new Member();
         member.setStatus(1);
         if(memberList.isEmpty()){
-            member.setCreateTime(new Date());
-            memberMapper.insertSelective(member);
+            return new BaseResponse(501,"平台信息（Member）未注册，激活失败");
         }else{
             memberMapper.updateByExampleSelective(member,exampleMember2);
         }

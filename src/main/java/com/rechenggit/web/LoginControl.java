@@ -8,6 +8,7 @@ import com.rechenggit.core.common.LoginRequest;
 import com.rechenggit.core.dal.dataobject.Member;
 import com.rechenggit.core.dal.dataobject.Operator;
 import com.rechenggit.core.domain.BaseMember;
+import com.rechenggit.core.domain.login.EmailMailboxInfo;
 import com.rechenggit.core.domain.login.EnterpriseServiceInfo;
 import com.rechenggit.core.domain.login.OperatorLoginPwdRequest;
 import com.rechenggit.core.domain.login.ServicePasswordInfo;
@@ -89,11 +90,12 @@ public class LoginControl extends BaseControl {
     }
     //激活邮箱
     @RequestMapping("/verifyingMailbox")
-    public BaseResponse servicePassword(String code,String email){
+    public BaseResponse servicePassword(@RequestBody @Validated EmailMailboxInfo mailboxInfo, BindingResult result){
         BaseResponse<ServicePasswordInfo> response = new BaseResponse();
         try {
-            logger.info("激活邮箱:"+ email);
-            response = loginService.verifyingMailbox(code,email);
+            validate(result);
+            logger.info("激活邮箱:"+ mailboxInfo.getEmail());
+            response = loginService.verifyingMailbox(mailboxInfo.getEmail(),mailboxInfo.getCode());
         } catch (Exception e) {
             logger.error("激活失败 : ", e);
             response.setStatus(504);
