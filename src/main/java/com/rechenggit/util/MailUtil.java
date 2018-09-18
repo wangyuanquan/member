@@ -1,5 +1,12 @@
 package com.rechenggit.util;
 import com.sun.mail.util.MailSSLSocketFactory;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.Properties;
@@ -7,16 +14,22 @@ import java.util.Properties;
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-
+@Setter
+@Getter
+@ToString
+@Configuration
 public class MailUtil implements Runnable {
     private String email;// 收件人邮箱
     private String code;// 激活码
-
-    public MailUtil(String email, String code) {
+    public static String url;//链接跳转地址
+    public MailUtil(String email, String code,String url) {
         this.email = email;
         this.code = code;
+        this.url = url;
     }
 
+    public MailUtil() {
+    }
     public void run() {
         // 1.创建连接对象javax.mail.Session
         // 2.创建邮件对象 javax.mail.Message
@@ -35,8 +48,6 @@ public class MailUtil implements Runnable {
             sf.setTrustAllHosts(true);
             properties.put("mail.smtp.ssl.enable", "true");
             properties.put("mail.smtp.ssl.socketFactory", sf);
-
-
             // 1.获取默认session对象
             Session session = Session.getDefaultInstance(properties, new Authenticator() {
                 public PasswordAuthentication getPasswordAuthentication() {
@@ -59,9 +70,9 @@ public class MailUtil implements Runnable {
                     "<br/>" +
                     "<h3>Dear customer:</h3>" +
                     "<h3>Thank you for choosing Supay cross-border payment solution.</h3>" +
-                    "<h2>Please click" +
-                    "<a href='http://localhost:8000/user/verification?email="+email+"&code="+code+"'>here</a>"+
-                    "to verify your email.</h2></body></html>"+
+                    "<h2>Please click " +
+                    "<a href='"+url+"/user/verification?email="+email+"&code="+code+"'> here</a>"+
+                    "&nbsp;to verify your email. </h2></body></html>"+
                     "<h3>&nbsp; &nbsp; Best regards</h3>"+
                     "<h3>&nbsp; &nbsp; www.supay.com</h3>";
             message.setContent(content, "text/html;charset=UTF-8");
@@ -72,5 +83,9 @@ public class MailUtil implements Runnable {
             System.out.println("邮件发送失败!");
             e.printStackTrace();
         }
+    }
+
+    public static void main(String[] args) {
+        new Thread( new MailUtil("1101699612@qq.com", "asasas","http://localhost:8000")).start();
     }
 }

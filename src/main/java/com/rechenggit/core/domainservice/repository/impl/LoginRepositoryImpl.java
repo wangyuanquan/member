@@ -23,6 +23,7 @@ import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.stereotype.Repository;
 import tk.mybatis.mapper.entity.Example;
@@ -35,6 +36,8 @@ import java.util.UUID;
 @Repository
 public class LoginRepositoryImpl implements LoginRepository {
     private final static Logger logger = LoggerFactory.getLogger(LoginControl.class);
+    @Value("${email.url}")
+    private String emailUrl  ;
     @Autowired
     private MemberMapper memberMapper;
     @Autowired
@@ -199,7 +202,7 @@ public class LoginRepositoryImpl implements LoginRepository {
         mailboxActivation.setMailboxName(email);
         String code= UUID.randomUUID().toString().replaceAll("-", "");
         mailboxActivation.setActivationCode(code);
-        new Thread(new MailUtil(email, code)).start();
+        new Thread(new MailUtil(email,code,emailUrl)).start();
         if(mailboxActivationList.isEmpty()){
             mailboxActivation.setCreateTime(new Date());
             mailboxActivationMapper.insertSelective(mailboxActivation);
