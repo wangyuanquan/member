@@ -54,16 +54,16 @@ public class MailUtil implements Runnable {
             message.setSubject("Account activation");
             // 2.4设置邮件内容
             String content = "<html><head></head><body>" +
-                    "<h1>Please do not reply directly to this system-generated email.</h1>" +
-                    "<h1>Please Verify Your Mailbox</h1>" +
+                    "<h3>Please do not reply directly to this system-generated email.</h3>" +
+                    "<h3>Please Verify Your Mailbox</h3>" +
                     "<br/>" +
-                    "<h1>Dear customer:</h1>" +
+                    "<h3>Dear customer:</h3>" +
                     "<h3>Thank you for choosing Supay cross-border payment solution.</h3>" +
-                    "<h3>Please click<a href='http://10.10.60.102:8050/RegisterDemo/ActiveServlet?email="
-                    + email + "'>?code=" + code
-                    + "</href> to verify your email.</h3></body></html>"+
-                    "<h1>&nbsp; &nbsp; Best regards,</h1>"+
-                    "<h1>&nbsp; &nbsp; www.supay.com</h1>";
+                    "<h2>Please click" +
+                    "<a href='http://10.10.60.102:8050/RegisterDemo/ActiveServlet?email="+email+"&code="+code+"'>here</a>"+
+                    "to verify your email.</h2></body></html>"+
+                    "<h3>&nbsp; &nbsp; Best regards</h3>"+
+                    "<h3>&nbsp; &nbsp; www.supay.com</h3>";
             message.setContent(content, "text/html;charset=UTF-8");
             // 3.发送邮件
             Transport.send(message);
