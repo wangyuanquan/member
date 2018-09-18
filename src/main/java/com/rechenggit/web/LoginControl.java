@@ -57,6 +57,7 @@ public class LoginControl extends BaseControl {
             Map<String,String> data=new HashMap<>();
             data.put("operatorId",operator.getOperatorId());
             data.put("memberId",member.getMemberId());
+            data.put("memberName",member.getMemberName());
            /*  Map<String, String> map = new HashMap<>();
            JWTInfo jwtInfo = new JWTInfo(request.getLoginName(), member.getMemberId(), operator.getOperatorId());
             Date expireTime = DateTime.now().plusSeconds(jwtTokenUtil.getExpire()).toDate();
