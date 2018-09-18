@@ -1,7 +1,5 @@
 package com.rechenggit.config;
 
-import com.rechengit.cheng.cloud.auth.client.interceptor.ServiceAuthRestInterceptor;
-import com.rechengit.cheng.cloud.auth.client.interceptor.UserAuthRestInterceptor;
 import com.rechengit.cheng.cloud.common.handler.GlobalExceptionHandler;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.servlet.MultipartConfigFactory;

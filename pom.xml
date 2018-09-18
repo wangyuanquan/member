@@ -170,11 +170,11 @@
             <artifactId>super-common</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
-        <dependency>
+ <!--       <dependency>
             <groupId>com.rechengit.cheng</groupId>
             <artifactId>cheng-auth-client</artifactId>
             <version>1.0-SNAPSHOT</version>
-        </dependency>
+        </dependency>-->
         <dependency>
             <groupId>com.aliyun</groupId>
             <artifactId>aliyun-java-sdk-sts</artifactId>
@@ -204,11 +204,17 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
         </dependency>
-        <dependency>
+<!--        <dependency>
             <groupId>com.rechengit.cheng</groupId>
             <artifactId>auth-client</artifactId>
             <version>1.0-SNAPSHOT</version>
-        </dependency>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-data-redis</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>-->
 
     </dependencies>
     <build>
