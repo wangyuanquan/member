@@ -8,10 +8,6 @@ import com.aliyuncs.profile.IClientProfile;
 import com.aliyuncs.sts.model.v20150401.AssumeRoleRequest;
 import com.aliyuncs.sts.model.v20150401.AssumeRoleResponse;
 import com.rechenggit.util.OssManage;
-import com.rechengit.cheng.cloud.auth.client.annotation.CheckClientToken;
-import com.rechengit.cheng.cloud.auth.client.annotation.CheckUserToken;
-import com.rechengit.cheng.cloud.auth.client.annotation.IgnoreClientToken;
-import com.rechengit.cheng.cloud.auth.client.annotation.IgnoreUserToken;
 import com.rechengit.cheng.cloud.common.util.UUIDUtils;
 import com.rechengit.common.entity.response.ResponseMessage;
 import com.rechengit.common.enums.exception.ReturnCodes;
@@ -138,8 +134,6 @@ public class OssController {
      * @return
      */
     @RequestMapping("/getToken")
-    @IgnoreClientToken
-    @IgnoreUserToken
     public ResponseMessage getToken(){
         ResponseMessage resp = new ResponseMessage();
         String endpoint = "sts.cn-hangzhou.aliyuncs.com";

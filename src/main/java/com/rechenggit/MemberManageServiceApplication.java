@@ -7,6 +7,7 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import tk.mybatis.spring.annotation.MapperScan;
 
+
 @SpringBootApplication
 @EnableTransactionManagement
 @MapperScan(basePackages = { "com.rechenggit.core.dal.mapper" })
