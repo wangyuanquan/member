@@ -64,13 +64,13 @@ public class LoginControl extends BaseControl {
             Date expireTime = DateTime.now().plusSeconds(jwtTokenUtil.getExpire()).toDate();
             String token = jwtTokenUtil.generateToken(jwtInfo, map, expireTime);*/
             response.setData(data);
-            return success(response);
         } catch (Exception e) {
             logger.error("验证操作员登陆密码异常 : {}", e);
             response.setStatus(500);
             response.setMessage(e.getMessage());
             return fail(response);
         }
+        return success(response);
     }
     //注册
     @PostMapping("/service")
@@ -86,7 +86,7 @@ public class LoginControl extends BaseControl {
             response.setMessage(e.getMessage());
             return  fail(response);
         }
-        return response;
+        return success(response);
     }
     //激活邮箱
     @RequestMapping("/verifyingMailbox")
@@ -100,8 +100,9 @@ public class LoginControl extends BaseControl {
             logger.error("激活失败 : ", e);
             response.setStatus(504);
             response.setMessage(e.getMessage());
+            return  fail(response);
         }
-        return response;
+        return success(response);
     }
     //注册密码
     @PostMapping("/servicePassword")
@@ -115,8 +116,9 @@ public class LoginControl extends BaseControl {
             logger.error("注册信息异常 : ", e);
             response.setStatus(504);
             response.setMessage(e.getMessage());
+            return  fail(response);
         }
-        return response;
+        return success(response);
     }
     //找回登录密码，向邮箱发送验证码
     @PostMapping("/findLoginPassword")
@@ -130,8 +132,9 @@ public class LoginControl extends BaseControl {
             logger.error("找回登录密码异常 : ", e);
             response.setStatus(504);
             response.setMessage(e.getMessage());
+            return  fail(response);
         }
-        return response;
+        return success(response);
     }
 
     @PostMapping("/personalLogin")

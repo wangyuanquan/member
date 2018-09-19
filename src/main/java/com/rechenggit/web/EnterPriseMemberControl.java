@@ -65,9 +65,9 @@ public class EnterPriseMemberControl extends BaseControl {
             response = memberService.updateEnterpriseBasicInfo(enterpriseBasic);
         }catch (Exception e){
             logger.error("更新基本信息错误：{}",e);
-            return  fail(response);
+            return  fail();
         }
-        return response;
+        return success(response);
     }
 
     @PostMapping("/saveEnterpriseBasicInfo")
@@ -81,8 +81,9 @@ public class EnterPriseMemberControl extends BaseControl {
             logger.error("保存基本信息错误：{}",e);
             response.setStatus(504);
             response.setMessage(e.getMessage());
+            return  fail(response);
         }
-        return response;
+        return success(response);
     }
 
     @RequestMapping("/queryEnterpriseBasicInfo")
@@ -109,7 +110,7 @@ public class EnterPriseMemberControl extends BaseControl {
             logger.error("删除基本信息错误：{}",e);
             return  fail(response);
         }
-        return response;
+        return success(response);
     }
     @PostMapping("/saveEnterpriseOtherInfo")
     public BaseResponse saveEnterpriseOtherInfo(@RequestBody @Validated EnterpriseOther enterpriseOther ,BindingResult result) {
@@ -120,9 +121,9 @@ public class EnterPriseMemberControl extends BaseControl {
             response = memberService.saveEnterpriseOtherInfo(enterpriseOther);
         }catch (Exception e){
             logger.error("保存信息错误：{}",e);
-            return  fail(response);
+            return  fail();
         }
-        return response;
+        return success(response);
     }
 
     @RequestMapping("/queryEnterpriseOtherInfo")
@@ -147,8 +148,8 @@ public class EnterPriseMemberControl extends BaseControl {
             response = memberService.deleteEnterpriseOtherInfo(memberId);
         }catch (Exception e){
             logger.error("删除基本信息错误：{}",e);
-            return  fail(response);
+            return  fail();
         }
-        return response;
+        return success(response);
     }
 }
