@@ -118,6 +118,21 @@ public class LoginControl extends BaseControl {
         }
         return response;
     }
+    //找回登录密码，向邮箱发送验证码
+    @PostMapping("/findLoginPassword")
+    public BaseResponse findLoginPassword(@RequestBody @Validated EmailMailboxInfo mailboxInfo, BindingResult result){
+        BaseResponse<ServicePasswordInfo> response = new BaseResponse();
+        try {
+            validate(result);
+            logger.info("找回登录密码:"+ JSONObject.toJSONString(mailboxInfo));
+            response = loginService.findLoginPassword(mailboxInfo.getEmail());
+        } catch (Exception e) {
+            logger.error("找回登录密码异常 : ", e);
+            response.setStatus(504);
+            response.setMessage(e.getMessage());
+        }
+        return response;
+    }
 
     @PostMapping("/personalLogin")
     public BaseResponse queryOperator(OperationEnvironment environment,

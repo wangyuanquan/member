@@ -223,4 +223,9 @@ public class LoginServiceImpl implements LoginService {
     public BaseResponse verifyingMailbox(String email,String code) {
         return loginRepository.verifyingMailbox(email,code);
     }
+
+    @Override
+    public BaseResponse findLoginPassword(String email) {
+        return loginRepository.findLoginPassword(email);
+    }
 }

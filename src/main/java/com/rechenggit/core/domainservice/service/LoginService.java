@@ -43,4 +43,9 @@ public interface LoginService {
      * @return
      */
     BaseResponse verifyingMailbox(String email,String code);
+    /**
+     * 找回登录密码，邮箱发送验证码
+     * @return
+     */
+    BaseResponse findLoginPassword(String email);
 }

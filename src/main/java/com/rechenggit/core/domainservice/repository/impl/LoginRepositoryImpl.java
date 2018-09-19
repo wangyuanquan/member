@@ -16,7 +16,6 @@ import com.rechenggit.core.domainservice.repository.LoginRepository;
 import com.rechenggit.core.domainservice.repository.SequenceRepository;
 import com.rechenggit.util.FieldLength;
 import com.rechenggit.util.MaiSendUtil;
-import com.rechenggit.util.MailUtil;
 import com.rechenggit.util.Utils;
 import com.rechenggit.web.LoginControl;
 import org.apache.commons.lang.StringUtils;
@@ -74,9 +73,9 @@ public class LoginRepositoryImpl implements LoginRepository {
     @Override
     public BaseResponse enterpriseService(EnterpriseServiceInfo serviceInfo) {
         //验证identity标识是否存在 tm_member_identity
-        Example exampleMember = new Example(MemberIdentity.class);
-        exampleMember.createCriteria().andEqualTo("identity", serviceInfo.getIdentity());
-        List<MemberIdentity> memberIdentityList = memberIdentityMapper.selectByExample(exampleMember);
+        Example exampleIdentity = new Example(MemberIdentity.class);
+        exampleIdentity.createCriteria().andEqualTo("identity", serviceInfo.getIdentity());
+        List<MemberIdentity> memberIdentityList = memberIdentityMapper.selectByExample(exampleIdentity);
         if(!memberIdentityList.isEmpty()){
             return new BaseResponse(502,"该信息已存在，重复注册");
         }else{
@@ -99,9 +98,9 @@ public class LoginRepositoryImpl implements LoginRepository {
                 memberIdentityMapper.updateByExampleSelective(memberIdentity,exampleMemberIdentity);
             }
             //tm_member 新增 member_id member_name status(0:未激活)
-            Example exampleMember2 = new Example(Member .class);
-            exampleMember2.createCriteria().andEqualTo("memberId", memberId);
-            List<Member> memberList = memberMapper.selectByExample(exampleMember2);
+            Example exampleMember = new Example(Member .class);
+            exampleMember.createCriteria().andEqualTo("memberId", memberId);
+            List<Member> memberList = memberMapper.selectByExample(exampleMember);
             Member member = new Member();
             member.setMemberId(memberId.toString());
             member.setStatus(0);
@@ -110,7 +109,7 @@ public class LoginRepositoryImpl implements LoginRepository {
                 member.setCreateTime(new Date());
                 memberMapper.insertSelective(member);
             }else{
-                memberMapper.updateByExampleSelective(member,exampleMember2);
+                memberMapper.updateByExampleSelective(member,exampleMember);
             }
             //tm_operator 新增 member_id status(0:未激活）
             Example exampleOperator = new Example(Operator.class);
@@ -192,15 +191,16 @@ public class LoginRepositoryImpl implements LoginRepository {
         }
 
         //tm_mailbox_activation 新增 member_id mailbox_name activation_code status
+        String code= UUID.randomUUID().toString().replaceAll("-", "");
         Example exampleMailboxActivation = new Example(MailboxActivation .class);
-        exampleMailboxActivation.createCriteria().andEqualTo("memberId", servicePasswordInfo.getMemberId());
+        exampleMailboxActivation.createCriteria().andEqualTo("memberId", servicePasswordInfo.getMemberId())
+                .andEqualTo("activationCode", code);
         List<MailboxActivation> mailboxActivationList = mailboxActivationMapper.selectByExample(exampleMailboxActivation);
         MailboxActivation mailboxActivation = new MailboxActivation();
         mailboxActivation.setStatus(0);
         mailboxActivation.setMemberId(servicePasswordInfo.getMemberId());
         String email = memberIdentityList.get(0).getIdentity();
         mailboxActivation.setMailboxName(email);
-        String code= UUID.randomUUID().toString().replaceAll("-", "");
         mailboxActivation.setActivationCode(code);
         MaiSendUtil.verifyingMailbox(email,code,emailUrl);
         if(mailboxActivationList.isEmpty()){
@@ -281,6 +281,38 @@ public class LoginRepositoryImpl implements LoginRepository {
             loginNameMapper.insertSelective(loginName);
         }else{
             loginNameMapper.updateByExampleSelective(loginName,exampleLoginName);
+        }
+        return baseResponse;
+    }
+
+    @Override
+    public BaseResponse findLoginPassword(String email) {
+        BaseResponse baseResponse = new BaseResponse();
+        //验证identity标识是否存在 tm_member_identity
+        Example exampleIdentity = new Example(MemberIdentity.class);
+        exampleIdentity.createCriteria().andEqualTo("identity", email);
+        List<MemberIdentity> memberIdentityList = memberIdentityMapper.selectByExample(exampleIdentity);
+        if(!memberIdentityList.isEmpty()){
+            return new BaseResponse(503,"该邮箱未注册");
+        }else {
+            //tm_mailbox_activation 新增 member_id mailbox_name activation_code status
+            String code = UUID.randomUUID().toString().replaceAll("-", "");
+            Example exampleMailboxActivation = new Example(MailboxActivation.class);
+            exampleMailboxActivation.createCriteria().andEqualTo("memberId", memberIdentityList.get(0).getMemberId())
+                    .andEqualTo("activationCode", code);
+            List<MailboxActivation> mailboxActivationList = mailboxActivationMapper.selectByExample(exampleMailboxActivation);
+            MailboxActivation mailboxActivation = new MailboxActivation();
+            mailboxActivation.setStatus(0);
+            mailboxActivation.setMemberId(memberIdentityList.get(0).getMemberId());
+            mailboxActivation.setMailboxName(email);
+            mailboxActivation.setActivationCode(code);
+            MaiSendUtil.findLoginPassword(email, code, emailUrl);
+            if (mailboxActivationList.isEmpty()) {
+                mailboxActivation.setCreateTime(new Date());
+                mailboxActivationMapper.insertSelective(mailboxActivation);
+            } else {
+                mailboxActivationMapper.updateByExampleSelective(mailboxActivation, exampleMailboxActivation);
+            }
         }
         return baseResponse;
     }
