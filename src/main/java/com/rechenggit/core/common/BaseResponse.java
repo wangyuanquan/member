@@ -23,7 +23,7 @@ public class BaseResponse<T> {
     * */
     private int status =200;
 
-    private String message = "success";
+    private String message = "operation.success";
     private T data;
 
     public BaseResponse() {
