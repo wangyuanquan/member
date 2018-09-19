@@ -43,7 +43,7 @@ public class LoginControl extends BaseControl {
 
     @PostMapping("/enterpriseLogin")
     public BaseResponse enterpriselogin(@RequestBody OperatorLoginPwdRequest request){
-        BaseResponse response =new BaseResponse();
+        BaseResponse response = new BaseResponse();
         try {
             Member member =memberValidator.validateMemberExistAndNormal(
                     request.getIdentity(), request.getPlatFormType());
@@ -66,9 +66,7 @@ public class LoginControl extends BaseControl {
             response.setData(data);
         } catch (Exception e) {
             logger.error("验证操作员登陆密码异常 : {}", e);
-            response.setStatus(500);
-            response.setMessage(e.getMessage());
-            return fail(response);
+            return fail();
         }
         return success(response);
     }
@@ -82,9 +80,7 @@ public class LoginControl extends BaseControl {
             response = loginService.enterpriseService(serviceInfo);
         } catch (Exception e) {
             logger.error("注册信息异常 : ", e);
-            response.setStatus(504);
-            response.setMessage(e.getMessage());
-            return  fail(response);
+            return  fail();
         }
         return success(response);
     }
@@ -98,9 +94,7 @@ public class LoginControl extends BaseControl {
             response = loginService.verifyingMailbox(mailboxInfo.getEmail(),mailboxInfo.getCode());
         } catch (Exception e) {
             logger.error("激活失败 : ", e);
-            response.setStatus(504);
-            response.setMessage(e.getMessage());
-            return  fail(response);
+            return  fail();
         }
         return success(response);
     }
@@ -114,9 +108,7 @@ public class LoginControl extends BaseControl {
             response = loginService.saveServicePasswordInfo(servicePasswordInfo);
         } catch (Exception e) {
             logger.error("注册信息异常 : ", e);
-            response.setStatus(504);
-            response.setMessage(e.getMessage());
-            return  fail(response);
+            return  fail();
         }
         return success(response);
     }
@@ -130,9 +122,7 @@ public class LoginControl extends BaseControl {
             response = loginService.findLoginPassword(mailboxInfo.getEmail());
         } catch (Exception e) {
             logger.error("找回登录密码异常 : ", e);
-            response.setStatus(504);
-            response.setMessage(e.getMessage());
-            return  fail(response);
+            return  fail();
         }
         return success(response);
     }
