@@ -14,6 +14,8 @@ import com.rechenggit.core.domain.login.OperatorLoginPwdRequest;
 import com.rechenggit.core.domain.login.ServicePasswordInfo;
 import com.rechenggit.core.domainservice.repository.LoginRepository;
 import com.rechenggit.core.domainservice.repository.SequenceRepository;
+import com.rechenggit.core.exception.CommonDefinedException;
+import com.rechenggit.core.exception.ErrorCodeException.CommonException;
 import com.rechenggit.util.FieldLength;
 import com.rechenggit.util.MaiSendUtil;
 import com.rechenggit.util.Utils;
@@ -71,13 +73,15 @@ public class LoginRepositoryImpl implements LoginRepository {
     }
 
     @Override
-    public BaseResponse enterpriseService(EnterpriseServiceInfo serviceInfo) {
+    public ServicePasswordInfo enterpriseService(EnterpriseServiceInfo serviceInfo) throws CommonException{
         //验证identity标识是否存在 tm_member_identity
         Example exampleIdentity = new Example(MemberIdentity.class);
         exampleIdentity.createCriteria().andEqualTo("identity", serviceInfo.getIdentity());
         List<MemberIdentity> memberIdentityList = memberIdentityMapper.selectByExample(exampleIdentity);
         if(!memberIdentityList.isEmpty()){
-            return new BaseResponse(502,"service.repeat");
+            CommonException exp = CommonDefinedException.SERVICE_REPEAT;
+            exp.setMemo(serviceInfo.getIdentity());
+            throw exp;
         }else{
             MemberTypeEnum memberType = MemberTypeEnum.getByCode(serviceInfo.getPid());
             String memberId = genMemberId(memberType);
@@ -142,12 +146,10 @@ public class LoginRepositoryImpl implements LoginRepository {
             }else{
                 enterpriseBasicInfoMapper.updateByExampleSelective(basicInfo,exampleBasic);
             }
-            BaseResponse baseResponse = new BaseResponse();
             ServicePasswordInfo servicePasswordInfo = new ServicePasswordInfo();
             servicePasswordInfo.setMemberId(memberId);
             servicePasswordInfo.setOperatorId(operatorId);
-            baseResponse.setData(servicePasswordInfo);
-            return baseResponse;
+            return servicePasswordInfo;
         }
     }
 

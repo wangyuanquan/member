@@ -4,10 +4,9 @@ import com.alibaba.druid.util.StringUtils;
 import com.alibaba.fastjson.JSONObject;
 import com.netfinworks.common.domain.OperationEnvironment;
 import com.rechenggit.core.common.BaseResponse;
-import com.rechenggit.core.common.LoginRequest;
+import com.rechenggit.core.exception.ErrorCodeException.CommonException;
 import com.rechenggit.core.dal.dataobject.Member;
 import com.rechenggit.core.dal.dataobject.Operator;
-import com.rechenggit.core.domain.BaseMember;
 import com.rechenggit.core.domain.login.EmailMailboxInfo;
 import com.rechenggit.core.domain.login.EnterpriseServiceInfo;
 import com.rechenggit.core.domain.login.OperatorLoginPwdRequest;
@@ -15,18 +14,12 @@ import com.rechenggit.core.domain.login.ServicePasswordInfo;
 import com.rechenggit.core.domainservice.service.LoginService;
 import com.rechenggit.core.domainservice.validator.MemberValidator;
 import com.rechenggit.core.domainservice.validator.OperatorValidator;
-import com.rechengit.cheng.core.util.jwt.JWTInfo;
-import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
-
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -77,7 +70,14 @@ public class LoginControl extends BaseControl {
         try {
             validate(result);
             logger.info("注册serviceInfo:"+ JSONObject.toJSONString(serviceInfo));
-            response = loginService.enterpriseService(serviceInfo);
+            ServicePasswordInfo servicePasswordInfo = loginService.enterpriseService(serviceInfo);
+            if(servicePasswordInfo == null){
+                return  fail(new BaseResponse("",""));
+            }
+            response.setData(servicePasswordInfo);
+        }catch (CommonException e) {
+            logger.error("注册异常，该邮箱已注册 : "+ e.getMemo());
+            return  fail(new BaseResponse(502,"service.repeat"));
         } catch (Exception e) {
             logger.error("注册信息异常 : ", e);
             return  fail();

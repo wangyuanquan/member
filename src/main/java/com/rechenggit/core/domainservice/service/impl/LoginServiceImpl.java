@@ -17,8 +17,8 @@ import com.rechenggit.core.domain.login.ServicePasswordInfo;
 import com.rechenggit.core.domainservice.repository.LoginRepository;
 import com.rechenggit.core.domainservice.repository.OperatorLockRepository;
 import com.rechenggit.core.domainservice.service.LoginService;
+import com.rechenggit.core.exception.ErrorCodeException.CommonException;
 import com.rechenggit.core.exception.MaBizException;
-import com.rechenggit.util.MailUtil;
 import com.rechenggit.util.LoginPwdFacadeValidator;
 import com.rechenggit.util.Utils;
 import com.rechenggit.web.EnterPriseMemberControl;
@@ -28,7 +28,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.UUID;
 
 @Repository
 public class LoginServiceImpl implements LoginService {
@@ -65,9 +64,8 @@ public class LoginServiceImpl implements LoginService {
 
     @Override
     @Transactional
-    public BaseResponse enterpriseService(EnterpriseServiceInfo serviceInfo) {
-        BaseResponse baseResponse = loginRepository.enterpriseService(serviceInfo);
-        return baseResponse;
+    public ServicePasswordInfo enterpriseService(EnterpriseServiceInfo serviceInfo) throws CommonException {
+        return loginRepository.enterpriseService(serviceInfo);
     }
 
     @Override
