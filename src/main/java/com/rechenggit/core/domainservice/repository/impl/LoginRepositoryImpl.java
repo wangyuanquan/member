@@ -14,6 +14,8 @@ import com.rechenggit.core.domain.login.OperatorLoginPwdRequest;
 import com.rechenggit.core.domain.login.ServicePasswordInfo;
 import com.rechenggit.core.domainservice.repository.LoginRepository;
 import com.rechenggit.core.domainservice.repository.SequenceRepository;
+import com.rechenggit.core.exception.CommonDefinedException;
+import com.rechenggit.core.exception.ErrorCodeException.CommonException;
 import com.rechenggit.util.FieldLength;
 import com.rechenggit.util.MaiSendUtil;
 import com.rechenggit.util.Utils;
@@ -71,13 +73,15 @@ public class LoginRepositoryImpl implements LoginRepository {
     }
 
     @Override
-    public BaseResponse enterpriseService(EnterpriseServiceInfo serviceInfo) {
+    public ServicePasswordInfo enterpriseService(EnterpriseServiceInfo serviceInfo) throws CommonException{
         //验证identity标识是否存在 tm_member_identity
         Example exampleIdentity = new Example(MemberIdentity.class);
         exampleIdentity.createCriteria().andEqualTo("identity", serviceInfo.getIdentity());
         List<MemberIdentity> memberIdentityList = memberIdentityMapper.selectByExample(exampleIdentity);
         if(!memberIdentityList.isEmpty()){
-            return new BaseResponse(502,"该信息已存在，重复注册");
+            CommonException exp = CommonDefinedException.SERVICE_REPEAT;
+            exp.setMemo(serviceInfo.getIdentity());
+            throw exp;
         }else{
             MemberTypeEnum memberType = MemberTypeEnum.getByCode(serviceInfo.getPid());
             String memberId = genMemberId(memberType);
@@ -142,12 +146,10 @@ public class LoginRepositoryImpl implements LoginRepository {
             }else{
                 enterpriseBasicInfoMapper.updateByExampleSelective(basicInfo,exampleBasic);
             }
-            BaseResponse baseResponse = new BaseResponse();
             ServicePasswordInfo servicePasswordInfo = new ServicePasswordInfo();
             servicePasswordInfo.setMemberId(memberId);
             servicePasswordInfo.setOperatorId(operatorId);
-            baseResponse.setData(servicePasswordInfo);
-            return baseResponse;
+            return servicePasswordInfo;
         }
     }
 
@@ -159,7 +161,7 @@ public class LoginRepositoryImpl implements LoginRepository {
         exampleMember.createCriteria().andEqualTo("memberId", servicePasswordInfo.getMemberId());
         List<MemberIdentity> memberIdentityList = memberIdentityMapper.selectByExample(exampleMember);
         if(memberIdentityList.isEmpty()){
-            return new BaseResponse(503,"保存密码失败，无相关注册信息");
+            return new BaseResponse(503,"service.nothing.information");
         }
         //密码
         String loginPassword = Utils.hashSignContent(servicePasswordInfo.getLoginPassword());
@@ -220,11 +222,11 @@ public class LoginRepositoryImpl implements LoginRepository {
                 .andEqualTo("mailboxName", email);
         List<MailboxActivation> mailboxActivationList = mailboxActivationMapper.selectByExample(exampleMailboxActivation);
         if(mailboxActivationList.isEmpty()){
-            return new BaseResponse(501,"没有相关信息，激活失败");
+            return new BaseResponse(501,"activation.fail.nothing");
         }
         MailboxActivation mailboxActivation = new MailboxActivation();
         if(mailboxActivationList.get(0).getStatus() == 1){
-            return new BaseResponse(502,"该账户已激活");
+            return new BaseResponse(502,"activation.already.repeat");
         }
         mailboxActivation.setStatus(1);
         mailboxActivationMapper.updateByExampleSelective(mailboxActivation,exampleMailboxActivation);
@@ -236,7 +238,7 @@ public class LoginRepositoryImpl implements LoginRepository {
         MemberIdentity memberIdentity = new MemberIdentity();
         memberIdentity.setStatus(1);
         if(identityList.isEmpty()){
-            return new BaseResponse(501,"平台信息（MemberIdentity）未注册，激活失败");
+            return new BaseResponse(501,"activation.unregistered");
         }else{
             memberIdentityMapper.updateByExampleSelective(memberIdentity,exampleMemberIdentity);
         }
@@ -247,7 +249,7 @@ public class LoginRepositoryImpl implements LoginRepository {
         Member member = new Member();
         member.setStatus(1);
         if(memberList.isEmpty()){
-            return new BaseResponse(501,"平台信息（Member）未注册，激活失败");
+            return new BaseResponse(501,"activation.unregistered");
         }else{
             memberMapper.updateByExampleSelective(member,exampleMember2);
         }
@@ -258,7 +260,7 @@ public class LoginRepositoryImpl implements LoginRepository {
         Operator operator = new Operator();
         operator.setStatus(1);
         if(operatorList.isEmpty()){
-            return new BaseResponse(501,"平台信息（Member）未注册，激活失败");
+            return new BaseResponse(501,"activation.unregistered");
         }else{
             operatorMapper.updateByExampleSelective(operator,exampleOperator);
         }
@@ -268,7 +270,7 @@ public class LoginRepositoryImpl implements LoginRepository {
         List<LoginName> loginNameList = loginNameMapper.selectByExample(exampleLoginName);
         LoginName loginName = new LoginName();
         if(operatorList.isEmpty() || memberList.isEmpty() || identityList.isEmpty()){
-            return new BaseResponse(501,"注册信息不全，激活失败");
+            return new BaseResponse(501,"activation.unregistered");
         }else{
             loginName.setOperatorId(operatorList.get(0).getOperatorId());
             loginName.setMemberId(operatorList.get(0).getMemberId());
@@ -293,7 +295,7 @@ public class LoginRepositoryImpl implements LoginRepository {
         exampleIdentity.createCriteria().andEqualTo("identity", email);
         List<MemberIdentity> memberIdentityList = memberIdentityMapper.selectByExample(exampleIdentity);
         if(!memberIdentityList.isEmpty()){
-            return new BaseResponse(503,"该邮箱未注册");
+            return new BaseResponse(503,"email.unregistered");
         }else {
             //tm_mailbox_activation 新增 member_id mailbox_name activation_code status
             String code = UUID.randomUUID().toString().replaceAll("-", "");

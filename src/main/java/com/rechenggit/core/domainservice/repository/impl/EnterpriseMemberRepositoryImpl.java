@@ -3,11 +3,9 @@ package com.rechenggit.core.domainservice.repository.impl;
 import com.rechenggit.core.common.BaseResponse;
 import com.rechenggit.core.dal.dataobject.*;
 import com.rechenggit.core.dal.mapper.*;
-import com.rechenggit.core.domain.EnterpriseBasic;
-import com.rechenggit.core.domain.EnterpriseCompany;
-import com.rechenggit.core.domain.EnterpriseOther;
-import com.rechenggit.core.domain.EnterpriseStore;
+import com.rechenggit.core.domain.*;
 import com.rechenggit.core.domainservice.repository.EnterpriseMemberRepository;
+import com.rechenggit.util.Utils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -32,19 +30,21 @@ public class EnterpriseMemberRepositoryImpl implements EnterpriseMemberRepositor
     private EnterpriseOtherInfoMapper enterpriseOtherInfoMapper;
     @Autowired
     private MemberMapper memberMapper;
+    @Autowired
+    private TrPasswordMapper trPasswordMapper;
 
     @Override
     public BaseResponse saveEnterpriseBasicInfo(EnterpriseBasic enterpriseBasic) {
         String memberId = enterpriseBasic.getMemberId();
         if(memberId == null || "".equals(memberId) ){
-            return new BaseResponse(501,"没有商户ID，添加相关信息失败");
+            return new BaseResponse(501,"parameter.invalid");
         }
         //保存商家名称tm_member
         Example exampleMember = new Example(Member.class);
         exampleMember.createCriteria().andEqualTo("memberId", memberId);
         List<Member> memberList = memberMapper.selectByExample(exampleMember);
         if(memberList.isEmpty()){
-            return new BaseResponse(501,"商户ID没有建立，保存信息失败");
+            return new BaseResponse(501,"parameter.invalid");
         }else{
             Member member = new Member();
             member.setMemberName(enterpriseBasic.getMerName());
@@ -93,7 +93,7 @@ public class EnterpriseMemberRepositoryImpl implements EnterpriseMemberRepositor
     public BaseResponse updateEnterpriseBasicInfo(EnterpriseBasic enterpriseBasic) {
         String memberId = enterpriseBasic.getMemberId();
         if(memberId == null || "".equals(memberId) ){
-            return new BaseResponse(501,"没有商户ID，更新相关信息失败");
+            return new BaseResponse(501,"parameter.invalid");
         }
         EnterpriseBasicInfo basicInfo = new EnterpriseBasicInfo();
         BeanUtils.copyProperties(enterpriseBasic,basicInfo);
@@ -132,7 +132,7 @@ public class EnterpriseMemberRepositoryImpl implements EnterpriseMemberRepositor
         exampleMember.createCriteria().andEqualTo("memberId", memberId);
         List<Member> memberList = memberMapper.selectByExample(exampleMember);
         if(memberList.isEmpty()){
-            return new BaseResponse(504,"参数无效，无相关memberId");
+            return new BaseResponse(504,"parameter.invalid");
         }
         enterpriseBasic.setMerName(memberList.get(0).getMemberName());
         //基本信息
@@ -140,7 +140,7 @@ public class EnterpriseMemberRepositoryImpl implements EnterpriseMemberRepositor
         exampleBasicInfo.createCriteria().andEqualTo("memberId", memberId);
         List<EnterpriseBasicInfo> basicInfo = enterpriseBasicInfoMapper.selectByExample(exampleBasicInfo);
         if(basicInfo.isEmpty()){
-            return new BaseResponse(504,"参数无效，无相关memberId");
+            return new BaseResponse(504,"parameter.invalid");
         }
         BeanUtils.copyProperties(basicInfo.get(0),enterpriseBasic);
         //商店
@@ -184,7 +184,7 @@ public class EnterpriseMemberRepositoryImpl implements EnterpriseMemberRepositor
         exampleCompany.createCriteria().andEqualTo("memberId", memberId);
         num += companyInfoMapper.deleteByExample(exampleCompany);
         if(num < 1){
-            return new BaseResponse(503,"参数无效，无相关信息");
+            return new BaseResponse(503,"parameter.invalid");
         }
         return new BaseResponse();
     }
@@ -193,7 +193,7 @@ public class EnterpriseMemberRepositoryImpl implements EnterpriseMemberRepositor
     public BaseResponse saveEnterpriseOtherInfo(EnterpriseOther enterpriseOther) {
         String memberId = enterpriseOther.getMemberId();
         if(memberId == null || "".equals(memberId) ){
-            return new BaseResponse(501,"没有商户ID，添加相关信息失败");
+            return new BaseResponse(501,"parameter.invalid");
         }
         //保存其他信息
         Example exampleOther = new Example(EnterpriseOtherInfo.class);
@@ -218,7 +218,7 @@ public class EnterpriseMemberRepositoryImpl implements EnterpriseMemberRepositor
         exampleBasicOther.createCriteria().andEqualTo("memberId", memberId);
         List<EnterpriseOtherInfo> basicOther = enterpriseOtherInfoMapper.selectByExample(exampleBasicOther);
         if(basicOther.isEmpty()){
-            return new BaseResponse(504,"参数无效，无相关信息");
+            return new BaseResponse(504,"parameter.invalid");
         }
         BeanUtils.copyProperties(basicOther.get(0),enterpriseOther);
         baseResponse.setData(enterpriseOther);
@@ -231,8 +231,27 @@ public class EnterpriseMemberRepositoryImpl implements EnterpriseMemberRepositor
         exampleOtherInfo.createCriteria().andEqualTo("memberId", memberId);
         int num = enterpriseOtherInfoMapper.deleteByExample(exampleOtherInfo);
         if(num < 1){
-            return new BaseResponse(503,"参数无效，无相关信息");
+            return new BaseResponse(503,"parameter.invalid");
         }
         return new BaseResponse();
+    }
+
+    @Override
+    public BaseResponse verifyPayPwd(PayPwdRequest payPwdRequest) {
+        Example example = new Example(TrPassword.class);
+        example.createCriteria().andEqualTo("accountId",payPwdRequest.getMemberId())
+                .andEqualTo("operatorId",payPwdRequest.getOperatorId());
+        TrPassword trPassword = trPasswordMapper.selectOneByExample(example);
+        BaseResponse response = new BaseResponse();
+        if(trPassword.getPassword().equals(Utils.hashSignContent(payPwdRequest.getPayPassword()))){
+            response.setStatus(200);
+            response.setMessage("success");
+            response.setData(true);
+        }else {
+            response.setStatus(200);
+            response.setMessage("failure");
+            response.setData(false);
+        }
+        return response;
     }
 }

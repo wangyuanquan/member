@@ -46,7 +46,7 @@ public class EnterPriseMemberControl extends BaseControl {
     public BaseResponse queryEnterpriseServiceInfoById(String memberId) {
         BaseResponse<EnterpriseMemberServiceDomain> response=new BaseResponse();
         try{
-            EnterpriseMemberServiceDomain enterpriseMemberServiceDomain=    memberService.queryEnterpriseServiceInfoById(memberId);
+            EnterpriseMemberServiceDomain enterpriseMemberServiceDomain = memberService.queryEnterpriseServiceInfoById(memberId);
             response.setData(enterpriseMemberServiceDomain);
         }catch (Exception e){
             logger.error("查询会员服务信息错误：{}",e);
@@ -65,9 +65,9 @@ public class EnterPriseMemberControl extends BaseControl {
             response = memberService.updateEnterpriseBasicInfo(enterpriseBasic);
         }catch (Exception e){
             logger.error("更新基本信息错误：{}",e);
-            return  fail(response);
+            return  fail();
         }
-        return response;
+        return success(response);
     }
 
     @PostMapping("/saveEnterpriseBasicInfo")
@@ -76,20 +76,21 @@ public class EnterPriseMemberControl extends BaseControl {
         try{
             validate(result);
             logger.info("保存enterpriseBasic:"+ JSONObject.toJSONString(enterpriseBasic));
-            response = memberService.saveEnterpriseBasicInfo(enterpriseBasic);
+            memberService.saveEnterpriseBasicInfo(enterpriseBasic);
         }catch (Exception e){
             logger.error("保存基本信息错误：{}",e);
             response.setStatus(504);
             response.setMessage(e.getMessage());
+            return  fail(response);
         }
-        return response;
+        return success();
     }
 
     @RequestMapping("/queryEnterpriseBasicInfo")
     public BaseResponse queryEnterpriseBasicInfo(String memberId) {
         BaseResponse<EnterpriseBasic> response = new BaseResponse();
         if(memberId == null || "".equals(memberId) ){
-            return new BaseResponse(501,"没有商户ID，操作失败");
+            return new BaseResponse(501,"parameter.invalid");
         }
         try{
             response = memberService.queryEnterpriseBasicInfo(memberId);
@@ -101,35 +102,33 @@ public class EnterPriseMemberControl extends BaseControl {
     }
     @RequestMapping("/deleteEnterpriseBasicInfo")
     public BaseResponse deleteEnterpriseBasicInfo(String memberId) {
-        BaseResponse<EnterpriseBasic> response = new BaseResponse();
         try{
             logger.info("删除基本信息 memberId:"+ memberId);
-            response = memberService.deleteEnterpriseBasicInfo(memberId);
+            memberService.deleteEnterpriseBasicInfo(memberId);
         }catch (Exception e){
             logger.error("删除基本信息错误：{}",e);
-            return  fail(response);
+            return  fail();
         }
-        return response;
+        return success();
     }
     @PostMapping("/saveEnterpriseOtherInfo")
     public BaseResponse saveEnterpriseOtherInfo(@RequestBody @Validated EnterpriseOther enterpriseOther ,BindingResult result) {
-        BaseResponse<EnterpriseOther> response = new BaseResponse();
         try{
             validate(result);
             logger.info("保存enterpriseOther:"+ JSONObject.toJSONString(enterpriseOther));
-            response = memberService.saveEnterpriseOtherInfo(enterpriseOther);
+            memberService.saveEnterpriseOtherInfo(enterpriseOther);
         }catch (Exception e){
             logger.error("保存信息错误：{}",e);
-            return  fail(response);
+            return  fail();
         }
-        return response;
+        return success();
     }
 
     @RequestMapping("/queryEnterpriseOtherInfo")
     public BaseResponse queryEnterpriseOtherInfo(String memberId) {
         BaseResponse<EnterpriseOther> response = new BaseResponse();
         if(memberId == null || "".equals(memberId) ){
-            return new BaseResponse(501,"没有商户ID，操作失败");
+            fail(new BaseResponse(501,"parameter.invalid"));
         }
         try{
             response = memberService.queryEnterpriseOtherInfo(memberId);
@@ -141,14 +140,13 @@ public class EnterPriseMemberControl extends BaseControl {
     }
     @RequestMapping("/deleteEnterpriseOtherInfo")
     public BaseResponse deleteEnterpriseOtherInfo(String memberId) {
-        BaseResponse<EnterpriseOther> response = new BaseResponse();
         try{
             logger.info("删除基本信息 memberId:"+ memberId);
-            response = memberService.deleteEnterpriseOtherInfo(memberId);
+            memberService.deleteEnterpriseOtherInfo(memberId);
         }catch (Exception e){
             logger.error("删除基本信息错误：{}",e);
-            return  fail(response);
+            return  fail();
         }
-        return response;
+        return success();
     }
 }

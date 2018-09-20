@@ -4,10 +4,9 @@ import com.alibaba.druid.util.StringUtils;
 import com.alibaba.fastjson.JSONObject;
 import com.netfinworks.common.domain.OperationEnvironment;
 import com.rechenggit.core.common.BaseResponse;
-import com.rechenggit.core.common.LoginRequest;
+import com.rechenggit.core.exception.ErrorCodeException.CommonException;
 import com.rechenggit.core.dal.dataobject.Member;
 import com.rechenggit.core.dal.dataobject.Operator;
-import com.rechenggit.core.domain.BaseMember;
 import com.rechenggit.core.domain.login.EmailMailboxInfo;
 import com.rechenggit.core.domain.login.EnterpriseServiceInfo;
 import com.rechenggit.core.domain.login.OperatorLoginPwdRequest;
@@ -15,18 +14,12 @@ import com.rechenggit.core.domain.login.ServicePasswordInfo;
 import com.rechenggit.core.domainservice.service.LoginService;
 import com.rechenggit.core.domainservice.validator.MemberValidator;
 import com.rechenggit.core.domainservice.validator.OperatorValidator;
-import com.rechengit.cheng.core.util.jwt.JWTInfo;
-import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
-
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -43,7 +36,7 @@ public class LoginControl extends BaseControl {
 
     @PostMapping("/enterpriseLogin")
     public BaseResponse enterpriselogin(@RequestBody OperatorLoginPwdRequest request){
-        BaseResponse response =new BaseResponse();
+        BaseResponse response = new BaseResponse();
         try {
             Member member =memberValidator.validateMemberExistAndNormal(
                     request.getIdentity(), request.getPlatFormType());
@@ -64,13 +57,11 @@ public class LoginControl extends BaseControl {
             Date expireTime = DateTime.now().plusSeconds(jwtTokenUtil.getExpire()).toDate();
             String token = jwtTokenUtil.generateToken(jwtInfo, map, expireTime);*/
             response.setData(data);
-            return success(response);
         } catch (Exception e) {
             logger.error("验证操作员登陆密码异常 : {}", e);
-            response.setStatus(500);
-            response.setMessage(e.getMessage());
-            return fail(response);
+            return fail();
         }
+        return success(response);
     }
     //注册
     @PostMapping("/service")
@@ -79,14 +70,19 @@ public class LoginControl extends BaseControl {
         try {
             validate(result);
             logger.info("注册serviceInfo:"+ JSONObject.toJSONString(serviceInfo));
-            response = loginService.enterpriseService(serviceInfo);
+            ServicePasswordInfo servicePasswordInfo = loginService.enterpriseService(serviceInfo);
+            if(servicePasswordInfo == null){
+                return  fail(new BaseResponse("",""));
+            }
+            response.setData(servicePasswordInfo);
+        }catch (CommonException e) {
+            logger.error("注册异常，该邮箱已注册 : "+ e.getMemo());
+            return  fail(new BaseResponse(502,"service.repeat"));
         } catch (Exception e) {
             logger.error("注册信息异常 : ", e);
-            response.setStatus(504);
-            response.setMessage(e.getMessage());
-            return  fail(response);
+            return  fail();
         }
-        return response;
+        return success(response);
     }
     //激活邮箱
     @RequestMapping("/verifyingMailbox")
@@ -98,10 +94,9 @@ public class LoginControl extends BaseControl {
             response = loginService.verifyingMailbox(mailboxInfo.getEmail(),mailboxInfo.getCode());
         } catch (Exception e) {
             logger.error("激活失败 : ", e);
-            response.setStatus(504);
-            response.setMessage(e.getMessage());
+            return  fail();
         }
-        return response;
+        return success(response);
     }
     //注册密码
     @PostMapping("/servicePassword")
@@ -113,10 +108,9 @@ public class LoginControl extends BaseControl {
             response = loginService.saveServicePasswordInfo(servicePasswordInfo);
         } catch (Exception e) {
             logger.error("注册信息异常 : ", e);
-            response.setStatus(504);
-            response.setMessage(e.getMessage());
+            return  fail();
         }
-        return response;
+        return success(response);
     }
     //找回登录密码，向邮箱发送验证码
     @PostMapping("/findLoginPassword")
@@ -128,10 +122,9 @@ public class LoginControl extends BaseControl {
             response = loginService.findLoginPassword(mailboxInfo.getEmail());
         } catch (Exception e) {
             logger.error("找回登录密码异常 : ", e);
-            response.setStatus(504);
-            response.setMessage(e.getMessage());
+            return  fail();
         }
-        return response;
+        return success(response);
     }
 
     @PostMapping("/personalLogin")
