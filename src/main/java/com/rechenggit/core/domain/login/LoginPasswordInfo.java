@@ -20,6 +20,11 @@ public class LoginPasswordInfo {
     @NotBlank
     private String operatorId;
     /**
+     * 原密码
+     */
+    @NotBlank
+    private String oldPassword;
+    /**
      * 登录密码
      */
     @NotBlank

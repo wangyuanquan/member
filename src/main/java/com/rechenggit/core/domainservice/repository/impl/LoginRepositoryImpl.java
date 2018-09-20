@@ -94,6 +94,8 @@ public class LoginRepositoryImpl implements LoginRepository {
             MemberIdentity memberIdentity = new MemberIdentity();
             memberIdentity.setMemberId(memberId.toString());
             memberIdentity.setStatus(0);
+            memberIdentity.setIsRecvAddr(1);
+            memberIdentity.setIdentityType(1);
             memberIdentity.setIdentity(serviceInfo.getIdentity());
             memberIdentity.setPid(serviceInfo.getPid());
             if(identityList.isEmpty()){
@@ -109,6 +111,8 @@ public class LoginRepositoryImpl implements LoginRepository {
             Member member = new Member();
             member.setMemberId(memberId.toString());
             member.setStatus(0);
+            member.setMemberType(2);
+            member.setLockStatus(0);
             member.setMemberName(serviceInfo.getMemberName());
             if(memberList.isEmpty()){
                 member.setCreateTime(new Date());
@@ -246,6 +250,31 @@ public class LoginRepositoryImpl implements LoginRepository {
         }
         return result;
     }
+
+    @Override
+    public Boolean checkLoginPassword(String memberId, String password) {
+        //获取Operator中的password
+        Example exampleOperator = new Example(Operator.class);
+        exampleOperator.createCriteria().andEqualTo("memberId", memberId);
+        List<Operator> operatorList = operatorMapper.selectByExample(exampleOperator);
+        if(operatorList.isEmpty()){
+            return false;
+        }
+        return operatorList.get(0).getPassword().equals(Utils.hashSignContent(password));
+    }
+
+    @Override
+    public Boolean checkTransactionPassword(String operatorId, String password) {
+        //tr_password 获取 password 交易密码
+        Example examplePassword = new Example(TrPassword.class);
+        examplePassword.createCriteria().andEqualTo("operatorId", operatorId);
+        List<TrPassword> trPasswordList = trPasswordMapper.selectByExample(examplePassword);
+        if(trPasswordList.isEmpty()){
+            return false;
+        }
+        return trPasswordList.get(0).getPassword().equals(Utils.hashSignContent(password));
+    }
+
     //交易密码
     @Override
     public int saveTransactionPassword(ServicePasswordInfo servicePasswordInfo) throws CommonException {

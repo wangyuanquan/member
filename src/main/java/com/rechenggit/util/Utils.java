@@ -58,7 +58,8 @@ public class Utils {
     }
 
     public static void main(String[] args) {
-        System.out.println(hashSignContent("123456"));
+
+        System.out.println(hashSignContent("1111111"));
     }
 
 }

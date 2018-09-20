@@ -244,6 +244,11 @@ public class LoginServiceImpl implements LoginService {
         if(!loginPasswordInfo.getLoginPassword().equals(loginPasswordInfo.getEnterLoginPassword())){
             return new BaseResponse(505,"equals.login.pwd");
         }
+        //验证登录密码
+        Boolean flag = loginRepository.checkLoginPassword(loginPasswordInfo.getMemberId(),loginPasswordInfo.getOldPassword());
+        if(!flag){
+            return new BaseResponse(504,"login.pwd.fail");
+        }
         //保存登录密码
         ServicePasswordInfo servicePasswordInfo = new ServicePasswordInfo();
         BeanUtils.copyProperties(loginPasswordInfo,servicePasswordInfo);
@@ -261,10 +266,15 @@ public class LoginServiceImpl implements LoginService {
         if(!transactionPasswordInfo.getPaymentPassword().equals(transactionPasswordInfo.getEnterPaymentPassword())){
             return new BaseResponse(505,"equals.payment.pwd");
         }
+        //验证交易密码
+        Boolean flag = loginRepository.checkTransactionPassword(transactionPasswordInfo.getOperatorId(),transactionPasswordInfo.getOldPassword());
+        if(!flag){
+            return new BaseResponse(504,"transaction.pwd.fail");
+        }
         //保存交易密码
         ServicePasswordInfo servicePasswordInfo = new ServicePasswordInfo();
         BeanUtils.copyProperties(transactionPasswordInfo,servicePasswordInfo);
-        int result = loginRepository.saveLoginPassword(servicePasswordInfo);
+        int result = loginRepository.saveTransactionPassword(servicePasswordInfo);
         if(result == 0){
             CommonException exp = CommonDefinedException.REQUEST_PARAMETER;
             exp.setMemo(transactionPasswordInfo.getMemberId());

@@ -35,6 +35,16 @@ public interface LoginRepository {
      */
     int saveLoginPassword(ServicePasswordInfo servicePasswordInfo)throws CommonException;
     /**
+     * 验证登录密码
+     * @return
+     */
+    Boolean checkLoginPassword(String  memberId,String  password);
+    /**
+     * 验证登录密码
+     * @return
+     */
+    Boolean checkTransactionPassword(String  memberId,String  password);
+    /**
      * 保存交易密码
      * @return
      */
