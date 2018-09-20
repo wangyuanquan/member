@@ -20,7 +20,6 @@ public class BaseResponse<T> {
     503  无相关信息
     504  参数错误
     506  邮件发送失败
-
     * */
     private int status =200;
 
