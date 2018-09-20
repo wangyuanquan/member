@@ -77,7 +77,7 @@ public class LoginControl extends BaseControl {
             response.setData(servicePasswordInfo);
         }catch (CommonException e) {
             logger.error("注册失败:"+e.getErrorMsg()+"注册信息 : "+ e.getMemo());
-            return fail(ResponseUtils.getBaseResponse(e.getErrorCode()));
+            return fail(new BaseResponse(e.getErrorCode(),e.getErrorMsg()));
         } catch (Exception e) {
             logger.error("注册信息异常 : ", e);
             return  fail();
@@ -94,7 +94,7 @@ public class LoginControl extends BaseControl {
             response = loginService.verifyingMailbox(mailboxInfo.getEmail(),mailboxInfo.getCode());
         } catch (CommonException e) {
             logger.error("激活失败:"+e.getErrorMsg()+"邮箱或激活码信息 : "+ e.getMemo());
-            return fail(ResponseUtils.getBaseResponse(e.getErrorCode()));
+            return fail(new BaseResponse(e.getErrorCode(),e.getErrorMsg()));
         }catch (Exception e) {
             logger.error("激活失败 : ", e);
             return  fail();
@@ -111,7 +111,7 @@ public class LoginControl extends BaseControl {
             response = loginService.saveServicePasswordInfo(servicePasswordInfo);
         }  catch (CommonException e) {
             logger.error("保存密码失败:"+e.getErrorMsg()+"信息 : "+ e.getMemo());
-            return fail(ResponseUtils.getBaseResponse(e.getErrorCode()));
+            return fail(new BaseResponse(e.getErrorCode(),e.getErrorMsg()));
         }catch (Exception e) {
             logger.error("保存密码信息异常 : ", e);
             return  fail();
@@ -128,7 +128,7 @@ public class LoginControl extends BaseControl {
             response = loginService.modifyLoginPassword(loginPasswordInfo);
         }  catch (CommonException e) {
             logger.error("修改登录密码失败:"+e.getErrorMsg()+"信息 : "+ e.getMemo());
-            return fail(ResponseUtils.getBaseResponse(e.getErrorCode()));
+            return fail(new BaseResponse(e.getErrorCode(),e.getErrorMsg()));
         }catch (Exception e) {
             logger.error("修改登录密码异常 : ", e);
             return  fail();
@@ -145,7 +145,7 @@ public class LoginControl extends BaseControl {
             response = loginService.modifyTransactionPassword(transactionPasswordInfo);
         }  catch (CommonException e) {
             logger.error("修改交易密码失败:"+e.getErrorMsg()+"信息 : "+ e.getMemo());
-            return fail(ResponseUtils.getBaseResponse(e.getErrorCode()));
+            return fail(new BaseResponse(e.getErrorCode(),e.getErrorMsg()));
         }catch (Exception e) {
             logger.error("修改交易密码异常 : ", e);
             return  fail();

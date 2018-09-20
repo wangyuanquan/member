@@ -166,7 +166,7 @@ public class LoginRepositoryImpl implements LoginRepository {
         exampleMember.createCriteria().andEqualTo("memberId", servicePasswordInfo.getMemberId());
         List<MemberIdentity> memberIdentityList = memberIdentityMapper.selectByExample(exampleMember);
         if(memberIdentityList.isEmpty()){
-            return new BaseResponse(503,"service.nothing.information");
+            return new BaseResponse("503","service.nothing.information");
         }
         //密码
         String loginPassword = Utils.hashSignContent(servicePasswordInfo.getLoginPassword());
