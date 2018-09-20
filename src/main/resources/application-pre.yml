@@ -6,7 +6,7 @@ spring:
 
         name: member
 
-        url: jdbc:mysql://172.19.18.159:3306/member
+        url: jdbc:mysql://47.100.60.133:3306/member
 
         username: cheng
 
