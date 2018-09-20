@@ -3,6 +3,7 @@ package com.rechenggit.core.domainservice.repository;
 import com.rechenggit.core.dal.dataobject.Member;
 import com.rechenggit.core.dal.dataobject.MemberIdentity;
 import com.rechenggit.core.domain.MemberIntegratedQuery;
+import com.rechenggit.core.exception.MaBizException;
 
 public interface MemberRepository {
 
@@ -24,5 +25,5 @@ public interface MemberRepository {
      */
     Member load(String memberId);
 
-    Member queryBaseMember(MemberIntegratedQuery query);
+    Member queryBaseMember(MemberIntegratedQuery query) ;
 }

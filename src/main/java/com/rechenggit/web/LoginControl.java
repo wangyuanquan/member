@@ -33,7 +33,7 @@ public class LoginControl extends BaseControl {
     private LoginService loginService;
 
     @PostMapping("/enterpriseLogin")
-    public BaseResponse enterpriselogin(@RequestBody OperatorLoginPwdRequest request){
+    public BaseResponse enterpriselogin(@RequestBody @Validated OperatorLoginPwdRequest request){
         BaseResponse response = new BaseResponse();
         try {
             Member member =memberValidator.validateMemberExistAndNormal(
