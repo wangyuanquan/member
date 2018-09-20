@@ -14,7 +14,6 @@ public class EnterpriseServiceInfo {
     /**
      * 商户邮箱
      */
-    @NotBlank
     @Email
     private String identity;
     /**
