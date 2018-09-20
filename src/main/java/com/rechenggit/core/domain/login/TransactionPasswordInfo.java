@@ -20,6 +20,11 @@ public class TransactionPasswordInfo {
     @NotBlank
     private String operatorId;
     /**
+     * 原密码
+     */
+    @NotBlank
+    private String oldPassword;
+    /**
      * 交易密码
      */
     @NotBlank
