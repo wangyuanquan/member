@@ -3,6 +3,7 @@ package com.rechenggit.core.domainservice.repository;
 import com.rechenggit.core.common.BaseResponse;
 import com.rechenggit.core.domain.EnterpriseBasic;
 import com.rechenggit.core.domain.EnterpriseOther;
+import com.rechenggit.core.domain.PayPwdRequest;
 
 public interface EnterpriseMemberRepository {
     /**
@@ -40,4 +41,11 @@ public interface EnterpriseMemberRepository {
      * @param memberId
      */
     BaseResponse deleteEnterpriseOtherInfo(String memberId);
+
+    /**
+     * 校验支付密码
+     * @param payPwdRequest
+     * @return
+     */
+    BaseResponse verifyPayPwd(PayPwdRequest payPwdRequest);
 }

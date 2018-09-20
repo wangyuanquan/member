@@ -70,6 +70,7 @@ public class LoginServiceImpl implements LoginService {
     }
 
     @Override
+    @Transactional
     public void checkLoginPwd(Operator operator, String password) throws MaBizException {
         operator.setFlag(PassWordLockFlagEnum.LOGIN_PASSWORD_FLAG);
         //验证登陆密码

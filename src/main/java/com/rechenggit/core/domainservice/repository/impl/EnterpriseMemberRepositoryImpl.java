@@ -3,11 +3,9 @@ package com.rechenggit.core.domainservice.repository.impl;
 import com.rechenggit.core.common.BaseResponse;
 import com.rechenggit.core.dal.dataobject.*;
 import com.rechenggit.core.dal.mapper.*;
-import com.rechenggit.core.domain.EnterpriseBasic;
-import com.rechenggit.core.domain.EnterpriseCompany;
-import com.rechenggit.core.domain.EnterpriseOther;
-import com.rechenggit.core.domain.EnterpriseStore;
+import com.rechenggit.core.domain.*;
 import com.rechenggit.core.domainservice.repository.EnterpriseMemberRepository;
+import com.rechenggit.util.Utils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -32,6 +30,8 @@ public class EnterpriseMemberRepositoryImpl implements EnterpriseMemberRepositor
     private EnterpriseOtherInfoMapper enterpriseOtherInfoMapper;
     @Autowired
     private MemberMapper memberMapper;
+    @Autowired
+    private TrPasswordMapper trPasswordMapper;
 
     @Override
     public BaseResponse saveEnterpriseBasicInfo(EnterpriseBasic enterpriseBasic) {
@@ -234,5 +234,24 @@ public class EnterpriseMemberRepositoryImpl implements EnterpriseMemberRepositor
             return new BaseResponse(503,"parameter.invalid");
         }
         return new BaseResponse();
+    }
+
+    @Override
+    public BaseResponse verifyPayPwd(PayPwdRequest payPwdRequest) {
+        Example example = new Example(TrPassword.class);
+        example.createCriteria().andEqualTo("accountId",payPwdRequest.getMemberId())
+                .andEqualTo("operatorId",payPwdRequest.getOperatorId());
+        TrPassword trPassword = trPasswordMapper.selectOneByExample(example);
+        BaseResponse response = new BaseResponse();
+        if(trPassword.getPassword().equals(Utils.hashSignContent(payPwdRequest.getPayPassword()))){
+            response.setStatus(200);
+            response.setMessage("success");
+            response.setData(true);
+        }else {
+            response.setStatus(200);
+            response.setMessage("failure");
+            response.setData(false);
+        }
+        return response;
     }
 }

@@ -4,11 +4,11 @@ import com.rechenggit.core.common.BaseResponse;
 import com.rechenggit.core.domain.EnterpriseBasic;
 import com.rechenggit.core.domain.EnterpriseMemberServiceDomain;
 import com.rechenggit.core.domain.EnterpriseOther;
+import com.rechenggit.core.domain.PayPwdRequest;
 import com.rechenggit.core.domainservice.mongodbrepository.MongoMemberRespository;
 import com.rechenggit.core.domainservice.repository.EnterpriseMemberRepository;
 import com.rechenggit.core.domainservice.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -69,5 +69,10 @@ public class MemberServiceImpl implements MemberService {
     @Transactional
     public BaseResponse deleteEnterpriseOtherInfo(String memberId) {
         return enterpriseMemberRepository.deleteEnterpriseOtherInfo(memberId);
+    }
+
+    @Override
+    public BaseResponse verifyPayPwd(PayPwdRequest payPwdRequest) {
+        return enterpriseMemberRepository.verifyPayPwd(payPwdRequest);
     }
 }

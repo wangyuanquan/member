@@ -4,6 +4,7 @@ import com.rechenggit.core.common.BaseResponse;
 import com.rechenggit.core.domain.EnterpriseBasic;
 import com.rechenggit.core.domain.EnterpriseMemberServiceDomain;
 import com.rechenggit.core.domain.EnterpriseOther;
+import com.rechenggit.core.domain.PayPwdRequest;
 
 public interface MemberService {
     /**
@@ -45,4 +46,6 @@ public interface MemberService {
      * @param memberId
      */
     BaseResponse deleteEnterpriseOtherInfo(String memberId);
+
+    BaseResponse verifyPayPwd(PayPwdRequest payPwdRequest);
 }
