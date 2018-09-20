@@ -32,7 +32,7 @@ public class EnterPriseMemberControl extends BaseControl {
 
         }catch (ValidateException e){
             logger.error("保存会员服务信息错误：{}",e.getMessage());
-            response.setStatus(501);
+            response.setStatus("501");
             response.setMessage(e.getMessage());
             return  fail(response);
 
@@ -79,7 +79,7 @@ public class EnterPriseMemberControl extends BaseControl {
             memberService.saveEnterpriseBasicInfo(enterpriseBasic);
         }catch (Exception e){
             logger.error("保存基本信息错误：{}",e);
-            response.setStatus(504);
+            response.setStatus("504");
             response.setMessage(e.getMessage());
             return  fail(response);
         }
@@ -90,7 +90,7 @@ public class EnterPriseMemberControl extends BaseControl {
     public BaseResponse queryEnterpriseBasicInfo(String memberId) {
         BaseResponse<EnterpriseBasic> response = new BaseResponse();
         if(memberId == null || "".equals(memberId) ){
-            return new BaseResponse(501,"parameter.invalid");
+            return new BaseResponse("501","parameter.invalid");
         }
         try{
             response = memberService.queryEnterpriseBasicInfo(memberId);
@@ -128,7 +128,7 @@ public class EnterPriseMemberControl extends BaseControl {
     public BaseResponse queryEnterpriseOtherInfo(String memberId) {
         BaseResponse<EnterpriseOther> response = new BaseResponse();
         if(memberId == null || "".equals(memberId) ){
-            fail(new BaseResponse(501,"parameter.invalid"));
+            fail(new BaseResponse("501","parameter.invalid"));
         }
         try{
             response = memberService.queryEnterpriseOtherInfo(memberId);

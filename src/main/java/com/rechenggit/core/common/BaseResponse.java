@@ -21,7 +21,7 @@ public class BaseResponse<T> {
     504  参数错误
     506  邮件发送失败
     * */
-    private int status =200;
+    private String status = "200";
 
     private String message = "operation.success";
     private T data;
@@ -29,23 +29,15 @@ public class BaseResponse<T> {
     public BaseResponse() {
     }
 
-    public BaseResponse(int status, String message) {
+    public BaseResponse(String status, String message) {
         this.status = status;
         this.message = message;
     }
 
-    public BaseResponse(int status, String message, T data) {
+    public BaseResponse(String status, String message, T data) {
         this.status = status;
         this.message = message;
         this.data = data;
     }
 
-    public BaseResponse(String message, T data) {
-        this.message = message;
-        this.data = data;
-    }
-    @Override
-    public  String  toString(){
-        return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
-    }
 }

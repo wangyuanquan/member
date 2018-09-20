@@ -52,7 +52,7 @@ public class BaseControl {
     }
     public BaseResponse fail(){
         BaseResponse response=new BaseResponse();
-        response.setStatus(500);
+        response.setStatus("500");
         response.setMessage(getMessage("operation.fail"));
         return response;
 
