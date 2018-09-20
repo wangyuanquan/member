@@ -53,7 +53,7 @@ spring:
     data:
          mongodb:
 
-            uri: mongodb://localhost:27017/member
+            uri: mongodb://172.19.52.168:27017/member
 oss:
     upload:
         url: http://oss-cn-hangzhou.aliyuncs.com
@@ -61,6 +61,6 @@ oss:
         accesskeysecret: aX3TnUGHrHOCJDRMqYrCO7obuYBZ9C
         bucketname: super-app
 email:
-    url: http://localhost:8000
+    url: http://139.196.120.236:8000
 
 
