@@ -4,13 +4,10 @@ import com.alibaba.druid.util.StringUtils;
 import com.alibaba.fastjson.JSONObject;
 import com.netfinworks.common.domain.OperationEnvironment;
 import com.rechenggit.core.common.BaseResponse;
+import com.rechenggit.core.domain.login.*;
 import com.rechenggit.core.exception.ErrorCodeException.CommonException;
 import com.rechenggit.core.dal.dataobject.Member;
 import com.rechenggit.core.dal.dataobject.Operator;
-import com.rechenggit.core.domain.login.EmailMailboxInfo;
-import com.rechenggit.core.domain.login.EnterpriseServiceInfo;
-import com.rechenggit.core.domain.login.OperatorLoginPwdRequest;
-import com.rechenggit.core.domain.login.ServicePasswordInfo;
 import com.rechenggit.core.domainservice.service.LoginService;
 import com.rechenggit.core.domainservice.validator.MemberValidator;
 import com.rechenggit.core.domainservice.validator.OperatorValidator;
@@ -88,7 +85,7 @@ public class LoginControl extends BaseControl {
     //激活邮箱
     @RequestMapping("/verifyingMailbox")
     public BaseResponse servicePassword(@RequestBody @Validated EmailMailboxInfo mailboxInfo, BindingResult result){
-        BaseResponse<ServicePasswordInfo> response = new BaseResponse();
+        BaseResponse response;
         try {
             validate(result);
             logger.info("激活邮箱:"+ mailboxInfo.getEmail());
@@ -105,7 +102,7 @@ public class LoginControl extends BaseControl {
     //注册时保存登录密码交易密码
     @PostMapping("/servicePassword")
     public BaseResponse servicePassword(@RequestBody @Validated ServicePasswordInfo servicePasswordInfo , BindingResult result){
-        BaseResponse<ServicePasswordInfo> response = new BaseResponse();
+        BaseResponse response;
         try {
             validate(result);
             logger.info("提交密码:"+ JSONObject.toJSONString(servicePasswordInfo));
@@ -115,6 +112,40 @@ public class LoginControl extends BaseControl {
             return fail(ResponseUtils.getBaseResponse(e.getErrorCode()));
         }catch (Exception e) {
             logger.error("保存密码信息异常 : ", e);
+            return  fail();
+        }
+        return success(response);
+    }
+    //修改登录密码
+    @PostMapping("/modifyLoginPassword")
+    public BaseResponse modifyLoginPassword(@RequestBody @Validated LoginPasswordInfo loginPasswordInfo , BindingResult result){
+        BaseResponse response;
+        try {
+            validate(result);
+            logger.info("修改登录密码:"+ JSONObject.toJSONString(loginPasswordInfo));
+            response = loginService.modifyLoginPassword(loginPasswordInfo);
+        }  catch (CommonException e) {
+            logger.error("修改登录密码失败:"+e.getErrorMsg()+"信息 : "+ e.getMemo());
+            return fail(ResponseUtils.getBaseResponse(e.getErrorCode()));
+        }catch (Exception e) {
+            logger.error("修改登录密码异常 : ", e);
+            return  fail();
+        }
+        return success(response);
+    }
+    //修改交易密码
+    @PostMapping("/modifyTransactionPassword")
+    public BaseResponse modifyTransactionPassword(@RequestBody @Validated TransactionPasswordInfo transactionPasswordInfo , BindingResult result){
+        BaseResponse response;
+        try {
+            validate(result);
+            logger.info("修改交易密码:"+ JSONObject.toJSONString(transactionPasswordInfo));
+            response = loginService.modifyTransactionPassword(transactionPasswordInfo);
+        }  catch (CommonException e) {
+            logger.error("修改交易密码失败:"+e.getErrorMsg()+"信息 : "+ e.getMemo());
+            return fail(ResponseUtils.getBaseResponse(e.getErrorCode()));
+        }catch (Exception e) {
+            logger.error("修改交易密码异常 : ", e);
             return  fail();
         }
         return success(response);
@@ -134,6 +165,7 @@ public class LoginControl extends BaseControl {
         }
         return success(response);
     }
+
     //  未开发
     @PostMapping("/personalLogin")
     public BaseResponse queryOperator(OperationEnvironment environment,

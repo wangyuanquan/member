@@ -11,13 +11,12 @@ import com.rechenggit.core.domain.PassWordLock;
 import com.rechenggit.core.domain.PayPwdLockInfo;
 import com.rechenggit.core.domain.enums.PassWordLockFlagEnum;
 import com.rechenggit.core.domain.enums.ResponseCode;
-import com.rechenggit.core.domain.login.EnterpriseServiceInfo;
-import com.rechenggit.core.domain.login.OperatorLoginPwdRequest;
-import com.rechenggit.core.domain.login.ServicePasswordInfo;
+import com.rechenggit.core.domain.login.*;
 import com.rechenggit.core.domainservice.repository.LoginRepository;
 import com.rechenggit.core.domainservice.repository.OperatorLockRepository;
 import com.rechenggit.core.domainservice.service.LoginService;
 import com.rechenggit.core.exception.CommonDefinedException;
+import com.rechenggit.core.exception.ErrorCodeException;
 import com.rechenggit.core.exception.ErrorCodeException.CommonException;
 import com.rechenggit.core.exception.MaBizException;
 import com.rechenggit.util.LoginPwdFacadeValidator;
@@ -25,6 +24,7 @@ import com.rechenggit.util.Utils;
 import com.rechenggit.web.EnterPriseMemberControl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -234,6 +234,40 @@ public class LoginServiceImpl implements LoginService {
         if(result == 0){
             CommonException exp = CommonDefinedException.MAILBOX_SENDING;
             exp.setMemo(servicePasswordInfo.getMemberId());
+            throw exp;
+        }
+        return new BaseResponse();
+    }
+
+    @Override
+    public BaseResponse modifyLoginPassword(LoginPasswordInfo loginPasswordInfo) throws CommonException {
+        if(!loginPasswordInfo.getLoginPassword().equals(loginPasswordInfo.getEnterLoginPassword())){
+            return new BaseResponse(505,"equals.login.pwd");
+        }
+        //保存登录密码
+        ServicePasswordInfo servicePasswordInfo = new ServicePasswordInfo();
+        BeanUtils.copyProperties(loginPasswordInfo,servicePasswordInfo);
+        int result = loginRepository.saveLoginPassword(servicePasswordInfo);
+        if(result == 0){
+            CommonException exp = CommonDefinedException.REQUEST_PARAMETER;
+            exp.setMemo(loginPasswordInfo.getMemberId());
+            throw exp;
+        }
+        return new BaseResponse();
+    }
+
+    @Override
+    public BaseResponse modifyTransactionPassword(TransactionPasswordInfo transactionPasswordInfo) throws CommonException {
+        if(!transactionPasswordInfo.getPaymentPassword().equals(transactionPasswordInfo.getEnterPaymentPassword())){
+            return new BaseResponse(505,"equals.payment.pwd");
+        }
+        //保存交易密码
+        ServicePasswordInfo servicePasswordInfo = new ServicePasswordInfo();
+        BeanUtils.copyProperties(transactionPasswordInfo,servicePasswordInfo);
+        int result = loginRepository.saveLoginPassword(servicePasswordInfo);
+        if(result == 0){
+            CommonException exp = CommonDefinedException.REQUEST_PARAMETER;
+            exp.setMemo(transactionPasswordInfo.getMemberId());
             throw exp;
         }
         return new BaseResponse();

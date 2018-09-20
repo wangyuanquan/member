@@ -3,11 +3,9 @@ package com.rechenggit.core.domainservice.service;
 import com.rechenggit.core.common.BaseResponse;
 import com.rechenggit.core.common.LoginRequest;
 import com.rechenggit.core.dal.dataobject.Operator;
-import com.rechenggit.core.domain.login.EnterpriseServiceInfo;
-import com.rechenggit.core.domain.login.OperatorLoginPwdRequest;
+import com.rechenggit.core.domain.login.*;
 import com.rechenggit.core.exception.ErrorCodeException.CommonException;
 import com.rechenggit.core.exception.MaBizException;
-import com.rechenggit.core.domain.login.ServicePasswordInfo;
 
 public interface LoginService {
     /**
@@ -37,6 +35,16 @@ public interface LoginService {
      * @return
      */
     BaseResponse saveServicePasswordInfo(ServicePasswordInfo servicePasswordInfo)throws CommonException;
+    /**
+     * 修改登录密码
+     * @return
+     */
+    BaseResponse modifyLoginPassword(LoginPasswordInfo loginPasswordInfo)throws CommonException;
+    /**
+     * 修改交易密码
+     * @return
+     */
+    BaseResponse modifyTransactionPassword(TransactionPasswordInfo transactionPasswordInfo)throws CommonException;
 
     /**
      * 激活账号
