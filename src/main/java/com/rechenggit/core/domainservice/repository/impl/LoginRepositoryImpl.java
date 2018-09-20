@@ -94,6 +94,8 @@ public class LoginRepositoryImpl implements LoginRepository {
             MemberIdentity memberIdentity = new MemberIdentity();
             memberIdentity.setMemberId(memberId.toString());
             memberIdentity.setStatus(0);
+            memberIdentity.setIsRecvAddr(1);
+            memberIdentity.setIdentityType(1);
             memberIdentity.setIdentity(serviceInfo.getIdentity());
             memberIdentity.setPid(serviceInfo.getPid());
             if(identityList.isEmpty()){
@@ -109,6 +111,8 @@ public class LoginRepositoryImpl implements LoginRepository {
             Member member = new Member();
             member.setMemberId(memberId.toString());
             member.setStatus(0);
+            member.setMemberType(2);
+            member.setLockStatus(0);
             member.setMemberName(serviceInfo.getMemberName());
             if(memberList.isEmpty()){
                 member.setCreateTime(new Date());
