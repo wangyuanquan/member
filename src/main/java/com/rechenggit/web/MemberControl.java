@@ -38,6 +38,7 @@ public class MemberControl extends BaseControl {
             return  fail(response);
 
         }catch (Exception e){
+            logger.error("verifyPayPwd has  Exception req 【{}】",payPwdRequest,e);
             return  fail();
         }
         return success();
