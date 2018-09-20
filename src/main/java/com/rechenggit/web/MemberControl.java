@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(value="/enterpriseMember")
+@RequestMapping(value="/member")
 public class MemberControl extends BaseControl {
 
     private final static Logger logger = LoggerFactory.getLogger(MemberControl.class);

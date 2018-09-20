@@ -5,6 +5,7 @@ import com.rechenggit.core.dal.dataobject.*;
 import com.rechenggit.core.dal.mapper.*;
 import com.rechenggit.core.domain.*;
 import com.rechenggit.core.domainservice.repository.EnterpriseMemberRepository;
+import com.rechenggit.util.Utils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -242,7 +243,7 @@ public class EnterpriseMemberRepositoryImpl implements EnterpriseMemberRepositor
                 .andEqualTo("operatorId",payPwdRequest.getOperatorId());
         TrPassword trPassword = trPasswordMapper.selectOneByExample(example);
         BaseResponse response = new BaseResponse();
-        if(trPassword.getPassword().equals(payPwdRequest.getPayPassword())){
+        if(trPassword.getPassword().equals(Utils.hashSignContent(payPwdRequest.getPayPassword()))){
             response.setStatus(200);
             response.setMessage("success");
             response.setData(true);
