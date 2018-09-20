@@ -36,16 +36,16 @@ public interface LoginService {
      * 保存登录密码，交易密码.激活账号
      * @return
      */
-    BaseResponse saveServicePasswordInfo(ServicePasswordInfo servicePasswordInfo);
+    BaseResponse saveServicePasswordInfo(ServicePasswordInfo servicePasswordInfo)throws CommonException;
 
     /**
      * 激活账号
      * @return
      */
-    BaseResponse verifyingMailbox(String email,String code);
+    BaseResponse verifyingMailbox(String email,String code)throws CommonException;
     /**
      * 找回登录密码，邮箱发送验证码
      * @return
      */
-    BaseResponse findLoginPassword(String email);
+    BaseResponse findLoginPassword(String email)throws CommonException;
 }

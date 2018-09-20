@@ -15,6 +15,7 @@ import com.rechenggit.core.domain.login.ServicePasswordInfo;
 import com.rechenggit.core.domainservice.repository.LoginRepository;
 import com.rechenggit.core.domainservice.repository.SequenceRepository;
 import com.rechenggit.core.exception.CommonDefinedException;
+import com.rechenggit.core.exception.ErrorCodeException;
 import com.rechenggit.core.exception.ErrorCodeException.CommonException;
 import com.rechenggit.util.FieldLength;
 import com.rechenggit.util.MaiSendUtil;
@@ -152,7 +153,7 @@ public class LoginRepositoryImpl implements LoginRepository {
             return servicePasswordInfo;
         }
     }
-
+    //已优化 不调用该方法
     @Override
     public BaseResponse saveServicePasswordInfo(ServicePasswordInfo servicePasswordInfo) {
         BaseResponse baseResponse = new BaseResponse();
@@ -213,20 +214,125 @@ public class LoginRepositoryImpl implements LoginRepository {
         }
         return baseResponse;
     }
+    //登录密码
+    @Override
+    public int saveLoginPassword(ServicePasswordInfo servicePasswordInfo) throws CommonException {
+        //验证Operator中的memberId operatorId是否跟参数一致
+        Example exampleOperator = new Example(Operator.class);
+        exampleOperator.createCriteria().andEqualTo("memberId", servicePasswordInfo.getMemberId());
+        List<Operator> operatorList = operatorMapper.selectByExample(exampleOperator);
+        if(operatorList.isEmpty()){
+            CommonException exp = CommonDefinedException.ACTIVATION_UNREGISTERED_OPERATOR;
+            exp.setMemo(servicePasswordInfo.getMemberId());
+            throw exp;
+        }
+        String operatorId = operatorList.get(0).getOperatorId();
+        if(!operatorId.equals(servicePasswordInfo.getOperatorId())){
+            CommonException exp = CommonDefinedException.ACTIVATION_DIFFERENCE;
+            exp.setMemo("参数operatorId："+servicePasswordInfo.getOperatorId()+"查询operatorId："+operatorId);
+            throw exp;
+        }
+        //登录密码
+        String loginPassword = Utils.hashSignContent(servicePasswordInfo.getLoginPassword());
+        //tm_operator 更新 password
+        Operator operator = new Operator();
+        operator.setPassword(loginPassword);
+        int result = 0;
+        if(operatorList.isEmpty()){
+            operator.setCreateTime(new Date());
+            result = operatorMapper.insertSelective(operator);
+        }else{
+            result = operatorMapper.updateByExampleSelective(operator,exampleOperator);
+        }
+        return result;
+    }
+    //交易密码
+    @Override
+    public int saveTransactionPassword(ServicePasswordInfo servicePasswordInfo) throws CommonException {
+        //验证Operator中的memberId operatorId是否跟参数一致
+        Example exampleOperator = new Example(Operator.class);
+        exampleOperator.createCriteria().andEqualTo("memberId", servicePasswordInfo.getMemberId());
+        List<Operator> operatorList = operatorMapper.selectByExample(exampleOperator);
+        if(operatorList.isEmpty()){
+            CommonException exp = CommonDefinedException.ACTIVATION_UNREGISTERED_OPERATOR;
+            exp.setMemo(servicePasswordInfo.getMemberId());
+            throw exp;
+        }
+        String operatorId = operatorList.get(0).getOperatorId();
+        if(!operatorId.equals(servicePasswordInfo.getOperatorId())){
+            CommonException exp = CommonDefinedException.ACTIVATION_DIFFERENCE;
+            exp.setMemo("参数operatorId："+servicePasswordInfo.getOperatorId()+"查询operatorId："+operatorId);
+            throw exp;
+        }
+        //tr_password 更新 password 交易密码
+        String paymentPassword = Utils.hashSignContent(servicePasswordInfo.getPaymentPassword());
+        Example examplePassword = new Example(TrPassword.class);
+        examplePassword.createCriteria().andEqualTo("operatorId", servicePasswordInfo.getOperatorId());
+        List<TrPassword> trPasswordList = trPasswordMapper.selectByExample(examplePassword);
+        TrPassword trPassword = new TrPassword();
+        trPassword.setPassword(paymentPassword);
+        trPassword.setOperatorId(servicePasswordInfo.getOperatorId());
+        int result = 0;
+        if(trPasswordList.isEmpty()){
+            trPassword.setCreateTime(new Date());
+            result = trPasswordMapper.insertSelective(trPassword);
+        }else{
+            result = trPasswordMapper.updateByExampleSelective(trPassword,examplePassword);
+        }
+        return result;
+    }
+    //发送激活邮件
+    @Override
+    public int sendActivationMail(ServicePasswordInfo servicePasswordInfo) throws CommonException{
+        //获取identity标识 tm_member_identity （email）
+        Example exampleMember = new Example(MemberIdentity.class);
+        exampleMember.createCriteria().andEqualTo("memberId", servicePasswordInfo.getMemberId());
+        List<MemberIdentity> memberIdentityList = memberIdentityMapper.selectByExample(exampleMember);
+        if(memberIdentityList.isEmpty()){
+            CommonException exp = CommonDefinedException.ACTIVATION_UNREGISTERED_IDENTITY;
+            exp.setMemo(servicePasswordInfo.getMemberId());
+            throw exp;
+        }
+        String email = memberIdentityList.get(0).getIdentity();
+        //tm_mailbox_activation 新增 member_id mailbox_name activation_code status
+        String code= UUID.randomUUID().toString().replaceAll("-", "");
+        Example exampleMailboxActivation = new Example(MailboxActivation .class);
+        exampleMailboxActivation.createCriteria().andEqualTo("memberId", servicePasswordInfo.getMemberId())
+                .andEqualTo("activationCode", code);
+        List<MailboxActivation> mailboxActivationList = mailboxActivationMapper.selectByExample(exampleMailboxActivation);
+        MailboxActivation mailboxActivation = new MailboxActivation();
+        mailboxActivation.setStatus(0);
+        mailboxActivation.setMemberId(servicePasswordInfo.getMemberId());
+        mailboxActivation.setMailboxName(email);
+        mailboxActivation.setActivationCode(code);
+        MaiSendUtil.verifyingMailbox(email,code,emailUrl);
+        int result = 0;
+        if(mailboxActivationList.isEmpty()){
+            mailboxActivation.setCreateTime(new Date());
+            result = mailboxActivationMapper.insertSelective(mailboxActivation);
+        }else{
+            result = mailboxActivationMapper.updateByExampleSelective(mailboxActivation,exampleMailboxActivation);
+        }
+        return result;
+    }
 
     @Override
-    public BaseResponse verifyingMailbox(String email,String code) {
+    public BaseResponse verifyingMailbox(String email,String code) throws CommonException{
         BaseResponse baseResponse = new BaseResponse();
         Example exampleMailboxActivation = new Example(MailboxActivation .class);
         exampleMailboxActivation.createCriteria().andEqualTo("activationCode", code)
                 .andEqualTo("mailboxName", email);
         List<MailboxActivation> mailboxActivationList = mailboxActivationMapper.selectByExample(exampleMailboxActivation);
         if(mailboxActivationList.isEmpty()){
-            return new BaseResponse(501,"activation.fail.nothing");
+            CommonException exp = CommonDefinedException.SERVICE_REPEAT;
+            exp.setMemo("邮箱"+email+"激活码"+code);
+            throw exp;
         }
         MailboxActivation mailboxActivation = new MailboxActivation();
         if(mailboxActivationList.get(0).getStatus() == 1){
-            return new BaseResponse(502,"activation.already.repeat");
+            CommonException exp = CommonDefinedException.ACTIVATION_REPEAT;
+            exp.setMemo("邮箱"+email+"激活码"+code);
+            throw exp;
         }
         mailboxActivation.setStatus(1);
         mailboxActivationMapper.updateByExampleSelective(mailboxActivation,exampleMailboxActivation);
@@ -238,7 +344,9 @@ public class LoginRepositoryImpl implements LoginRepository {
         MemberIdentity memberIdentity = new MemberIdentity();
         memberIdentity.setStatus(1);
         if(identityList.isEmpty()){
-            return new BaseResponse(501,"activation.unregistered");
+            CommonException exp = CommonDefinedException.ACTIVATION_UNREGISTERED_IDENTITY;
+            exp.setMemo("memberId"+memberId);
+            throw exp;
         }else{
             memberIdentityMapper.updateByExampleSelective(memberIdentity,exampleMemberIdentity);
         }
@@ -249,7 +357,9 @@ public class LoginRepositoryImpl implements LoginRepository {
         Member member = new Member();
         member.setStatus(1);
         if(memberList.isEmpty()){
-            return new BaseResponse(501,"activation.unregistered");
+            CommonException exp = CommonDefinedException.ACTIVATION_UNREGISTERED_MEMBER;
+            exp.setMemo("memberId"+memberId);
+            throw exp;
         }else{
             memberMapper.updateByExampleSelective(member,exampleMember2);
         }
@@ -260,7 +370,9 @@ public class LoginRepositoryImpl implements LoginRepository {
         Operator operator = new Operator();
         operator.setStatus(1);
         if(operatorList.isEmpty()){
-            return new BaseResponse(501,"activation.unregistered");
+            CommonException exp = CommonDefinedException.ACTIVATION_UNREGISTERED_OPERATOR;
+            exp.setMemo("memberId"+memberId);
+            throw exp;
         }else{
             operatorMapper.updateByExampleSelective(operator,exampleOperator);
         }
@@ -270,7 +382,9 @@ public class LoginRepositoryImpl implements LoginRepository {
         List<LoginName> loginNameList = loginNameMapper.selectByExample(exampleLoginName);
         LoginName loginName = new LoginName();
         if(operatorList.isEmpty() || memberList.isEmpty() || identityList.isEmpty()){
-            return new BaseResponse(501,"activation.unregistered");
+            CommonException exp = CommonDefinedException.ACTIVATION_UNREGISTERED_LOGINNAME;
+            exp.setMemo("memberId"+memberId);
+            throw exp;
         }else{
             loginName.setOperatorId(operatorList.get(0).getOperatorId());
             loginName.setMemberId(operatorList.get(0).getMemberId());
@@ -288,14 +402,16 @@ public class LoginRepositoryImpl implements LoginRepository {
     }
 
     @Override
-    public BaseResponse findLoginPassword(String email) {
+    public BaseResponse findLoginPassword(String email)  throws CommonException{
         BaseResponse baseResponse = new BaseResponse();
         //验证identity标识是否存在 tm_member_identity
         Example exampleIdentity = new Example(MemberIdentity.class);
         exampleIdentity.createCriteria().andEqualTo("identity", email);
         List<MemberIdentity> memberIdentityList = memberIdentityMapper.selectByExample(exampleIdentity);
         if(!memberIdentityList.isEmpty()){
-            return new BaseResponse(503,"email.unregistered");
+            CommonException exp = CommonDefinedException.REQUEST_PARAMETER;
+            exp.setMemo("identity"+email);
+            throw exp;
         }else {
             //tm_mailbox_activation 新增 member_id mailbox_name activation_code status
             String code = UUID.randomUUID().toString().replaceAll("-", "");
@@ -322,7 +438,7 @@ public class LoginRepositoryImpl implements LoginRepository {
     /*
      * 生成操作员id
      */
-    private String genOperatorId() {
+    public String genOperatorId() {
         String prefix = MaConstant.PRE_OPERATOR_ID;
         int seqLen = FieldLength.OPERATOR_ID - prefix.length();
         String operatorId = prefix
@@ -348,16 +464,6 @@ public class LoginRepositoryImpl implements LoginRepository {
                 + StringUtil.alignRight(seq, MaConstant.MEMBER_ID_SEQ_LENGTH,
                 MaConstant.ID_FIX_CHAR);
         return memberId;
-    }
-    /*
-     * 生成密码
-     */
-
-    //解密
-    public static String decryPwd(String param)
-    {
-        String pwd= StringUtils.substring(param,64);
-        return pwd;
     }
 
 

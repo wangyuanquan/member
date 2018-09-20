@@ -30,13 +30,28 @@ public interface LoginRepository {
      */
     BaseResponse saveServicePasswordInfo(ServicePasswordInfo servicePasswordInfo);
     /**
+     * 保存登录密码
+     * @return
+     */
+    int saveLoginPassword(ServicePasswordInfo servicePasswordInfo)throws CommonException;
+    /**
+     * 保存交易密码
+     * @return
+     */
+    int saveTransactionPassword(ServicePasswordInfo servicePasswordInfo)throws CommonException;
+    /**
+     * 发送激活邮件
+     * @return
+     */
+    int sendActivationMail(ServicePasswordInfo servicePasswordInfo)throws CommonException;
+    /**
      * 激活账号
      * @return
      */
-    BaseResponse verifyingMailbox(String email,String code);
+    BaseResponse verifyingMailbox(String email,String code)throws CommonException;
     /**
      * 找回登录密码，邮箱发送验证码
      * @return
      */
-    BaseResponse findLoginPassword(String email);
+    BaseResponse findLoginPassword(String email)throws CommonException;
 }

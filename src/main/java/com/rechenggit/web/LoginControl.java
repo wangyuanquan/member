@@ -14,6 +14,7 @@ import com.rechenggit.core.domain.login.ServicePasswordInfo;
 import com.rechenggit.core.domainservice.service.LoginService;
 import com.rechenggit.core.domainservice.validator.MemberValidator;
 import com.rechenggit.core.domainservice.validator.OperatorValidator;
+import com.rechenggit.util.ResponseUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,7 +64,7 @@ public class LoginControl extends BaseControl {
         }
         return success(response);
     }
-    //注册
+    //用户注册
     @PostMapping("/service")
     public BaseResponse service(@RequestBody @Validated EnterpriseServiceInfo serviceInfo , BindingResult result){
         BaseResponse response = new BaseResponse();
@@ -72,12 +73,12 @@ public class LoginControl extends BaseControl {
             logger.info("注册serviceInfo:"+ JSONObject.toJSONString(serviceInfo));
             ServicePasswordInfo servicePasswordInfo = loginService.enterpriseService(serviceInfo);
             if(servicePasswordInfo == null){
-                return  fail(new BaseResponse("",""));
+                return  fail();
             }
             response.setData(servicePasswordInfo);
         }catch (CommonException e) {
-            logger.error("注册异常，该邮箱已注册 : "+ e.getMemo());
-            return  fail(new BaseResponse(502,"service.repeat"));
+            logger.error("注册失败:"+e.getErrorMsg()+"注册信息 : "+ e.getMemo());
+            return fail(ResponseUtils.getBaseResponse(e.getErrorCode()));
         } catch (Exception e) {
             logger.error("注册信息异常 : ", e);
             return  fail();
@@ -92,13 +93,16 @@ public class LoginControl extends BaseControl {
             validate(result);
             logger.info("激活邮箱:"+ mailboxInfo.getEmail());
             response = loginService.verifyingMailbox(mailboxInfo.getEmail(),mailboxInfo.getCode());
-        } catch (Exception e) {
+        } catch (CommonException e) {
+            logger.error("激活失败:"+e.getErrorMsg()+"邮箱或激活码信息 : "+ e.getMemo());
+            return fail(ResponseUtils.getBaseResponse(e.getErrorCode()));
+        }catch (Exception e) {
             logger.error("激活失败 : ", e);
             return  fail();
         }
         return success(response);
     }
-    //注册密码
+    //注册时保存登录密码交易密码
     @PostMapping("/servicePassword")
     public BaseResponse servicePassword(@RequestBody @Validated ServicePasswordInfo servicePasswordInfo , BindingResult result){
         BaseResponse<ServicePasswordInfo> response = new BaseResponse();
@@ -106,13 +110,17 @@ public class LoginControl extends BaseControl {
             validate(result);
             logger.info("提交密码:"+ JSONObject.toJSONString(servicePasswordInfo));
             response = loginService.saveServicePasswordInfo(servicePasswordInfo);
-        } catch (Exception e) {
-            logger.error("注册信息异常 : ", e);
+        }  catch (CommonException e) {
+            logger.error("保存密码失败:"+e.getErrorMsg()+"信息 : "+ e.getMemo());
+            return fail(ResponseUtils.getBaseResponse(e.getErrorCode()));
+        }catch (Exception e) {
+            logger.error("保存密码信息异常 : ", e);
             return  fail();
         }
         return success(response);
     }
     //找回登录密码，向邮箱发送验证码
+    //  未开发
     @PostMapping("/findLoginPassword")
     public BaseResponse findLoginPassword(@RequestBody @Validated EmailMailboxInfo mailboxInfo, BindingResult result){
         BaseResponse<ServicePasswordInfo> response = new BaseResponse();
@@ -126,12 +134,13 @@ public class LoginControl extends BaseControl {
         }
         return success(response);
     }
-
+    //  未开发
     @PostMapping("/personalLogin")
     public BaseResponse queryOperator(OperationEnvironment environment,
                                       OperatorLoginPwdRequest request){
         return null;
     }
+    //  未开发
     @PostMapping("/queryOperator")
     public BaseResponse personallogin(OperationEnvironment environment,
                                         OperatorLoginPwdRequest request){

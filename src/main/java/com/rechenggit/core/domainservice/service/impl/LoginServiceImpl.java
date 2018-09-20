@@ -17,6 +17,7 @@ import com.rechenggit.core.domain.login.ServicePasswordInfo;
 import com.rechenggit.core.domainservice.repository.LoginRepository;
 import com.rechenggit.core.domainservice.repository.OperatorLockRepository;
 import com.rechenggit.core.domainservice.service.LoginService;
+import com.rechenggit.core.exception.CommonDefinedException;
 import com.rechenggit.core.exception.ErrorCodeException.CommonException;
 import com.rechenggit.core.exception.MaBizException;
 import com.rechenggit.util.LoginPwdFacadeValidator;
@@ -206,24 +207,45 @@ public class LoginServiceImpl implements LoginService {
 
     @Override
     @Transactional
-    public BaseResponse saveServicePasswordInfo(ServicePasswordInfo servicePasswordInfo) {
+    public BaseResponse saveServicePasswordInfo(ServicePasswordInfo servicePasswordInfo)throws CommonException {
         if(!servicePasswordInfo.getLoginPassword().equals(servicePasswordInfo.getEnterLoginPassword())){
-            return new BaseResponse(505,"两次登录密码不一致");
+            return new BaseResponse(505,"equals.login.pwd");
         }
         if(!servicePasswordInfo.getPaymentPassword().equals(servicePasswordInfo.getEnterPaymentPassword())){
-            return new BaseResponse(505,"两次交易密码不一致");
+            return new BaseResponse(505,"equals.payment.pwd");
         }
-        return loginRepository.saveServicePasswordInfo(servicePasswordInfo);
+        //保存登录密码
+        int result = loginRepository.saveLoginPassword(servicePasswordInfo);
+        if(result == 0){
+            CommonException exp = CommonDefinedException.REQUEST_PARAMETER;
+            exp.setMemo(servicePasswordInfo.getMemberId());
+            throw exp;
+        }
+        //保存交易密码
+        result = loginRepository.saveTransactionPassword(servicePasswordInfo);
+        if(result == 0){
+            CommonException exp = CommonDefinedException.REQUEST_PARAMETER;
+            exp.setMemo(servicePasswordInfo.getMemberId());
+            throw exp;
+        }
+        //发送激活邮件
+        result = loginRepository.sendActivationMail(servicePasswordInfo);
+        if(result == 0){
+            CommonException exp = CommonDefinedException.MAILBOX_SENDING;
+            exp.setMemo(servicePasswordInfo.getMemberId());
+            throw exp;
+        }
+        return new BaseResponse();
     }
 
     @Override
     @Transactional
-    public BaseResponse verifyingMailbox(String email,String code) {
+    public BaseResponse verifyingMailbox(String email,String code) throws CommonException{
         return loginRepository.verifyingMailbox(email,code);
     }
 
     @Override
-    public BaseResponse findLoginPassword(String email) {
+    public BaseResponse findLoginPassword(String email)throws CommonException {
         return loginRepository.findLoginPassword(email);
     }
 }

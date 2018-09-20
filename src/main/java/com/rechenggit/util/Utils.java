@@ -2,7 +2,9 @@ package com.rechenggit.util;
 
 import java.io.UnsupportedEncodingException;
 
+import com.rechenggit.core.common.BaseResponse;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.slf4j.Logger;
@@ -47,6 +49,16 @@ public class Utils {
             logger.error(ex.getMessage(), ex);
             return null;
         }
+    }
+    //解密
+    public static String decryPwd(String param)
+    {
+        String pwd= StringUtils.substring(param,64);
+        return pwd;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(hashSignContent("123456"));
     }
 
 }
