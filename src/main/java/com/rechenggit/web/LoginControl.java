@@ -57,7 +57,9 @@ public class LoginControl extends BaseControl {
             response.setData(data);
         } catch (Exception e) {
             logger.error("验证操作员登陆密码异常 : {}", e);
-            return fail();
+            response.setStatus(500);
+            response.setMessage(e.getMessage());
+            return fail(response);
         }
         return success(response);
     }

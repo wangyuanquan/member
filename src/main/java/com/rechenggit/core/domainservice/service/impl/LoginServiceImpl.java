@@ -114,9 +114,9 @@ public class LoginServiceImpl implements LoginService {
                 }*/
             }
             if (PassWordLockFlagEnum.LOGIN_PASSWORD_FLAG == operator.getFlag()) {
-                throw new MaBizException(ResponseCode.LOGIN_PASSWORD_CHECK_FAIL, String.valueOf(count));
+                throw new MaBizException(ResponseCode.LOGIN_PASSWORD_CHECK_FAIL);
             } else {
-                throw new MaBizException(ResponseCode.PASSWORD_CHECK_FAIL, String.valueOf(count));
+                throw new MaBizException(ResponseCode.PASSWORD_CHECK_FAIL);
             }
         }
     }

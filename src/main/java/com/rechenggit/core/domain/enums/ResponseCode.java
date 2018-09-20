@@ -91,7 +91,7 @@ public enum ResponseCode {
     PASSWORD_LOCKED("264","支付密码被锁定"),
 
     LOGIN_PASSWORD_UPDATE_FAIL("265","登录密码更新失败"),
-    LOGIN_PASSWORD_CHECK_FAIL("266","校验登录密码失败"),
+    LOGIN_PASSWORD_CHECK_FAIL("266","validate.login.pwd.fail"),
     LOGIN_PASSWORD_NOT_EXISTS("267","尚未设置登录密码"),
     LOGIN_PASSWORD_LOCKED("274","登录密码被锁定"),
     PASSWORD_FLAG_NULL("275","密码类型为空"),
