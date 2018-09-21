@@ -4,6 +4,7 @@ import com.alibaba.druid.util.StringUtils;
 import com.alibaba.fastjson.JSONObject;
 import com.netfinworks.common.domain.OperationEnvironment;
 import com.rechenggit.core.common.BaseResponse;
+import com.rechenggit.core.domain.enums.ResponseCode;
 import com.rechenggit.core.domain.login.*;
 import com.rechenggit.core.exception.ErrorCodeException.CommonException;
 import com.rechenggit.core.dal.dataobject.Member;
@@ -11,6 +12,7 @@ import com.rechenggit.core.dal.dataobject.Operator;
 import com.rechenggit.core.domainservice.service.LoginService;
 import com.rechenggit.core.domainservice.validator.MemberValidator;
 import com.rechenggit.core.domainservice.validator.OperatorValidator;
+import com.rechenggit.core.exception.MaBizException;
 import com.rechenggit.util.ResponseUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,6 +57,9 @@ public class LoginControl extends BaseControl {
             Date expireTime = DateTime.now().plusSeconds(jwtTokenUtil.getExpire()).toDate();
             String token = jwtTokenUtil.generateToken(jwtInfo, map, expireTime);*/
             response.setData(data);
+        }catch (MaBizException e) {
+            logger.error(e.getMessage());
+            return fail(new BaseResponse(e.getCode().getCode(),e.getCode().getMessage()));
         } catch (Exception e) {
             logger.error("验证操作员登陆密码异常 : {}", e);
             return fail();
@@ -74,7 +79,7 @@ public class LoginControl extends BaseControl {
             }
             response.setData(servicePasswordInfo);
         }catch (CommonException e) {
-            logger.error("注册失败:"+e.getErrorMsg()+"注册信息 : "+ e.getMemo());
+            logger.error("注册失败:注册信息 : "+ e.getMemo()+"失败原因:"+e.getMessage());
             return fail(new BaseResponse(e.getErrorCode(),e.getErrorMsg()));
         } catch (Exception e) {
             logger.error("注册信息异常 : ", e);

@@ -36,6 +36,7 @@ public class BaseControl {
 
     }
     public BaseResponse success(BaseResponse response){
+        //String code = "operation.success";
         String message = getMessage(response.getMessage());
         response.setMessage(message);
         return response;
@@ -45,15 +46,14 @@ public class BaseControl {
         if (response ==null){
             return fail();
         }
-        String message = getMessage(response.getMessage());
-        response.setMessage(message);
+
         return response;
 
     }
     public BaseResponse fail(){
         BaseResponse response=new BaseResponse();
         response.setStatus("500");
-        response.setMessage(getMessage("operation.fail"));
+        response.setMessage("operation.fail");
         return response;
 
     }
@@ -100,7 +100,7 @@ public class BaseControl {
     public String getMessage(String code){
         //这里使用比较方便的方法，不依赖request.
         Locale locale = LocaleContextHolder.getLocale();
-        //System.out.println(locale);
+        System.out.println(locale);
         //Locale.CHINESE
         //Locale.US
         return messageSource.getMessage(code, null, null, locale);
