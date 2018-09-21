@@ -1,10 +1,6 @@
 package com.rechenggit.core.dal.dataobject;
 
-import com.rechenggit.core.domain.PayPassWord;
-import com.rechenggit.core.domain.enums.PassWordLockFlagEnum;
-
 import java.util.Date;
-import java.util.List;
 import javax.persistence.*;
 
 @Table(name = "tm_operator")
@@ -117,20 +113,6 @@ public class Operator {
      */
     @Column(name = "ANTI_FAKE_MARK")
     private String antiFakeMark;
-
-
-    /**
-     * 支付密码列表
-     */
-    private List<PayPassWord> payPwdList;
-
-    public List<PayPassWord> getPayPwdList() {
-        return payPwdList;
-    }
-
-    public void setPayPwdList(List<PayPassWord> payPwdList) {
-        this.payPwdList = payPwdList;
-    }
 
     /**
      * 获取操作员编号(由seq_operator_id 生成,并以7开头)
@@ -454,22 +436,5 @@ public class Operator {
      */
     public void setAntiFakeMark(String antiFakeMark) {
         this.antiFakeMark = antiFakeMark == null ? null : antiFakeMark.trim();
-    }
-
-    private PassWordLockFlagEnum flag;
-
-    public PassWordLockFlagEnum getFlag() {
-        return flag;
-    }
-
-    public void setFlag(PassWordLockFlagEnum flag) {
-        this.flag = flag;
-    }
-
-    public PayPassWord getBasePayPassword() {
-        if (!(this.payPwdList == null || this.payPwdList.isEmpty())) {
-            return this.payPwdList.get(0);
-        }
-        return null;
     }
 }

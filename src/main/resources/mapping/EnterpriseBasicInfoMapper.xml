@@ -23,7 +23,6 @@
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="type" jdbcType="VARCHAR" property="type" />
-    <result column="rate" jdbcType="VARCHAR" property="rate" />
     <result column="profit_distribution" jdbcType="INTEGER" property="profitDistribution" />
     <result column="settlement_cycle" jdbcType="VARCHAR" property="settlementCycle" />
     <result column="uploading_files" jdbcType="VARCHAR" property="uploadingFiles" />
@@ -35,6 +34,7 @@
     <result column="company_suburb" jdbcType="VARCHAR" property="companySuburb" />
     <result column="company_state" jdbcType="VARCHAR" property="companyState" />
     <result column="company_postcode" jdbcType="VARCHAR" property="companyPostcode" />
+    <result column="rate" jdbcType="VARCHAR" property="rate" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--
@@ -42,8 +42,8 @@
     -->
     id, member_id, mer_address, mer_suburb, mer_state, mer_post_code, mer_phone, mer_email, 
     contact_name, contact_phone, contact_title, account_name, bank_name, bbs_number, 
-    file_path, create_time, update_time, type, rate, profit_distribution, settlement_cycle, 
+    file_path, create_time, update_time, type, profit_distribution, settlement_cycle, 
     uploading_files, company_name, company_abn, company_acn, company_industry, company_address, 
-    company_suburb, company_state, company_postcode
+    company_suburb, company_state, company_postcode, rate
   </sql>
 </mapper>

@@ -100,11 +100,12 @@ public class EnterpriseBasicInfo {
 
     private String type;
 
-    private String rate;
-
     @Column(name = "profit_distribution")
     private Integer profitDistribution;
 
+    /**
+     * 结算周期
+     */
     @Column(name = "settlement_cycle")
     private String settlementCycle;
 
@@ -158,6 +159,8 @@ public class EnterpriseBasicInfo {
      */
     @Column(name = "company_postcode")
     private String companyPostcode;
+
+    private String rate;
 
     /**
      * @return id
@@ -468,20 +471,6 @@ public class EnterpriseBasicInfo {
     }
 
     /**
-     * @return rate
-     */
-    public String getRate() {
-        return rate;
-    }
-
-    /**
-     * @param rate
-     */
-    public void setRate(String rate) {
-        this.rate = rate == null ? null : rate.trim();
-    }
-
-    /**
      * @return profit_distribution
      */
     public Integer getProfitDistribution() {
@@ -496,14 +485,18 @@ public class EnterpriseBasicInfo {
     }
 
     /**
-     * @return settlement_cycle
+     * 获取结算周期
+     *
+     * @return settlement_cycle - 结算周期
      */
     public String getSettlementCycle() {
         return settlementCycle;
     }
 
     /**
-     * @param settlementCycle
+     * 设置结算周期
+     *
+     * @param settlementCycle 结算周期
      */
     public void setSettlementCycle(String settlementCycle) {
         this.settlementCycle = settlementCycle == null ? null : settlementCycle.trim();
@@ -665,5 +658,19 @@ public class EnterpriseBasicInfo {
      */
     public void setCompanyPostcode(String companyPostcode) {
         this.companyPostcode = companyPostcode == null ? null : companyPostcode.trim();
+    }
+
+    /**
+     * @return rate
+     */
+    public String getRate() {
+        return rate;
+    }
+
+    /**
+     * @param rate
+     */
+    public void setRate(String rate) {
+        this.rate = rate == null ? null : rate.trim();
     }
 }

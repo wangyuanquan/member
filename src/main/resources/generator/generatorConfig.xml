@@ -59,7 +59,7 @@
                enableUpdateByExample="false" enableDeleteByExample="false"
                enableSelectByExample="false" selectByExampleQueryId="false">
         </table>-->
-<!--        <table tableName="tm_enterprise_basic_info"
+    <table tableName="tm_enterprise_basic_info"
                domainObjectName="EnterpriseBasicInfo" enableCountByExample="false"
                enableUpdateByExample="false" enableDeleteByExample="false"
                enableSelectByExample="false" selectByExampleQueryId="false">
@@ -88,18 +88,17 @@
                domainObjectName="Operator" enableCountByExample="false"
                enableUpdateByExample="false" enableDeleteByExample="false"
                enableSelectByExample="false" selectByExampleQueryId="false">
-        </table>&ndash;&gt;
         </table>
         <table tableName="tm_member_identity"
                domainObjectName="MemberIdentity" enableCountByExample="false"
                enableUpdateByExample="false" enableDeleteByExample="false"
                enableSelectByExample="false" selectByExampleQueryId="false">
-        </table>-->
-       <!-- <table tableName="tr_login_name"
+        </table>
+       <table tableName="tr_login_name"
                domainObjectName="LoginName" enableCountByExample="false"
                enableUpdateByExample="false" enableDeleteByExample="false"
                enableSelectByExample="false" selectByExampleQueryId="false">
-        </table>-->
+        </table>
         <table tableName="tm_pwd_operator_lock"
                domainObjectName="PwdOperatorLock" enableCountByExample="false"
                enableUpdateByExample="false" enableDeleteByExample="false"
