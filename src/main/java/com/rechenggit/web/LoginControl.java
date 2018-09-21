@@ -81,7 +81,7 @@ public class LoginControl extends BaseControl {
             }
             response.setData(servicePasswordInfo);
         }catch (CommonException e) {
-            logger.error("注册失败:注册信息 : "+ e.getErrorMsg()+"失败原因:"+e.getMemo());
+            logger.error("注册失败:注册信息 : "+ e.getErrorMsg()+"信息:"+e.getMemo());
             return fail(new BaseResponse(e.getErrorCode(),e.getErrorMsg()));
         } catch (Exception e) {
             logger.error("注册信息异常 : ", e);
