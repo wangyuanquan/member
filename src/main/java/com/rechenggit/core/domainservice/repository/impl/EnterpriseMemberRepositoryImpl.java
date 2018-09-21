@@ -6,6 +6,7 @@ import com.rechenggit.core.dal.mapper.*;
 import com.rechenggit.core.domain.*;
 import com.rechenggit.core.domainservice.repository.EnterpriseMemberRepository;
 import com.rechenggit.util.Utils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -32,6 +33,8 @@ public class EnterpriseMemberRepositoryImpl implements EnterpriseMemberRepositor
     private MemberMapper memberMapper;
     @Autowired
     private TrPasswordMapper trPasswordMapper;
+    @Autowired
+    private OperatorMapper operatorMapper;
 
     @Override
     public BaseResponse saveEnterpriseBasicInfo(EnterpriseBasic enterpriseBasic) {
@@ -238,17 +241,34 @@ public class EnterpriseMemberRepositoryImpl implements EnterpriseMemberRepositor
 
     @Override
     public BaseResponse verifyPayPwd(PayPwdRequest payPwdRequest) {
+        Operator operator = new Operator();
+        operator.setMemberId(payPwdRequest.getMemberId());
+        operator.setOperatorId(payPwdRequest.getOperatorId());
+        int cnt = operatorMapper.selectCount(operator);
+
+        BaseResponse response = new BaseResponse();
+        if(cnt==0){
+            response.setStatus("200");
+            response.setMessage("操作员错误");
+            response.setData(false);
+            return response;
+        }
         Example example = new Example(TrPassword.class);
-        example.createCriteria().andEqualTo("accountId",payPwdRequest.getMemberId())
+        example.createCriteria()
                 .andEqualTo("operatorId",payPwdRequest.getOperatorId());
         TrPassword trPassword = trPasswordMapper.selectOneByExample(example);
-        BaseResponse response = new BaseResponse();
-        if(trPassword.getPassword().equals(Utils.hashSignContent(payPwdRequest.getPayPassword()))){
+        if(StringUtils.isBlank(trPassword.getPassword())){
+            response.setStatus("200");
+            response.setMessage("未设置支付密码!");
+            response.setData(false);
+            return response;
+        }
+        if(Utils.hashSignContent(payPwdRequest.getPayPassword()).equals(trPassword.getPassword())){
             response.setStatus("200");
             response.setMessage("success");
             response.setData(true);
         }else {
-            response.setStatus("500");
+            response.setStatus("200");
             response.setMessage("failure");
             response.setData(false);
         }
