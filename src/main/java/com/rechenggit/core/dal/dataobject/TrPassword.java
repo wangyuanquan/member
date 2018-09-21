@@ -24,6 +24,9 @@ public class TrPassword {
     @Column(name = "ACCOUNT_ID")
     private String accountId;
 
+    /**
+     * 支付密码
+     */
     private String password;
 
     /**
@@ -117,14 +120,18 @@ public class TrPassword {
     }
 
     /**
-     * @return password
+     * 获取支付密码
+     *
+     * @return password - 支付密码
      */
     public String getPassword() {
         return password;
     }
 
     /**
-     * @param password
+     * 设置支付密码
+     *
+     * @param password 支付密码
      */
     public void setPassword(String password) {
         this.password = password == null ? null : password.trim();
