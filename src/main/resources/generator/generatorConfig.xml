@@ -59,66 +59,90 @@
                enableUpdateByExample="false" enableDeleteByExample="false"
                enableSelectByExample="false" selectByExampleQueryId="false">
         </table>-->
-    <table tableName="tm_enterprise_basic_info"
+        <!--
+        <table tableName="tm_enterprise_basic_info"
                domainObjectName="EnterpriseBasicInfo" enableCountByExample="false"
                enableUpdateByExample="false" enableDeleteByExample="false"
                enableSelectByExample="false" selectByExampleQueryId="false">
         </table>
+        -->
+        <!--
         <table tableName="tm_company_info"
                domainObjectName="CompanyInfo" enableCountByExample="false"
                enableUpdateByExample="false" enableDeleteByExample="false"
                enableSelectByExample="false" selectByExampleQueryId="false">
         </table>
+        -->
+        <!--
         <table tableName="tm_store_info"
                domainObjectName="StoreInfo" enableCountByExample="false"
                enableUpdateByExample="false" enableDeleteByExample="false"
                enableSelectByExample="false" selectByExampleQueryId="false">
         </table>
+        -->
+        <!--
         <table tableName="tm_enterprise_other_info"
                domainObjectName="EnterpriseOtherInfo" enableCountByExample="false"
                enableUpdateByExample="false" enableDeleteByExample="false"
                enableSelectByExample="false" selectByExampleQueryId="false">
         </table>
+        -->
+        <!--
         <table tableName="tm_member"
                domainObjectName="Member" enableCountByExample="false"
                enableUpdateByExample="false" enableDeleteByExample="false"
                enableSelectByExample="false" selectByExampleQueryId="false">
         </table>
+        -->
+        <!--
         <table tableName="tm_operator"
                domainObjectName="Operator" enableCountByExample="false"
                enableUpdateByExample="false" enableDeleteByExample="false"
                enableSelectByExample="false" selectByExampleQueryId="false">
         </table>
+        -->
+        <!--
         <table tableName="tm_member_identity"
                domainObjectName="MemberIdentity" enableCountByExample="false"
                enableUpdateByExample="false" enableDeleteByExample="false"
                enableSelectByExample="false" selectByExampleQueryId="false">
         </table>
+        -->
+        <!--
        <table tableName="tr_login_name"
                domainObjectName="LoginName" enableCountByExample="false"
                enableUpdateByExample="false" enableDeleteByExample="false"
                enableSelectByExample="false" selectByExampleQueryId="false">
         </table>
+        -->
+        <!--
         <table tableName="tm_pwd_operator_lock"
                domainObjectName="PwdOperatorLock" enableCountByExample="false"
                enableUpdateByExample="false" enableDeleteByExample="false"
                enableSelectByExample="false" selectByExampleQueryId="false">
         </table>
+        -->
+        <!--
         <table tableName="tr_password"
                domainObjectName="TrPassword" enableCountByExample="false"
                enableUpdateByExample="false" enableDeleteByExample="false"
                enableSelectByExample="false" selectByExampleQueryId="false">
         </table>
+        -->
+        <!--
         <table tableName="tm_mailbox_activation"
                domainObjectName="MailboxActivation" enableCountByExample="false"
                enableUpdateByExample="false" enableDeleteByExample="false"
                enableSelectByExample="false" selectByExampleQueryId="false">
         </table>
+        -->
+        <!--
         <table tableName="tm_settlements_info"
                domainObjectName="SettlementsInfo" enableCountByExample="false"
                enableUpdateByExample="false" enableDeleteByExample="false"
                enableSelectByExample="false" selectByExampleQueryId="false">
         </table>
+        -->
 
     </context>
 </generatorConfiguration>
