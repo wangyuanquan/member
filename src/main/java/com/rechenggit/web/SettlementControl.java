@@ -29,11 +29,11 @@ public class SettlementControl extends BaseControl {
     public BaseResponse saveRateInfo(@RequestBody @Validated EnterpriseSettlementInfo enterpriseSettlementInfo, BindingResult result) {
         try{
             validate(result);
-            settlementService.saveRateInfo(enterpriseSettlementInfo);
-        }catch (MaBizException e) {
-            logger.error(e.getMessage());
-            return fail(new BaseResponse(e.getCode().getCode(),e.getCode().getMessage()));
-        } catch (Exception e) {
+            int state = settlementService.saveRateInfo(enterpriseSettlementInfo);
+            if(state == 0){
+                return fail();
+            }
+        }catch (Exception e) {
             logger.error("保存汇率信息:异常 ", e);
             return fail();
         }

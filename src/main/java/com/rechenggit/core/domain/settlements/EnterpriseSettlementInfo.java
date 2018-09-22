@@ -19,22 +19,36 @@ public class EnterpriseSettlementInfo {
     /**
      * 结算周期
      */
-    private Long settlementCycle;
+    private Integer settlementCycle;
 
     /**
      * 对商人费率
      */
-    private Long merchant;
+    private Float merchant;
 
     /**
      * 对消费者费率
      */
-    private Long consumer;
+    private Float consumer;
 
     /**
      * 结算服务类型
      */
-    private Long settlementType;
+    private Integer settlementType;
+    /**
+     * 用户名
+     */
+    private String accountName;
+
+    /**
+     * 银行名称
+     */
+    private String bankName;
+
+    /**
+     * bsb账号
+     */
+    private String bbsNumber;
 
 
 }
