@@ -9,7 +9,7 @@ public interface SettlementRepository {
      * 保存汇率信息
      * @return
      */
-    BaseResponse saveRateInfo(EnterpriseSettlementInfo enterpriseSettlementInfo) throws MaBizException;
+    int saveRateInfo(EnterpriseSettlementInfo enterpriseSettlementInfo) throws MaBizException ;
     /**
      * 查询汇率信息
      * @return

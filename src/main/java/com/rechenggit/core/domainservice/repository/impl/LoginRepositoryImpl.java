@@ -9,19 +9,17 @@ import com.rechenggit.core.dal.mapper.EnterpriseBasicInfoMapper;
 import com.rechenggit.core.dal.mapper.MemberIdentityMapper;
 import com.rechenggit.core.dal.mapper.MemberMapper;
 import com.rechenggit.core.dal.mapper.OperatorMapper;
+import com.rechenggit.core.domain.enums.ResponseCode;
 import com.rechenggit.core.domain.login.EnterpriseServiceInfo;
 import com.rechenggit.core.domain.login.OperatorLoginPwdRequest;
 import com.rechenggit.core.domain.login.ServicePasswordInfo;
 import com.rechenggit.core.domainservice.repository.LoginRepository;
 import com.rechenggit.core.domainservice.repository.SequenceRepository;
-import com.rechenggit.core.exception.CommonDefinedException;
-import com.rechenggit.core.exception.ErrorCodeException;
-import com.rechenggit.core.exception.ErrorCodeException.CommonException;
+import com.rechenggit.core.exception.MaBizException;
 import com.rechenggit.util.FieldLength;
 import com.rechenggit.util.MaiSendUtil;
 import com.rechenggit.util.Utils;
 import com.rechenggit.web.LoginControl;
-import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,15 +72,14 @@ public class LoginRepositoryImpl implements LoginRepository {
     }
 
     @Override
-    public ServicePasswordInfo enterpriseService(EnterpriseServiceInfo serviceInfo) throws CommonException{
+    public ServicePasswordInfo enterpriseService(EnterpriseServiceInfo serviceInfo)throws MaBizException {
         //验证identity标识是否存在 tm_member_identity
         Example exampleIdentity = new Example(MemberIdentity.class);
         exampleIdentity.createCriteria().andEqualTo("identity", serviceInfo.getIdentity());
         List<MemberIdentity> memberIdentityList = memberIdentityMapper.selectByExample(exampleIdentity);
         if(!memberIdentityList.isEmpty()){
-            CommonException exp = CommonDefinedException.SERVICE_REPEAT;
-            exp.setMemo(serviceInfo.getIdentity());
-            throw exp;
+            throw new MaBizException(ResponseCode.MEMBER_IDENTITY_EXIST,
+                    "重复注册：tm_member_identity表中identity" + serviceInfo.getIdentity() + "的相关信息已存在");
         }else{
             MemberTypeEnum memberType = MemberTypeEnum.getByCode(serviceInfo.getPid());
             String memberId = genMemberId(memberType);
@@ -220,21 +217,19 @@ public class LoginRepositoryImpl implements LoginRepository {
     }
     //登录密码
     @Override
-    public int saveLoginPassword(ServicePasswordInfo servicePasswordInfo) throws CommonException {
+    public int saveLoginPassword(ServicePasswordInfo servicePasswordInfo)throws MaBizException{
         //验证Operator中的memberId operatorId是否跟参数一致
         Example exampleOperator = new Example(Operator.class);
         exampleOperator.createCriteria().andEqualTo("memberId", servicePasswordInfo.getMemberId());
         List<Operator> operatorList = operatorMapper.selectByExample(exampleOperator);
         if(operatorList.isEmpty()){
-            CommonException exp = CommonDefinedException.ACTIVATION_UNREGISTERED_OPERATOR;
-            exp.setMemo(servicePasswordInfo.getMemberId());
-            throw exp;
+            throw new MaBizException(ResponseCode.ARGUMENT_ERROR,
+                    "tm_Operator表中memberId" + servicePasswordInfo.getMemberId( )+ "的相关信息不存在");
         }
         String operatorId = operatorList.get(0).getOperatorId();
         if(!operatorId.equals(servicePasswordInfo.getOperatorId())){
-            CommonException exp = CommonDefinedException.ACTIVATION_DIFFERENCE;
-            exp.setMemo("参数operatorId："+servicePasswordInfo.getOperatorId()+"查询operatorId："+operatorId);
-            throw exp;
+            throw new MaBizException(ResponseCode.ARGUMENT_ERROR,
+                    "tm_Operator表中operatorId" + servicePasswordInfo.getMemberId() + "与参数不符");
         }
         //登录密码
         String loginPassword = Utils.hashSignContent(servicePasswordInfo.getLoginPassword());
@@ -277,21 +272,19 @@ public class LoginRepositoryImpl implements LoginRepository {
 
     //交易密码
     @Override
-    public int saveTransactionPassword(ServicePasswordInfo servicePasswordInfo) throws CommonException {
+    public int saveTransactionPassword(ServicePasswordInfo servicePasswordInfo)throws MaBizException{
         //验证Operator中的memberId operatorId是否跟参数一致
         Example exampleOperator = new Example(Operator.class);
         exampleOperator.createCriteria().andEqualTo("memberId", servicePasswordInfo.getMemberId());
         List<Operator> operatorList = operatorMapper.selectByExample(exampleOperator);
         if(operatorList.isEmpty()){
-            CommonException exp = CommonDefinedException.ACTIVATION_UNREGISTERED_OPERATOR;
-            exp.setMemo(servicePasswordInfo.getMemberId());
-            throw exp;
+            throw new MaBizException(ResponseCode.ARGUMENT_ERROR,
+                    "tm_Operator表中memberId" + servicePasswordInfo.getMemberId() + "的相关信息不存在");
         }
         String operatorId = operatorList.get(0).getOperatorId();
         if(!operatorId.equals(servicePasswordInfo.getOperatorId())){
-            CommonException exp = CommonDefinedException.ACTIVATION_DIFFERENCE;
-            exp.setMemo("参数operatorId："+servicePasswordInfo.getOperatorId()+"查询operatorId："+operatorId);
-            throw exp;
+            throw new MaBizException(ResponseCode.ARGUMENT_ERROR,
+                    "tm_Operator表中operatorId" + servicePasswordInfo.getMemberId() + "与参数不符");
         }
         //tr_password 更新 password 交易密码
         String paymentPassword = Utils.hashSignContent(servicePasswordInfo.getPaymentPassword());
@@ -312,15 +305,14 @@ public class LoginRepositoryImpl implements LoginRepository {
     }
     //发送激活邮件
     @Override
-    public int sendActivationMail(ServicePasswordInfo servicePasswordInfo) throws CommonException{
+    public int sendActivationMail(ServicePasswordInfo servicePasswordInfo)throws MaBizException{
         //获取identity标识 tm_member_identity （email）
         Example exampleMember = new Example(MemberIdentity.class);
         exampleMember.createCriteria().andEqualTo("memberId", servicePasswordInfo.getMemberId());
         List<MemberIdentity> memberIdentityList = memberIdentityMapper.selectByExample(exampleMember);
         if(memberIdentityList.isEmpty()){
-            CommonException exp = CommonDefinedException.ACTIVATION_UNREGISTERED_IDENTITY;
-            exp.setMemo(servicePasswordInfo.getMemberId());
-            throw exp;
+            throw new MaBizException(ResponseCode.ARGUMENT_ERROR,
+                    "tm_member_identity表中memberId" + servicePasswordInfo.getMemberId() + "的相关信息不存在");
         }
         String email = memberIdentityList.get(0).getIdentity();
         //tm_mailbox_activation 新增 member_id mailbox_name activation_code status
@@ -346,22 +338,21 @@ public class LoginRepositoryImpl implements LoginRepository {
     }
 
     @Override
-    public BaseResponse verifyingMailbox(String email,String code) throws CommonException{
+    public BaseResponse verifyingMailbox(String email,String code)throws MaBizException{
         BaseResponse baseResponse = new BaseResponse();
+        //tm_mailbox_activation
         Example exampleMailboxActivation = new Example(MailboxActivation .class);
         exampleMailboxActivation.createCriteria().andEqualTo("activationCode", code)
                 .andEqualTo("mailboxName", email);
         List<MailboxActivation> mailboxActivationList = mailboxActivationMapper.selectByExample(exampleMailboxActivation);
         if(mailboxActivationList.isEmpty()){
-            CommonException exp = CommonDefinedException.SERVICE_REPEAT;
-            exp.setMemo("邮箱"+email+"激活码"+code);
-            throw exp;
+            throw new MaBizException(ResponseCode.ARGUMENT_ERROR,
+                    "tm_mailbox_activation表中符合" + code+"邮箱"+email + "的相关信息不存在");
         }
         MailboxActivation mailboxActivation = new MailboxActivation();
         if(mailboxActivationList.get(0).getStatus() == 1){
-            CommonException exp = CommonDefinedException.ACTIVATION_REPEAT;
-            exp.setMemo("邮箱"+email+"激活码"+code);
-            throw exp;
+            throw new MaBizException(ResponseCode.MEMBER_ALREADY_ACTIVE,
+                    email + "已激活");
         }
         mailboxActivation.setStatus(1);
         mailboxActivationMapper.updateByExampleSelective(mailboxActivation,exampleMailboxActivation);
@@ -373,9 +364,8 @@ public class LoginRepositoryImpl implements LoginRepository {
         MemberIdentity memberIdentity = new MemberIdentity();
         memberIdentity.setStatus(1);
         if(identityList.isEmpty()){
-            CommonException exp = CommonDefinedException.ACTIVATION_UNREGISTERED_IDENTITY;
-            exp.setMemo("memberId"+memberId);
-            throw exp;
+            throw new MaBizException(ResponseCode.ARGUMENT_ERROR,
+                    "tm_member_identity表中memberId" + memberId + "的相关信息不存在");
         }else{
             memberIdentityMapper.updateByExampleSelective(memberIdentity,exampleMemberIdentity);
         }
@@ -386,9 +376,8 @@ public class LoginRepositoryImpl implements LoginRepository {
         Member member = new Member();
         member.setStatus(1);
         if(memberList.isEmpty()){
-            CommonException exp = CommonDefinedException.ACTIVATION_UNREGISTERED_MEMBER;
-            exp.setMemo("memberId"+memberId);
-            throw exp;
+            throw new MaBizException(ResponseCode.ARGUMENT_ERROR,
+                    "tm_member表中memberId" + memberId + "的相关信息不存在");
         }else{
             memberMapper.updateByExampleSelective(member,exampleMember2);
         }
@@ -399,9 +388,8 @@ public class LoginRepositoryImpl implements LoginRepository {
         Operator operator = new Operator();
         operator.setStatus(1);
         if(operatorList.isEmpty()){
-            CommonException exp = CommonDefinedException.ACTIVATION_UNREGISTERED_OPERATOR;
-            exp.setMemo("memberId"+memberId);
-            throw exp;
+            throw new MaBizException(ResponseCode.ARGUMENT_ERROR,
+                    "tm_Operator表中memberId" + memberId + "的相关信息不存在");
         }else{
             operatorMapper.updateByExampleSelective(operator,exampleOperator);
         }
@@ -411,9 +399,8 @@ public class LoginRepositoryImpl implements LoginRepository {
         List<LoginName> loginNameList = loginNameMapper.selectByExample(exampleLoginName);
         LoginName loginName = new LoginName();
         if(operatorList.isEmpty() || memberList.isEmpty() || identityList.isEmpty()){
-            CommonException exp = CommonDefinedException.ACTIVATION_UNREGISTERED_LOGINNAME;
-            exp.setMemo("memberId"+memberId);
-            throw exp;
+            throw new MaBizException(ResponseCode.ARGUMENT_ERROR,
+                    "tr_login_name表中memberId" + memberId + "的相关信息不存在");
         }else{
             loginName.setOperatorId(operatorList.get(0).getOperatorId());
             loginName.setMemberId(operatorList.get(0).getMemberId());
@@ -431,16 +418,15 @@ public class LoginRepositoryImpl implements LoginRepository {
     }
 
     @Override
-    public BaseResponse findLoginPassword(String email)  throws CommonException{
+    public BaseResponse findLoginPassword(String email)throws MaBizException{
         BaseResponse baseResponse = new BaseResponse();
         //验证identity标识是否存在 tm_member_identity
         Example exampleIdentity = new Example(MemberIdentity.class);
         exampleIdentity.createCriteria().andEqualTo("identity", email);
         List<MemberIdentity> memberIdentityList = memberIdentityMapper.selectByExample(exampleIdentity);
         if(!memberIdentityList.isEmpty()){
-            CommonException exp = CommonDefinedException.REQUEST_PARAMETER;
-            exp.setMemo("identity"+email);
-            throw exp;
+            throw new MaBizException(ResponseCode.ARGUMENT_ERROR,
+                    "tm_member_identity表中identity" + email + "的相关信息不存在");
         }else {
             //tm_mailbox_activation 新增 member_id mailbox_name activation_code status
             String code = UUID.randomUUID().toString().replaceAll("-", "");

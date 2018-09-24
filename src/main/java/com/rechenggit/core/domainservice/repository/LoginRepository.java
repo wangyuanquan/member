@@ -3,10 +3,10 @@ package com.rechenggit.core.domainservice.repository;
 import com.rechenggit.core.common.BaseResponse;
 import com.rechenggit.core.dal.dataobject.Member;
 import com.rechenggit.core.dal.dataobject.Operator;
-import com.rechenggit.core.exception.ErrorCodeException.CommonException;
 import com.rechenggit.core.domain.login.EnterpriseServiceInfo;
 import com.rechenggit.core.domain.login.OperatorLoginPwdRequest;
 import com.rechenggit.core.domain.login.ServicePasswordInfo;
+import com.rechenggit.core.exception.MaBizException;
 
 public interface LoginRepository {
     /**
@@ -23,7 +23,7 @@ public interface LoginRepository {
      * 注册
      * @return
      */
-    ServicePasswordInfo enterpriseService(EnterpriseServiceInfo serviceInfo)throws CommonException;
+    ServicePasswordInfo enterpriseService(EnterpriseServiceInfo serviceInfo)throws MaBizException;
     /**
      * 保存登录密码，交易密码
      * @return
@@ -33,7 +33,7 @@ public interface LoginRepository {
      * 保存登录密码
      * @return
      */
-    int saveLoginPassword(ServicePasswordInfo servicePasswordInfo)throws CommonException;
+    int saveLoginPassword(ServicePasswordInfo servicePasswordInfo)throws MaBizException;
     /**
      * 验证登录密码
      * @return
@@ -48,20 +48,20 @@ public interface LoginRepository {
      * 保存交易密码
      * @return
      */
-    int saveTransactionPassword(ServicePasswordInfo servicePasswordInfo)throws CommonException;
+    int saveTransactionPassword(ServicePasswordInfo servicePasswordInfo)throws MaBizException;
     /**
      * 发送激活邮件
      * @return
      */
-    int sendActivationMail(ServicePasswordInfo servicePasswordInfo)throws CommonException;
+    int sendActivationMail(ServicePasswordInfo servicePasswordInfo)throws MaBizException;
     /**
      * 激活账号
      * @return
      */
-    BaseResponse verifyingMailbox(String email,String code)throws CommonException;
+    BaseResponse verifyingMailbox(String email,String code)throws MaBizException;
     /**
      * 找回登录密码，邮箱发送验证码
      * @return
      */
-    BaseResponse findLoginPassword(String email)throws CommonException;
+    BaseResponse findLoginPassword(String email)throws MaBizException;
 }

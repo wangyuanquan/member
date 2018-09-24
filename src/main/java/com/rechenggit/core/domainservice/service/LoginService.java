@@ -19,7 +19,7 @@ public interface LoginService {
      * 注册
      * @return
      */
-    ServicePasswordInfo enterpriseService(EnterpriseServiceInfo serviceInfo)throws CommonException;
+    ServicePasswordInfo enterpriseService(EnterpriseServiceInfo serviceInfo)throws MaBizException;
 
     void checkLoginPwd(Operator operator, String password) throws MaBizException;
 
@@ -34,26 +34,26 @@ public interface LoginService {
      * 保存登录密码，交易密码.激活账号
      * @return
      */
-    BaseResponse saveServicePasswordInfo(ServicePasswordInfo servicePasswordInfo)throws CommonException;
+    BaseResponse saveServicePasswordInfo(ServicePasswordInfo servicePasswordInfo)throws MaBizException;
     /**
      * 修改登录密码
      * @return
      */
-    BaseResponse modifyLoginPassword(LoginPasswordInfo loginPasswordInfo)throws CommonException;
+    BaseResponse modifyLoginPassword(LoginPasswordInfo loginPasswordInfo)throws MaBizException;
     /**
      * 修改交易密码
      * @return
      */
-    BaseResponse modifyTransactionPassword(TransactionPasswordInfo transactionPasswordInfo)throws CommonException;
+    BaseResponse modifyTransactionPassword(TransactionPasswordInfo transactionPasswordInfo)throws MaBizException;
 
     /**
      * 激活账号
      * @return
      */
-    BaseResponse verifyingMailbox(String email,String code)throws CommonException;
+    BaseResponse verifyingMailbox(String email,String code)throws MaBizException;
     /**
      * 找回登录密码，邮箱发送验证码
      * @return
      */
-    BaseResponse findLoginPassword(String email)throws CommonException;
+    BaseResponse findLoginPassword(String email)throws MaBizException;
 }

@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
 
 @Setter
 @Getter
@@ -12,12 +13,12 @@ public class LoginPasswordInfo {
     /**
      * memberId
      */
-    @NotBlank
+    @NotBlank(message ="{memberId.empty.error}")
     private String memberId;
     /**
      * operatorId
      */
-    @NotBlank
+    @NotBlank(message ="{operatorId.empty.error}")
     private String operatorId;
     /**
      * 原密码

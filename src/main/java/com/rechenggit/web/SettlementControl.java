@@ -29,7 +29,10 @@ public class SettlementControl extends BaseControl {
     public BaseResponse saveRateInfo(@RequestBody @Validated EnterpriseSettlementInfo enterpriseSettlementInfo, BindingResult result) {
         try{
             validate(result);
-            settlementService.saveRateInfo(enterpriseSettlementInfo);
+            int state = settlementService.saveRateInfo(enterpriseSettlementInfo);
+            if(state == 0){
+                return fail();
+            }
         }catch (MaBizException e) {
             logger.error(e.getMessage());
             return fail(new BaseResponse(e.getResponseCode().getCode(),e.getResponseCode().getMessage()));

@@ -80,9 +80,9 @@ public class LoginControl extends BaseControl {
                 return  fail();
             }
             response.setData(servicePasswordInfo);
-        }catch (CommonException e) {
-            logger.error("注册失败:注册信息 : "+ e.getErrorMsg()+"信息:"+e.getMemo());
-            return fail(new BaseResponse(e.getErrorCode(),e.getErrorMsg()));
+        }catch (MaBizException e) {
+            logger.error("注册异常："+e.getMessage());
+            return fail(new BaseResponse(e.getCode().getCode(),e.getCode().getMessage()));
         } catch (Exception e) {
             logger.error("注册信息异常 : ", e);
             return  fail();
@@ -97,9 +97,9 @@ public class LoginControl extends BaseControl {
             validate(result);
             logger.info("激活邮箱:"+ mailboxInfo.getEmail());
             response = loginService.verifyingMailbox(mailboxInfo.getEmail(),mailboxInfo.getCode());
-        } catch (CommonException e) {
-            logger.error("激活失败:"+e.getErrorMsg()+"邮箱或激活码信息 : "+ e.getMemo());
-            return fail(new BaseResponse(e.getErrorCode(),e.getErrorMsg()));
+        }catch (MaBizException e) {
+            logger.error("激活异常："+e.getMessage());
+            return fail(new BaseResponse(e.getCode().getCode(),e.getCode().getMessage()));
         }catch (Exception e) {
             logger.error("激活失败 : ", e);
             return  fail();
@@ -114,9 +114,9 @@ public class LoginControl extends BaseControl {
             validate(result);
             logger.info("提交密码:"+ JSONObject.toJSONString(servicePasswordInfo));
             response = loginService.saveServicePasswordInfo(servicePasswordInfo);
-        }  catch (CommonException e) {
-            logger.error("保存密码失败:"+e.getErrorMsg()+"信息 : "+ e.getMemo());
-            return fail(new BaseResponse(e.getErrorCode(),e.getErrorMsg()));
+        }catch (MaBizException e) {
+            logger.error("保存密码异常"+e.getMessage());
+            return fail(new BaseResponse(e.getCode().getCode(),e.getCode().getMessage()));
         }catch (Exception e) {
             logger.error("保存密码信息异常 : ", e);
             return  fail();
@@ -131,9 +131,9 @@ public class LoginControl extends BaseControl {
             validate(result);
             logger.info("修改登录密码:"+ JSONObject.toJSONString(loginPasswordInfo));
             response = loginService.modifyLoginPassword(loginPasswordInfo);
-        }  catch (CommonException e) {
-            logger.error("修改登录密码失败:"+e.getErrorMsg()+"信息 : "+ e.getMemo());
-            return fail(new BaseResponse(e.getErrorCode(),e.getErrorMsg()));
+        }catch (MaBizException e) {
+            logger.error("修改登录密码异常"+e.getMessage());
+            return fail(new BaseResponse(e.getCode().getCode(),e.getCode().getMessage()));
         }catch (Exception e) {
             logger.error("修改登录密码异常 : ", e);
             return  fail();
@@ -148,9 +148,9 @@ public class LoginControl extends BaseControl {
             validate(result);
             logger.info("修改交易密码:"+ JSONObject.toJSONString(transactionPasswordInfo));
             response = loginService.modifyTransactionPassword(transactionPasswordInfo);
-        }  catch (CommonException e) {
-            logger.error("修改交易密码失败:"+e.getErrorMsg()+"信息 : "+ e.getMemo());
-            return fail(new BaseResponse(e.getErrorCode(),e.getErrorMsg()));
+        } catch (MaBizException e) {
+            logger.error("修改交易密码异常"+e.getMessage());
+            return fail(new BaseResponse(e.getCode().getCode(),e.getCode().getMessage()));
         }catch (Exception e) {
             logger.error("修改交易密码异常 : ", e);
             return  fail();

@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 public class SettlementServiceImpl implements SettlementService {
@@ -19,7 +20,8 @@ public class SettlementServiceImpl implements SettlementService {
     private SettlementRepository settlementRepository;
 
     @Override
-    public BaseResponse saveRateInfo(EnterpriseSettlementInfo enterpriseSettlementInfo) throws MaBizException {
+    @Transactional
+    public int saveRateInfo(EnterpriseSettlementInfo enterpriseSettlementInfo) throws MaBizException {
         return settlementRepository.saveRateInfo(enterpriseSettlementInfo);
     }
 
