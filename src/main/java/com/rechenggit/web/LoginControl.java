@@ -82,7 +82,7 @@ public class LoginControl extends BaseControl {
             response.setData(servicePasswordInfo);
         }catch (MaBizException e) {
             logger.error("注册异常："+e.getMessage());
-            return fail(new BaseResponse(e.getCode().getCode(),e.getCode().getMessage()));
+            return fail(new BaseResponse(e.getResponseCode().getCode(),e.getResponseCode().getMessage()));
         } catch (Exception e) {
             logger.error("注册信息异常 : ", e);
             return  fail();
@@ -99,7 +99,7 @@ public class LoginControl extends BaseControl {
             response = loginService.verifyingMailbox(mailboxInfo.getEmail(),mailboxInfo.getCode());
         }catch (MaBizException e) {
             logger.error("激活异常："+e.getMessage());
-            return fail(new BaseResponse(e.getCode().getCode(),e.getCode().getMessage()));
+            return fail(new BaseResponse(e.getResponseCode().getCode(),e.getResponseCode().getMessage()));
         }catch (Exception e) {
             logger.error("激活失败 : ", e);
             return  fail();
@@ -116,7 +116,7 @@ public class LoginControl extends BaseControl {
             response = loginService.saveServicePasswordInfo(servicePasswordInfo);
         }catch (MaBizException e) {
             logger.error("保存密码异常"+e.getMessage());
-            return fail(new BaseResponse(e.getCode().getCode(),e.getCode().getMessage()));
+            return fail(new BaseResponse(e.getResponseCode().getCode(),e.getResponseCode().getMessage()));
         }catch (Exception e) {
             logger.error("保存密码信息异常 : ", e);
             return  fail();
@@ -133,7 +133,7 @@ public class LoginControl extends BaseControl {
             response = loginService.modifyLoginPassword(loginPasswordInfo);
         }catch (MaBizException e) {
             logger.error("修改登录密码异常"+e.getMessage());
-            return fail(new BaseResponse(e.getCode().getCode(),e.getCode().getMessage()));
+            return fail(new BaseResponse(e.getResponseCode().getCode(),e.getResponseCode().getMessage()));
         }catch (Exception e) {
             logger.error("修改登录密码异常 : ", e);
             return  fail();
@@ -150,7 +150,7 @@ public class LoginControl extends BaseControl {
             response = loginService.modifyTransactionPassword(transactionPasswordInfo);
         } catch (MaBizException e) {
             logger.error("修改交易密码异常"+e.getMessage());
-            return fail(new BaseResponse(e.getCode().getCode(),e.getCode().getMessage()));
+            return fail(new BaseResponse(e.getResponseCode().getCode(),e.getResponseCode().getMessage()));
         }catch (Exception e) {
             logger.error("修改交易密码异常 : ", e);
             return  fail();
