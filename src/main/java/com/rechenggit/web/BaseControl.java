@@ -32,7 +32,7 @@ public class BaseControl {
         LocaleContextHolder.setLocale(new Locale(lang.split("_")[0], lang.split("_")[1]));
     }
     public BaseResponse success(){
-        BaseResponse response = new BaseResponse("200",getMessage("operation.success"));
+        BaseResponse response = new BaseResponse(200,getMessage("operation.success"));
         return response;
     }
     public BaseResponse success(BaseResponse response){
@@ -51,7 +51,7 @@ public class BaseControl {
 
     }
     public BaseResponse fail(){
-        BaseResponse response=new BaseResponse("500",getMessage("operation.fail"));
+        BaseResponse response=new BaseResponse(500,getMessage("operation.fail"));
         return response;
     }
     public void validate(BindingResult result) throws ValidateException{

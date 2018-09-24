@@ -32,7 +32,7 @@ public class SettlementControl extends BaseControl {
             settlementService.saveRateInfo(enterpriseSettlementInfo);
         }catch (MaBizException e) {
             logger.error(e.getMessage());
-            return fail(new BaseResponse(e.getCode().getCode(),e.getCode().getMessage()));
+            return fail(new BaseResponse(e.getResponseCode().getCode(),e.getResponseCode().getMessage()));
         } catch (Exception e) {
             logger.error("保存汇率信息:异常 ", e);
             return fail();
@@ -48,7 +48,7 @@ public class SettlementControl extends BaseControl {
             response.setData(enterpriseSettlementInfo);
         }catch (MaBizException e) {
             logger.error(e.getMessage());
-            return fail(new BaseResponse(e.getCode().getCode(),e.getCode().getMessage()));
+            return fail(new BaseResponse(e.getResponseCode().getCode(),e.getResponseCode().getMessage()));
         } catch (Exception e) {
             logger.error("商家汇率查询:异常 ", e);
             return fail();

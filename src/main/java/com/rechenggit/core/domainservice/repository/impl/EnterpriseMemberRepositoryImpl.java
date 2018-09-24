@@ -40,14 +40,14 @@ public class EnterpriseMemberRepositoryImpl implements EnterpriseMemberRepositor
     public BaseResponse saveEnterpriseBasicInfo(EnterpriseBasic enterpriseBasic) {
         String memberId = enterpriseBasic.getMemberId();
         if(memberId == null || "".equals(memberId) ){
-            return new BaseResponse("501","parameter.invalid");
+            return new BaseResponse(501,"parameter.invalid");
         }
         //保存商家名称tm_member
         Example exampleMember = new Example(Member.class);
         exampleMember.createCriteria().andEqualTo("memberId", memberId);
         List<Member> memberList = memberMapper.selectByExample(exampleMember);
         if(memberList.isEmpty()){
-            return new BaseResponse("501","parameter.invalid");
+            return new BaseResponse(501,"parameter.invalid");
         }else{
             Member member = new Member();
             member.setMemberName(enterpriseBasic.getMerName());
@@ -96,7 +96,7 @@ public class EnterpriseMemberRepositoryImpl implements EnterpriseMemberRepositor
     public BaseResponse updateEnterpriseBasicInfo(EnterpriseBasic enterpriseBasic) {
         String memberId = enterpriseBasic.getMemberId();
         if(memberId == null || "".equals(memberId) ){
-            return new BaseResponse("501","parameter.invalid");
+            return new BaseResponse(501,"parameter.invalid");
         }
         EnterpriseBasicInfo basicInfo = new EnterpriseBasicInfo();
         BeanUtils.copyProperties(enterpriseBasic,basicInfo);
@@ -135,7 +135,7 @@ public class EnterpriseMemberRepositoryImpl implements EnterpriseMemberRepositor
         exampleMember.createCriteria().andEqualTo("memberId", memberId);
         List<Member> memberList = memberMapper.selectByExample(exampleMember);
         if(memberList.isEmpty()){
-            return new BaseResponse("504","parameter.invalid");
+            return new BaseResponse(504,"parameter.invalid");
         }
         enterpriseBasic.setMerName(memberList.get(0).getMemberName());
         //基本信息
@@ -143,7 +143,7 @@ public class EnterpriseMemberRepositoryImpl implements EnterpriseMemberRepositor
         exampleBasicInfo.createCriteria().andEqualTo("memberId", memberId);
         List<EnterpriseBasicInfo> basicInfo = enterpriseBasicInfoMapper.selectByExample(exampleBasicInfo);
         if(basicInfo.isEmpty()){
-            return new BaseResponse("504","parameter.invalid");
+            return new BaseResponse(504,"parameter.invalid");
         }
         BeanUtils.copyProperties(basicInfo.get(0),enterpriseBasic);
         //商店
@@ -187,7 +187,7 @@ public class EnterpriseMemberRepositoryImpl implements EnterpriseMemberRepositor
         exampleCompany.createCriteria().andEqualTo("memberId", memberId);
         num += companyInfoMapper.deleteByExample(exampleCompany);
         if(num < 1){
-            return new BaseResponse("503","parameter.invalid");
+            return new BaseResponse(503,"parameter.invalid");
         }
         return new BaseResponse();
     }
@@ -196,7 +196,7 @@ public class EnterpriseMemberRepositoryImpl implements EnterpriseMemberRepositor
     public BaseResponse saveEnterpriseOtherInfo(EnterpriseOther enterpriseOther) {
         String memberId = enterpriseOther.getMemberId();
         if(memberId == null || "".equals(memberId) ){
-            return new BaseResponse("501","parameter.invalid");
+            return new BaseResponse(501,"parameter.invalid");
         }
         //保存其他信息
         Example exampleOther = new Example(EnterpriseOtherInfo.class);
@@ -221,7 +221,7 @@ public class EnterpriseMemberRepositoryImpl implements EnterpriseMemberRepositor
         exampleBasicOther.createCriteria().andEqualTo("memberId", memberId);
         List<EnterpriseOtherInfo> basicOther = enterpriseOtherInfoMapper.selectByExample(exampleBasicOther);
         if(basicOther.isEmpty()){
-            return new BaseResponse("504","parameter.invalid");
+            return new BaseResponse(504,"parameter.invalid");
         }
         BeanUtils.copyProperties(basicOther.get(0),enterpriseOther);
         baseResponse.setData(enterpriseOther);
@@ -234,7 +234,7 @@ public class EnterpriseMemberRepositoryImpl implements EnterpriseMemberRepositor
         exampleOtherInfo.createCriteria().andEqualTo("memberId", memberId);
         int num = enterpriseOtherInfoMapper.deleteByExample(exampleOtherInfo);
         if(num < 1){
-            return new BaseResponse("503","parameter.invalid");
+            return new BaseResponse(503,"parameter.invalid");
         }
         return new BaseResponse();
     }
@@ -248,7 +248,7 @@ public class EnterpriseMemberRepositoryImpl implements EnterpriseMemberRepositor
 
         BaseResponse response = new BaseResponse();
         if(cnt==0){
-            response.setStatus("200");
+            response.setStatus(200);
             response.setMessage("操作员错误");
             response.setData(false);
             return response;
@@ -258,17 +258,17 @@ public class EnterpriseMemberRepositoryImpl implements EnterpriseMemberRepositor
                 .andEqualTo("operatorId",payPwdRequest.getOperatorId());
         TrPassword trPassword = trPasswordMapper.selectOneByExample(example);
         if(StringUtils.isBlank(trPassword.getPassword())){
-            response.setStatus("200");
+            response.setStatus(200);
             response.setMessage("未设置支付密码!");
             response.setData(false);
             return response;
         }
         if(Utils.hashSignContent(payPwdRequest.getPayPassword()).equals(trPassword.getPassword())){
-            response.setStatus("200");
+            response.setStatus(200);
             response.setMessage("success");
             response.setData(true);
         }else {
-            response.setStatus("200");
+            response.setStatus(200);
             response.setMessage("failure");
             response.setData(false);
         }

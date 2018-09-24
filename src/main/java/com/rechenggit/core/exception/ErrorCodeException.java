@@ -17,11 +17,11 @@ public class ErrorCodeException extends Exception {
 
     private static final long serialVersionUID = 4005358808809902012L;
 
-    private String            errorCode;
+    private Integer            errorCode;
     private String            errorMsg;
     private String            memo;
 
-    public ErrorCodeException(String errorCode, String errorMsg) {
+    public ErrorCodeException(Integer errorCode, String errorMsg) {
         super();
         this.errorCode = errorCode;
         this.errorMsg = errorMsg;
@@ -31,7 +31,7 @@ public class ErrorCodeException extends Exception {
 
         private static final long serialVersionUID = -3004891288021568474L;
 
-        public CommonException(String errorCode, String errorMsg) {
+        public CommonException(Integer errorCode, String errorMsg) {
             super(errorCode, errorMsg);
         }
 

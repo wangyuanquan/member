@@ -15,47 +15,47 @@ public class MaBizException extends Exception {
     /**
      * 应答码
      */
-    private ResponseCode code;
+    private ResponseCode responseCode;
 
     /**
      * 构造方法
-     * @param code
+     * @param responseCode
      */
-    public MaBizException(ResponseCode code) {
-        super(code.getMessage());
-        this.code = code;
+    public MaBizException(ResponseCode responseCode) {
+        super(responseCode.getMessage());
+        this.responseCode = responseCode;
     }
 
     /**
      * 构造方法
-     * @param code
+     * @param responseCode
      * @param message
      */
-    public MaBizException(ResponseCode code, String message) {
+    public MaBizException(ResponseCode responseCode, String message) {
         super(message);
-        this.code = code;
+        this.responseCode = responseCode;
     }
 
     /**
      * 构造方法
-     * @param code
+     * @param responseCode
      * @param message
      * @param cause
      */
-    public MaBizException(ResponseCode code, String message, Throwable cause) {
+    public MaBizException(ResponseCode responseCode, String message, Throwable cause) {
         super(message, cause);
-        this.code = code;
+        this.responseCode = responseCode;
     }
 
-    public ResponseCode getCode() {
-        return code;
+    public ResponseCode getResponseCode() {
+        return responseCode;
     }
 
-    public String getCodeStr() {
-        return code.getCode();
+    public Integer getCode() {
+        return responseCode.getCode();
     }
 
-    public void setCode(ResponseCode code) {
-        this.code = code;
+    public void setResponseCode(ResponseCode responseCode) {
+        this.responseCode = responseCode;
     }
 }

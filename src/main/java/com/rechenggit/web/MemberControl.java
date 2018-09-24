@@ -33,7 +33,7 @@ public class MemberControl extends BaseControl {
 
         }catch (ValidateException e){
             logger.error("保存会员服务信息错误：{}",e.getMessage());
-            response.setStatus("501");
+            response.setStatus(501);
             response.setMessage(e.getMessage());
             return  fail(response);
 

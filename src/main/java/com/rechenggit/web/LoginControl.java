@@ -59,10 +59,10 @@ public class LoginControl extends BaseControl {
             response.setData(data);
         }catch (MaBizException e) {
             logger.error(e.getMessage());
-            return fail(new BaseResponse(e.getCode().getCode(),e.getCode().getMessage()));
+            return fail(new BaseResponse(e.getResponseCode().getCode(),e.getResponseCode().getMessage()));
         } catch (Exception e) {
             logger.error("验证操作员登陆密码异常 : {}", e);
-            response.setStatus("500");
+            response.setStatus(500);
             response.setMessage(e.getMessage());
             return fail(response);
         }

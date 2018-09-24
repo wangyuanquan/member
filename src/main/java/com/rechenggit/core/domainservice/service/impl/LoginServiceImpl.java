@@ -210,10 +210,10 @@ public class LoginServiceImpl implements LoginService {
     @Transactional
     public BaseResponse saveServicePasswordInfo(ServicePasswordInfo servicePasswordInfo)throws CommonException {
         if(!servicePasswordInfo.getLoginPassword().equals(servicePasswordInfo.getEnterLoginPassword())){
-            return new BaseResponse("505","equals.login.pwd");
+            return new BaseResponse(505,"equals.login.pwd");
         }
         if(!servicePasswordInfo.getPaymentPassword().equals(servicePasswordInfo.getEnterPaymentPassword())){
-            return new BaseResponse("505","equals.payment.pwd");
+            return new BaseResponse(505,"equals.payment.pwd");
         }
         //保存登录密码
         int result = loginRepository.saveLoginPassword(servicePasswordInfo);
@@ -242,12 +242,12 @@ public class LoginServiceImpl implements LoginService {
     @Override
     public BaseResponse modifyLoginPassword(LoginPasswordInfo loginPasswordInfo) throws CommonException {
         if(!loginPasswordInfo.getLoginPassword().equals(loginPasswordInfo.getEnterLoginPassword())){
-            return new BaseResponse("505","equals.login.pwd");
+            return new BaseResponse(505,"equals.login.pwd");
         }
         //验证登录密码
         Boolean flag = loginRepository.checkLoginPassword(loginPasswordInfo.getMemberId(),loginPasswordInfo.getOldPassword());
         if(!flag){
-            return new BaseResponse("505","login.pwd.fail");
+            return new BaseResponse(505,"login.pwd.fail");
         }
         //保存登录密码
         ServicePasswordInfo servicePasswordInfo = new ServicePasswordInfo();
@@ -264,12 +264,12 @@ public class LoginServiceImpl implements LoginService {
     @Override
     public BaseResponse modifyTransactionPassword(TransactionPasswordInfo transactionPasswordInfo) throws CommonException {
         if(!transactionPasswordInfo.getPaymentPassword().equals(transactionPasswordInfo.getEnterPaymentPassword())){
-            return new BaseResponse("505","equals.payment.pwd");
+            return new BaseResponse(505,"equals.payment.pwd");
         }
         //验证交易密码
         Boolean flag = loginRepository.checkTransactionPassword(transactionPasswordInfo.getOperatorId(),transactionPasswordInfo.getOldPassword());
         if(!flag){
-            return new BaseResponse("505","transaction.pwd.fail");
+            return new BaseResponse(505,"transaction.pwd.fail");
         }
         //保存交易密码
         ServicePasswordInfo servicePasswordInfo = new ServicePasswordInfo();
