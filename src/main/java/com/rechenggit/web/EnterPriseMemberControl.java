@@ -76,14 +76,14 @@ public class EnterPriseMemberControl extends BaseControl {
         try{
             validate(result);
             logger.info("保存enterpriseBasic:"+ JSONObject.toJSONString(enterpriseBasic));
-            memberService.saveEnterpriseBasicInfo(enterpriseBasic);
+            response = memberService.saveEnterpriseBasicInfo(enterpriseBasic);
         }catch (Exception e){
             logger.error("保存基本信息错误：{}",e);
             response.setStatus("504");
             response.setMessage(e.getMessage());
             return  fail(response);
         }
-        return success();
+        return success(response);
     }
 
     @RequestMapping("/queryEnterpriseBasicInfo")

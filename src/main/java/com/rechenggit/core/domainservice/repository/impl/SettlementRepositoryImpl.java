@@ -1,6 +1,5 @@
 package com.rechenggit.core.domainservice.repository.impl;
 
-import com.rechenggit.core.common.BaseResponse;
 import com.rechenggit.core.dal.dataobject.EnterpriseBasicInfo;
 import com.rechenggit.core.dal.dataobject.SettlementsInfo;
 import com.rechenggit.core.dal.mapper.EnterpriseBasicInfoMapper;

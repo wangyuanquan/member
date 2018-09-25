@@ -15,9 +15,6 @@ import com.rechenggit.core.domain.login.*;
 import com.rechenggit.core.domainservice.repository.LoginRepository;
 import com.rechenggit.core.domainservice.repository.OperatorLockRepository;
 import com.rechenggit.core.domainservice.service.LoginService;
-import com.rechenggit.core.exception.CommonDefinedException;
-import com.rechenggit.core.exception.ErrorCodeException;
-import com.rechenggit.core.exception.ErrorCodeException.CommonException;
 import com.rechenggit.core.exception.MaBizException;
 import com.rechenggit.util.LoginPwdFacadeValidator;
 import com.rechenggit.util.Utils;
@@ -65,7 +62,7 @@ public class LoginServiceImpl implements LoginService {
 
     @Override
     @Transactional
-    public ServicePasswordInfo enterpriseService(EnterpriseServiceInfo serviceInfo) throws CommonException {
+    public ServicePasswordInfo enterpriseService(EnterpriseServiceInfo serviceInfo) throws MaBizException{
         return loginRepository.enterpriseService(serviceInfo);
     }
 
@@ -208,7 +205,7 @@ public class LoginServiceImpl implements LoginService {
 
     @Override
     @Transactional
-    public BaseResponse saveServicePasswordInfo(ServicePasswordInfo servicePasswordInfo)throws CommonException {
+    public BaseResponse saveServicePasswordInfo(ServicePasswordInfo servicePasswordInfo)throws MaBizException{
         if(!servicePasswordInfo.getLoginPassword().equals(servicePasswordInfo.getEnterLoginPassword())){
             return new BaseResponse("505","equals.login.pwd");
         }
@@ -218,29 +215,26 @@ public class LoginServiceImpl implements LoginService {
         //保存登录密码
         int result = loginRepository.saveLoginPassword(servicePasswordInfo);
         if(result == 0){
-            CommonException exp = CommonDefinedException.REQUEST_PARAMETER;
-            exp.setMemo(servicePasswordInfo.getMemberId());
-            throw exp;
+            throw new MaBizException(ResponseCode.UNKNOWN,
+                    "保存登录密码失败");
         }
         //保存交易密码
         result = loginRepository.saveTransactionPassword(servicePasswordInfo);
         if(result == 0){
-            CommonException exp = CommonDefinedException.REQUEST_PARAMETER;
-            exp.setMemo(servicePasswordInfo.getMemberId());
-            throw exp;
+            throw new MaBizException(ResponseCode.UNKNOWN,
+                    "保存交易密码失败");
         }
         //发送激活邮件
         result = loginRepository.sendActivationMail(servicePasswordInfo);
         if(result == 0){
-            CommonException exp = CommonDefinedException.MAILBOX_SENDING;
-            exp.setMemo(servicePasswordInfo.getMemberId());
-            throw exp;
+            throw new MaBizException(ResponseCode.UNKNOWN,
+                    "发送激活邮件失败");
         }
         return new BaseResponse();
     }
 
     @Override
-    public BaseResponse modifyLoginPassword(LoginPasswordInfo loginPasswordInfo) throws CommonException {
+    public BaseResponse modifyLoginPassword(LoginPasswordInfo loginPasswordInfo) throws MaBizException{
         if(!loginPasswordInfo.getLoginPassword().equals(loginPasswordInfo.getEnterLoginPassword())){
             return new BaseResponse("505","equals.login.pwd");
         }
@@ -254,15 +248,14 @@ public class LoginServiceImpl implements LoginService {
         BeanUtils.copyProperties(loginPasswordInfo,servicePasswordInfo);
         int result = loginRepository.saveLoginPassword(servicePasswordInfo);
         if(result == 0){
-            CommonException exp = CommonDefinedException.REQUEST_PARAMETER;
-            exp.setMemo(loginPasswordInfo.getMemberId());
-            throw exp;
+            throw new MaBizException(ResponseCode.UNKNOWN,
+                    "保存登录密码失败");
         }
         return new BaseResponse();
     }
 
     @Override
-    public BaseResponse modifyTransactionPassword(TransactionPasswordInfo transactionPasswordInfo) throws CommonException {
+    public BaseResponse modifyTransactionPassword(TransactionPasswordInfo transactionPasswordInfo)throws MaBizException {
         if(!transactionPasswordInfo.getPaymentPassword().equals(transactionPasswordInfo.getEnterPaymentPassword())){
             return new BaseResponse("505","equals.payment.pwd");
         }
@@ -276,21 +269,20 @@ public class LoginServiceImpl implements LoginService {
         BeanUtils.copyProperties(transactionPasswordInfo,servicePasswordInfo);
         int result = loginRepository.saveTransactionPassword(servicePasswordInfo);
         if(result == 0){
-            CommonException exp = CommonDefinedException.REQUEST_PARAMETER;
-            exp.setMemo(transactionPasswordInfo.getMemberId());
-            throw exp;
+            throw new MaBizException(ResponseCode.UNKNOWN,
+                    "保存交易密码失败");
         }
         return new BaseResponse();
     }
 
     @Override
     @Transactional
-    public BaseResponse verifyingMailbox(String email,String code) throws CommonException{
+    public BaseResponse verifyingMailbox(String email,String code)throws MaBizException{
         return loginRepository.verifyingMailbox(email,code);
     }
 
     @Override
-    public BaseResponse findLoginPassword(String email)throws CommonException {
+    public BaseResponse findLoginPassword(String email)throws MaBizException{
         return loginRepository.findLoginPassword(email);
     }
 }
