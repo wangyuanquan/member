@@ -13,12 +13,12 @@ public class EmailMailboxInfo {
     /**
      * 商户邮箱
      */
-    @NotBlank
+    @NotBlank(message ="{email.empty.error}")
     private String email;
     /**
      * 激活码
      */
-    @NotBlank
+    @NotBlank(message ="{code.empty.error}")
     private String code;
 
 

@@ -21,12 +21,12 @@ public class EnterpriseBasic {
     /**
      * 商家地址
      */
-    @NotBlank
+    @NotBlank(message ="{merAddress.empty.error}")
     private String merAddress;
     /**
      * 商家名称
      */
-    @NotBlank
+    @NotBlank(message ="{merName.empty.error}")
     private String merName;
 
     /**
@@ -52,19 +52,19 @@ public class EnterpriseBasic {
     /**
      * 商家：电子邮件地址
      */
-    @NotBlank
+    @NotBlank(message ="{merEmail.empty.error}")
     private String merEmail;
 
     /**
      * 主要联系人：全名
      */
-    @NotBlank
+    @NotBlank(message ="{contactName.empty.error}")
     private String contactName;
 
     /**
      * 主要联系人：手机号
      */
-    @NotBlank
+    @NotBlank(message ="{contactPhone.empty.error}")
     private String contactPhone;
 
     /**

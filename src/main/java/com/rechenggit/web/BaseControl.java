@@ -100,6 +100,6 @@ public class BaseControl {
         //System.out.println(locale);
         //Locale.CHINESE
         //Locale.US
-        return messageSource.getMessage(code, null, null, locale);
+        return messageSource.getMessage(code, null, code, locale);
     }
 }

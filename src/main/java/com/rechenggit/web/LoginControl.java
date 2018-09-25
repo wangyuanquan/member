@@ -85,14 +85,16 @@ public class LoginControl extends BaseControl {
             return fail(new BaseResponse(e.getResponseCode().getCode(),e.getResponseCode().getMessage()));
         } catch (Exception e) {
             logger.error("注册信息异常 : ", e);
-            return  fail();
+            response.setStatus(500);
+            response.setMessage(e.getMessage());
+            return fail(response);
         }
         return success(response);
     }
     //激活邮箱
     @RequestMapping("/verifyingMailbox")
     public BaseResponse servicePassword(@RequestBody @Validated EmailMailboxInfo mailboxInfo, BindingResult result){
-        BaseResponse response;
+        BaseResponse response = new BaseResponse();
         try {
             validate(result);
             logger.info("激活邮箱:"+ mailboxInfo.getEmail());
@@ -102,14 +104,16 @@ public class LoginControl extends BaseControl {
             return fail(new BaseResponse(e.getResponseCode().getCode(),e.getResponseCode().getMessage()));
         }catch (Exception e) {
             logger.error("激活失败 : ", e);
-            return  fail();
+            response.setStatus(500);
+            response.setMessage(e.getMessage());
+            return fail(response);
         }
         return success(response);
     }
     //注册时保存登录密码交易密码
     @PostMapping("/servicePassword")
     public BaseResponse servicePassword(@RequestBody @Validated ServicePasswordInfo servicePasswordInfo , BindingResult result){
-        BaseResponse response;
+        BaseResponse response = new BaseResponse();
         try {
             validate(result);
             logger.info("提交密码:"+ JSONObject.toJSONString(servicePasswordInfo));
@@ -119,14 +123,16 @@ public class LoginControl extends BaseControl {
             return fail(new BaseResponse(e.getResponseCode().getCode(),e.getResponseCode().getMessage()));
         }catch (Exception e) {
             logger.error("保存密码信息异常 : ", e);
-            return  fail();
+            response.setStatus(500);
+            response.setMessage(e.getMessage());
+            return fail(response);
         }
         return success(response);
     }
     //修改登录密码
     @PostMapping("/modifyLoginPassword")
     public BaseResponse modifyLoginPassword(@RequestBody @Validated LoginPasswordInfo loginPasswordInfo , BindingResult result){
-        BaseResponse response;
+        BaseResponse response = new BaseResponse();
         try {
             validate(result);
             logger.info("修改登录密码:"+ JSONObject.toJSONString(loginPasswordInfo));
@@ -136,14 +142,16 @@ public class LoginControl extends BaseControl {
             return fail(new BaseResponse(e.getResponseCode().getCode(),e.getResponseCode().getMessage()));
         }catch (Exception e) {
             logger.error("修改登录密码异常 : ", e);
-            return  fail();
+            response.setStatus(500);
+            response.setMessage(e.getMessage());
+            return fail(response);
         }
         return success(response);
     }
     //修改交易密码
     @PostMapping("/modifyTransactionPassword")
     public BaseResponse modifyTransactionPassword(@RequestBody @Validated TransactionPasswordInfo transactionPasswordInfo , BindingResult result){
-        BaseResponse response;
+        BaseResponse response = new BaseResponse();
         try {
             validate(result);
             logger.info("修改交易密码:"+ JSONObject.toJSONString(transactionPasswordInfo));
@@ -153,7 +161,9 @@ public class LoginControl extends BaseControl {
             return fail(new BaseResponse(e.getResponseCode().getCode(),e.getResponseCode().getMessage()));
         }catch (Exception e) {
             logger.error("修改交易密码异常 : ", e);
-            return  fail();
+            response.setStatus(500);
+            response.setMessage(e.getMessage());
+            return fail(response);
         }
         return success(response);
     }
@@ -168,7 +178,9 @@ public class LoginControl extends BaseControl {
             response = loginService.findLoginPassword(mailboxInfo.getEmail());
         } catch (Exception e) {
             logger.error("找回登录密码异常 : ", e);
-            return  fail();
+            response.setStatus(500);
+            response.setMessage(e.getMessage());
+            return fail(response);
         }
         return success(response);
     }

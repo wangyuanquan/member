@@ -23,17 +23,17 @@ public class LoginPasswordInfo {
     /**
      * 原密码
      */
-    @NotBlank
+    @NotBlank(message ="{password.empty.error}")
     private String oldPassword;
     /**
      * 登录密码
      */
-    @NotBlank
+    @NotBlank(message ="{password.empty.error}")
     private String loginPassword;
     /**
      * 确认登录密码
      */
-    @NotBlank
+    @NotBlank(message ="{password.empty.error}")
     private String  enterLoginPassword;
 
 

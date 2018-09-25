@@ -37,7 +37,9 @@ public class EnterPriseMemberControl extends BaseControl {
             return  fail(response);
 
         }catch (Exception e){
-            return  fail();
+            response.setStatus(500);
+            response.setMessage(e.getMessage());
+            return fail(response);
         }
         return success();
 
@@ -50,7 +52,9 @@ public class EnterPriseMemberControl extends BaseControl {
             response.setData(enterpriseMemberServiceDomain);
         }catch (Exception e){
             logger.error("查询会员服务信息错误：{}",e);
-            return  fail();
+            response.setStatus(500);
+            response.setMessage(e.getMessage());
+            return fail(response);
 
         }
         return success(response);
@@ -65,7 +69,9 @@ public class EnterPriseMemberControl extends BaseControl {
             response = memberService.updateEnterpriseBasicInfo(enterpriseBasic);
         }catch (Exception e){
             logger.error("更新基本信息错误：{}",e);
-            return  fail();
+            response.setStatus(500);
+            response.setMessage(e.getMessage());
+            return fail(response);
         }
         return success(response);
     }
@@ -79,7 +85,7 @@ public class EnterPriseMemberControl extends BaseControl {
             response = memberService.saveEnterpriseBasicInfo(enterpriseBasic);
         }catch (Exception e){
             logger.error("保存基本信息错误：{}",e);
-            response.setStatus(504);
+            response.setStatus(500);
             response.setMessage(e.getMessage());
             return  fail(response);
         }
@@ -96,7 +102,9 @@ public class EnterPriseMemberControl extends BaseControl {
             response = memberService.queryEnterpriseBasicInfo(memberId);
         }catch (Exception e){
             logger.error("查询商户信息失败：{}",e);
-            return  fail();
+            response.setStatus(500);
+            response.setMessage(e.getMessage());
+            return fail(response);
         }
         return success(response);
     }
@@ -113,13 +121,16 @@ public class EnterPriseMemberControl extends BaseControl {
     }
     @PostMapping("/saveEnterpriseOtherInfo")
     public BaseResponse saveEnterpriseOtherInfo(@RequestBody @Validated EnterpriseOther enterpriseOther ,BindingResult result) {
+        BaseResponse response = new BaseResponse();
         try{
             validate(result);
             logger.info("保存enterpriseOther:"+ JSONObject.toJSONString(enterpriseOther));
             memberService.saveEnterpriseOtherInfo(enterpriseOther);
         }catch (Exception e){
             logger.error("保存信息错误：{}",e);
-            return  fail();
+            response.setStatus(500);
+            response.setMessage(e.getMessage());
+            return fail(response);
         }
         return success();
     }
@@ -134,7 +145,9 @@ public class EnterPriseMemberControl extends BaseControl {
             response = memberService.queryEnterpriseOtherInfo(memberId);
         }catch (Exception e){
             logger.error("查询商户信息失败：{}",e);
-            return  fail();
+            response.setStatus(500);
+            response.setMessage(e.getMessage());
+            return fail(response);
         }
         return success(response);
     }

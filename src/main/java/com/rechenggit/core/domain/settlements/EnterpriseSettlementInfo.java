@@ -14,6 +14,7 @@ public class EnterpriseSettlementInfo {
     /**
      * 商家id
      */
+    @NotBlank(message ="{memberId.empty.error}")
     private String memberId;
 
     /**
