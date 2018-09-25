@@ -2,6 +2,7 @@ package com.rechenggit.core.domainservice.service.impl;
 
 import com.rechenggit.core.common.BaseResponse;
 import com.rechenggit.core.domain.settlements.EnterpriseSettlementInfo;
+import com.rechenggit.core.domain.settlements.Settlements;
 import com.rechenggit.core.domainservice.repository.LoginRepository;
 import com.rechenggit.core.domainservice.repository.SettlementRepository;
 import com.rechenggit.core.domainservice.service.SettlementService;
@@ -13,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Repository
 public class SettlementServiceImpl implements SettlementService {
     private final static Logger logger = LoggerFactory.getLogger(EnterPriseMemberControl.class);
@@ -21,8 +24,14 @@ public class SettlementServiceImpl implements SettlementService {
 
     @Override
     @Transactional
-    public int saveRateInfo(EnterpriseSettlementInfo enterpriseSettlementInfo) throws MaBizException {
-        return settlementRepository.saveRateInfo(enterpriseSettlementInfo);
+    public BaseResponse saveRateInfo(EnterpriseSettlementInfo enterpriseSettlementInfo) throws MaBizException {
+        for(Settlements settlements :enterpriseSettlementInfo.getSettlements()){
+             int result = settlementRepository.saveRateInfo(enterpriseSettlementInfo.getMemberId(),settlements);
+             if(result == 0){
+                 return new BaseResponse(500,"unknown");
+             }
+        }
+        return new BaseResponse();
     }
 
     @Override

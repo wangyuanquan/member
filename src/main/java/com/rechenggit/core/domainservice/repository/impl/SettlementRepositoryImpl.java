@@ -11,6 +11,7 @@ import com.rechenggit.core.dal.mapper.MemberMapper;
 import com.rechenggit.core.dal.mapper.SettlementsInfoMapper;
 import com.rechenggit.core.domain.enums.ResponseCode;
 import com.rechenggit.core.domain.settlements.EnterpriseSettlementInfo;
+import com.rechenggit.core.domain.settlements.Settlements;
 import com.rechenggit.core.domainservice.repository.SettlementRepository;
 import com.rechenggit.core.exception.MaBizException;
 import org.springframework.beans.BeanUtils;
@@ -32,21 +33,21 @@ public class SettlementRepositoryImpl implements SettlementRepository {
     @Autowired
     private MemberMapper memberMapper;
     @Override
-    public int saveRateInfo(EnterpriseSettlementInfo enterpriseSettlementInfo) throws MaBizException{
+    public int saveRateInfo(String memberId,Settlements settlements) throws MaBizException{
         //获取tm_member_identity  memberId验证参数
         Example exampleMember = new Example(MemberIdentity.class);
-        exampleMember.createCriteria().andEqualTo("memberId", enterpriseSettlementInfo.getMemberId());
+        exampleMember.createCriteria().andEqualTo("memberId", memberId);
         List<MemberIdentity> memberIdentityList = memberIdentityMapper.selectByExample(exampleMember);
         if(memberIdentityList.isEmpty()){
             throw new MaBizException(ResponseCode.ARGUMENT_ERROR,
-                    "tm_member_identity表中memberId" + enterpriseSettlementInfo.getMemberId() + "的相关信息不存在");
+                    "tm_member_identity表中memberId" + memberId + "的相关信息不存在");
         }
         //tm_settlements_info 保存 汇率信息
         Example exampleSettlementsInfo = new Example(SettlementsInfo.class);
-        exampleSettlementsInfo.createCriteria().andEqualTo("memberId", enterpriseSettlementInfo.getMemberId());
+        exampleSettlementsInfo.createCriteria().andEqualTo("memberId", memberId);
         List<SettlementsInfo> settlementInfoList = settlementsInfoMapper.selectByExample(exampleSettlementsInfo);
         SettlementsInfo settlementsInfo = new SettlementsInfo();
-        BeanUtils.copyProperties(enterpriseSettlementInfo,settlementsInfo);
+        BeanUtils.copyProperties(settlements,settlementsInfo);
         int result;
         if(settlementInfoList.isEmpty()){
             settlementsInfo.setCreateTime(new Date());
@@ -59,18 +60,7 @@ public class SettlementRepositoryImpl implements SettlementRepository {
 
     @Override
     public EnterpriseSettlementInfo queryRateInfo(String memberId) throws MaBizException {
-        //tm_settlements_info  汇率信息
-        Example exampleSettlementsInfo = new Example(SettlementsInfo.class);
-        exampleSettlementsInfo.createCriteria().andEqualTo("memberId", memberId);
-        List<SettlementsInfo> settlementInfoList = settlementsInfoMapper.selectByExample(exampleSettlementsInfo);
         EnterpriseSettlementInfo enterpriseSettlementInfo = new EnterpriseSettlementInfo();
-        /*
-        if(settlementInfoList.isEmpty()){
-            throw new MaBizException(ResponseCode.ARGUMENT_ERROR,
-                    "tm_settlements_info表中memberId" + memberId + "的相关信息不存在");
-        }else{
-            BeanUtils.copyProperties(settlementInfoList.get(0),enterpriseSettlementInfo);
-        }*/
         //tm_enterprise_basic_info 基本信息
         Example exampleBasicInfo = new Example(EnterpriseBasicInfo.class);
         exampleBasicInfo.createCriteria().andEqualTo("memberId", memberId);
@@ -90,6 +80,13 @@ public class SettlementRepositoryImpl implements SettlementRepository {
                     "tm_member表中memberId" + memberId + "的相关信息不存在");
         }
         enterpriseSettlementInfo.setMemberName(memberList.get(0).getMemberName());
+        //tm_settlements_info  汇率信息
+        Example exampleSettlementsInfo = new Example(SettlementsInfo.class);
+        exampleSettlementsInfo.createCriteria().andEqualTo("memberId", memberId);
+        List<SettlementsInfo> settlementInfoList = settlementsInfoMapper.selectByExample(exampleSettlementsInfo);
+        if(!settlementInfoList.isEmpty()){
+            BeanUtils.copyProperties(settlementInfoList,enterpriseSettlementInfo.getSettlements());
+        }
         return enterpriseSettlementInfo;
     }
 }

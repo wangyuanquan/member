@@ -3,8 +3,9 @@ package com.rechenggit.core.domain.settlements;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
+
+import java.util.List;
 
 @Setter
 @Getter
@@ -16,26 +17,6 @@ public class EnterpriseSettlementInfo {
      */
     @NotBlank(message ="{memberId.empty.error}")
     private String memberId;
-
-    /**
-     * 结算周期
-     */
-    private Integer settlementCycle;
-
-    /**
-     * 对商人费率
-     */
-    private Float merchant;
-
-    /**
-     * 对消费者费率
-     */
-    private Float consumer;
-
-    /**
-     * 结算服务类型
-     */
-    private Integer settlementType;
     /**
      * 商户名称
      */
@@ -54,6 +35,8 @@ public class EnterpriseSettlementInfo {
      * bsb账号
      */
     private String bbsNumber;
-
-
+    /**
+     * 结算信息
+     */
+    private List<Settlements> settlements;
 }

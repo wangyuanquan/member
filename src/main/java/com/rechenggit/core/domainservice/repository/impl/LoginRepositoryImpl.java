@@ -110,6 +110,7 @@ public class LoginRepositoryImpl implements LoginRepository {
             member.setStatus(0);
             member.setMemberType(2);
             member.setLockStatus(0);
+            member.setActiveTime(new Date());
             member.setMemberName(serviceInfo.getMemberName());
             if(memberList.isEmpty()){
                 member.setCreateTime(new Date());
@@ -125,6 +126,9 @@ public class LoginRepositoryImpl implements LoginRepository {
             operator.setMemberId(memberId.toString());
             operator.setStatus(0);
             operator.setOperatorId(operatorId);
+            operator.setIsDefault(1);
+            operator.setActiveTime(new Date());
+            operator.setLockStatus(0);
             operator.setOperatorType(memberType.getCode());
             if(operatorList.isEmpty()){
                 operator.setCreateTime(new Date());
@@ -375,6 +379,7 @@ public class LoginRepositoryImpl implements LoginRepository {
         List<Member> memberList = memberMapper.selectByExample(exampleMember2);
         Member member = new Member();
         member.setStatus(1);
+        member.setActiveTime(new Date());
         if(memberList.isEmpty()){
             throw new MaBizException(ResponseCode.ARGUMENT_ERROR,
                     "tm_member表中memberId" + memberId + "的相关信息不存在");
@@ -387,6 +392,7 @@ public class LoginRepositoryImpl implements LoginRepository {
         List<Operator> operatorList = operatorMapper.selectByExample(exampleOperator);
         Operator operator = new Operator();
         operator.setStatus(1);
+        operator.setActiveTime(new Date());
         if(operatorList.isEmpty()){
             throw new MaBizException(ResponseCode.ARGUMENT_ERROR,
                     "tm_Operator表中memberId" + memberId + "的相关信息不存在");

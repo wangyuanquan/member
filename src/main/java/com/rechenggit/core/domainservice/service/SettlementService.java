@@ -11,10 +11,15 @@ import com.rechenggit.core.exception.MaBizException;
 public interface SettlementService {
 
     /**
-     * 保存汇率信息
+     * 保存汇率信息 后台
      * @return
      */
-    int saveRateInfo(EnterpriseSettlementInfo enterpriseSettlementInfo) throws MaBizException ;
+    BaseResponse saveRateInfo(EnterpriseSettlementInfo enterpriseSettlementInfo) throws MaBizException ;
+    /**
+     * 保存汇率信息 商户 只能修改consumer
+     * @return
+     */
+    //BaseResponse saveRateInfo(EnterpriseSettlementInfo enterpriseSettlementInfo) throws MaBizException ;
     /**
      * 查询汇率信息
      * @return

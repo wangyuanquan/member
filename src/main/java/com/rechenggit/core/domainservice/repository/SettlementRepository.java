@@ -2,6 +2,7 @@ package com.rechenggit.core.domainservice.repository;
 
 import com.rechenggit.core.common.BaseResponse;
 import com.rechenggit.core.domain.settlements.EnterpriseSettlementInfo;
+import com.rechenggit.core.domain.settlements.Settlements;
 import com.rechenggit.core.exception.MaBizException;
 
 public interface SettlementRepository {
@@ -9,7 +10,7 @@ public interface SettlementRepository {
      * 保存汇率信息
      * @return
      */
-    int saveRateInfo(EnterpriseSettlementInfo enterpriseSettlementInfo) throws MaBizException ;
+    int saveRateInfo(String memberId,Settlements settlements) throws MaBizException ;
     /**
      * 查询汇率信息
      * @return

@@ -30,10 +30,7 @@ public class SettlementControl extends BaseControl {
         BaseResponse response = new BaseResponse();
         try{
             validate(result);
-            int state = settlementService.saveRateInfo(enterpriseSettlementInfo);
-            if(state == 0){
-                return fail();
-            }
+            response = settlementService.saveRateInfo(enterpriseSettlementInfo);
         }catch (ValidateException e){
             logger.error("保存汇率信息参数验证失败",e.getMessage());
             response.setStatus(505);
@@ -48,8 +45,7 @@ public class SettlementControl extends BaseControl {
             response.setMessage(e.getMessage());
             return fail(response);
         }
-        return success();
-
+        return success(response);
     }
     @GetMapping("/queryRateInfo")
     public BaseResponse queryRateInfo(String memberId) {
