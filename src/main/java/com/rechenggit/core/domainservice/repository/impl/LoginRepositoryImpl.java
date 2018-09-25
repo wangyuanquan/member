@@ -163,6 +163,8 @@ public class LoginRepositoryImpl implements LoginRepository {
                     .andEqualTo("settlementType", 1);
             List<SettlementsInfo> settlementInfoList = settlementsInfoMapper.selectByExample(exampleSettlementsInfo1);
             SettlementsInfo settlementsInfo = new SettlementsInfo();
+            settlementsInfo.setMemberId(memberId);
+            settlementsInfo.setSettlementType(1);
             settlementsInfo.setMerchant(0.015);
             if(settlementInfoList.isEmpty()){
                 settlementsInfo.setCreateTime(new Date());
@@ -176,6 +178,8 @@ public class LoginRepositoryImpl implements LoginRepository {
                     .andEqualTo("settlementType", 2);
             List<SettlementsInfo> settlementInfoList2 = settlementsInfoMapper.selectByExample(exampleSettlementsInfo2);
             SettlementsInfo settlementsInfo2 = new SettlementsInfo();
+            settlementsInfo2.setMemberId(memberId);
+            settlementsInfo2.setSettlementType(2);
             settlementsInfo2.setMerchant(0.008);
             if(settlementInfoList2.isEmpty()){
                 settlementsInfo2.setCreateTime(new Date());

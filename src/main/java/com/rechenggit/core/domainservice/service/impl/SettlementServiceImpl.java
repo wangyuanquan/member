@@ -40,6 +40,7 @@ public class SettlementServiceImpl implements SettlementService {
             //防止请求注入
             settlements.setSettlementCycle(null);
             settlements.setMerchant(null);
+            settlements.setSettlementCycle(null);
             int result = settlementRepository.saveRateInfo(enterpriseSettlementInfo.getMemberId(),settlements);
             if(result == 0){
                 return new BaseResponse(500,"unknown");

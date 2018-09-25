@@ -13,7 +13,7 @@ public class Settlements {
     /**
      * 结算周期
      */
-    private Integer settlementCycle;
+    private String settlementCycle;
 
     /**
      * 对商人费率

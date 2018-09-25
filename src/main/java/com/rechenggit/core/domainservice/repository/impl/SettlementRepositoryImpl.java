@@ -42,7 +42,19 @@ public class SettlementRepositoryImpl implements SettlementRepository {
             throw new MaBizException(ResponseCode.ARGUMENT_ERROR,
                     "tm_member_identity表中memberId" + memberId + "的相关信息不存在");
         }
-        //tm_settlements_info 保存 汇率信息
+        //tm_enterprise_basic_info 保存 费率周期
+        Example exampleBasic = new Example(EnterpriseBasicInfo.class);
+        exampleBasic.createCriteria().andEqualTo("memberId", memberId);
+        List<EnterpriseBasicInfo> basicInfoList = enterpriseBasicInfoMapper.selectByExample(exampleBasic);
+        EnterpriseBasicInfo basicInfo = new EnterpriseBasicInfo();
+        basicInfo.setSettlementCycle(settlements.getSettlementCycle());
+        if(basicInfoList.isEmpty()){
+            throw new MaBizException(ResponseCode.ARGUMENT_ERROR,
+                    "tm_enterprise_basic_info表中memberId" + memberId + "的相关信息不存在");
+        }else{
+            enterpriseBasicInfoMapper.updateByExampleSelective(basicInfo,exampleBasic);
+        }
+        //tm_settlements_info 保存 费率信息
         Example exampleSettlementsInfo = new Example(SettlementsInfo.class);
         exampleSettlementsInfo.createCriteria().andEqualTo("memberId", memberId)
                 .andEqualTo("settlementType", settlements.getSettlementType());
