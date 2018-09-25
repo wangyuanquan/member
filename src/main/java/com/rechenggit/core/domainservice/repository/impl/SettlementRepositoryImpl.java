@@ -1,8 +1,10 @@
 package com.rechenggit.core.domainservice.repository.impl;
 
 import com.rechenggit.core.dal.dataobject.EnterpriseBasicInfo;
+import com.rechenggit.core.dal.dataobject.MemberIdentity;
 import com.rechenggit.core.dal.dataobject.SettlementsInfo;
 import com.rechenggit.core.dal.mapper.EnterpriseBasicInfoMapper;
+import com.rechenggit.core.dal.mapper.MemberIdentityMapper;
 import com.rechenggit.core.dal.mapper.SettlementsInfoMapper;
 import com.rechenggit.core.domain.enums.ResponseCode;
 import com.rechenggit.core.domain.settlements.EnterpriseSettlementInfo;
@@ -22,8 +24,18 @@ public class SettlementRepositoryImpl implements SettlementRepository {
     SettlementsInfoMapper settlementsInfoMapper;
     @Autowired
     private EnterpriseBasicInfoMapper enterpriseBasicInfoMapper;
+    @Autowired
+    private MemberIdentityMapper memberIdentityMapper;
     @Override
-    public int saveRateInfo(EnterpriseSettlementInfo enterpriseSettlementInfo){
+    public int saveRateInfo(EnterpriseSettlementInfo enterpriseSettlementInfo) throws MaBizException{
+        //获取tm_member_identity  memberId验证参数
+        Example exampleMember = new Example(MemberIdentity.class);
+        exampleMember.createCriteria().andEqualTo("memberId", enterpriseSettlementInfo.getMemberId());
+        List<MemberIdentity> memberIdentityList = memberIdentityMapper.selectByExample(exampleMember);
+        if(memberIdentityList.isEmpty()){
+            throw new MaBizException(ResponseCode.ARGUMENT_ERROR,
+                    "tm_member_identity表中memberId" + enterpriseSettlementInfo.getMemberId() + "的相关信息不存在");
+        }
         //tm_settlements_info 保存 汇率信息
         Example exampleSettlementsInfo = new Example(SettlementsInfo.class);
         exampleSettlementsInfo.createCriteria().andEqualTo("memberId", enterpriseSettlementInfo.getMemberId());

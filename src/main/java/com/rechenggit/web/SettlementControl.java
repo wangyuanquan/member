@@ -33,6 +33,9 @@ public class SettlementControl extends BaseControl {
             if(state == 0){
                 return fail();
             }
+        }catch (MaBizException e) {
+            logger.error(e.getMessage());
+            return fail(new BaseResponse(e.getCode().getCode(),e.getCode().getMessage()));
         }catch (Exception e) {
             logger.error("保存汇率信息:异常 ", e);
             return fail();

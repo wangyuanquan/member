@@ -21,7 +21,7 @@ public class SettlementServiceImpl implements SettlementService {
 
     @Override
     @Transactional
-    public int saveRateInfo(EnterpriseSettlementInfo enterpriseSettlementInfo){
+    public int saveRateInfo(EnterpriseSettlementInfo enterpriseSettlementInfo) throws MaBizException {
         return settlementRepository.saveRateInfo(enterpriseSettlementInfo);
     }
 
