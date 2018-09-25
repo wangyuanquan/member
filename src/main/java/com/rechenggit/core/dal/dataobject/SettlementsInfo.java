@@ -17,15 +17,15 @@ public class SettlementsInfo {
     /**
      * 对商人费率
      */
-    private Float merchant;
+    private Double merchant;
 
     /**
      * 对消费者费率
      */
-    private Float consumer;
+    private Double consumer;
 
     /**
-     * 结算服务类型
+     * 结算服务类型(1:微信2：支付宝)
      */
     @Column(name = "settlement_type")
     private Integer settlementType;
@@ -79,7 +79,7 @@ public class SettlementsInfo {
      *
      * @return merchant - 对商人费率
      */
-    public Float getMerchant() {
+    public Double getMerchant() {
         return merchant;
     }
 
@@ -88,7 +88,7 @@ public class SettlementsInfo {
      *
      * @param merchant 对商人费率
      */
-    public void setMerchant(Float merchant) {
+    public void setMerchant(Double merchant) {
         this.merchant = merchant;
     }
 
@@ -97,7 +97,7 @@ public class SettlementsInfo {
      *
      * @return consumer - 对消费者费率
      */
-    public Float getConsumer() {
+    public Double getConsumer() {
         return consumer;
     }
 
@@ -106,23 +106,23 @@ public class SettlementsInfo {
      *
      * @param consumer 对消费者费率
      */
-    public void setConsumer(Float consumer) {
+    public void setConsumer(Double consumer) {
         this.consumer = consumer;
     }
 
     /**
-     * 获取结算服务类型
+     * 获取结算服务类型(1:微信2：支付宝)
      *
-     * @return settlement_type - 结算服务类型
+     * @return settlement_type - 结算服务类型(1:微信2：支付宝)
      */
     public Integer getSettlementType() {
         return settlementType;
     }
 
     /**
-     * 设置结算服务类型
+     * 设置结算服务类型(1:微信2：支付宝)
      *
-     * @param settlementType 结算服务类型
+     * @param settlementType 结算服务类型(1:微信2：支付宝)
      */
     public void setSettlementType(Integer settlementType) {
         this.settlementType = settlementType;

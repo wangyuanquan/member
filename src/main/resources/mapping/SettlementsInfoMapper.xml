@@ -7,8 +7,8 @@
     -->
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="member_id" jdbcType="VARCHAR" property="memberId" />
-    <result column="merchant" jdbcType="REAL" property="merchant" />
-    <result column="consumer" jdbcType="REAL" property="consumer" />
+    <result column="merchant" jdbcType="DOUBLE" property="merchant" />
+    <result column="consumer" jdbcType="DOUBLE" property="consumer" />
     <result column="settlement_type" jdbcType="INTEGER" property="settlementType" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />

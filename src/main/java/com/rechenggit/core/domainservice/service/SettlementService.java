@@ -19,7 +19,7 @@ public interface SettlementService {
      * 保存汇率信息 商户 只能修改consumer
      * @return
      */
-    //BaseResponse saveRateInfo(EnterpriseSettlementInfo enterpriseSettlementInfo) throws MaBizException ;
+    BaseResponse saveConsumerRateInfo(EnterpriseSettlementInfo enterpriseSettlementInfo) throws MaBizException ;
     /**
      * 查询汇率信息
      * @return

@@ -44,7 +44,8 @@ public class SettlementRepositoryImpl implements SettlementRepository {
         }
         //tm_settlements_info 保存 汇率信息
         Example exampleSettlementsInfo = new Example(SettlementsInfo.class);
-        exampleSettlementsInfo.createCriteria().andEqualTo("memberId", memberId);
+        exampleSettlementsInfo.createCriteria().andEqualTo("memberId", memberId)
+                .andEqualTo("settlementType", settlements.getSettlementType());
         List<SettlementsInfo> settlementInfoList = settlementsInfoMapper.selectByExample(exampleSettlementsInfo);
         SettlementsInfo settlementsInfo = new SettlementsInfo();
         BeanUtils.copyProperties(settlements,settlementsInfo);

@@ -47,6 +47,29 @@ public class SettlementControl extends BaseControl {
         }
         return success(response);
     }
+    //保存汇率信息 商户 只能修改consumer
+    @PostMapping("/saveRateInfo")
+    public BaseResponse saveConsumerRateInfo(@RequestBody @Validated EnterpriseSettlementInfo enterpriseSettlementInfo, BindingResult result) {
+        BaseResponse response = new BaseResponse();
+        try{
+            validate(result);
+            response = settlementService.saveConsumerRateInfo(enterpriseSettlementInfo);
+        }catch (ValidateException e){
+            logger.error("保存汇率信息参数验证失败",e.getMessage());
+            response.setStatus(505);
+            response.setMessage(e.getMessage());
+            return  fail(response);
+        }catch (MaBizException e) {
+            logger.error(e.getMessage());
+            return fail(new BaseResponse(e.getResponseCode().getCode(),e.getResponseCode().getMessage()));
+        } catch (Exception e) {
+            logger.error("保存汇率信息:异常 ", e);
+            response.setStatus(500);
+            response.setMessage(e.getMessage());
+            return fail(response);
+        }
+        return success(response);
+    }
     @GetMapping("/queryRateInfo")
     public BaseResponse queryRateInfo(String memberId) {
         BaseResponse response = new BaseResponse();

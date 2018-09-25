@@ -22,6 +22,7 @@ import com.rechenggit.util.Utils;
 import com.rechenggit.web.LoginControl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -54,6 +55,8 @@ public class LoginRepositoryImpl implements LoginRepository {
     private MailboxActivationMapper mailboxActivationMapper;
     @Autowired
     LoginNameMapper loginNameMapper;
+    @Autowired
+    SettlementsInfoMapper settlementsInfoMapper;
     @Override
     public Member validateMemberExistAndNormal(String identity,int platformType) {
        /* //返回会员对象基本信息 （会员标识 平台类型）
@@ -146,11 +149,39 @@ public class LoginRepositoryImpl implements LoginRepository {
             basicInfo.setContactPhone(serviceInfo.getContactPhone());
             basicInfo.setMerEmail(serviceInfo.getIdentity());
             basicInfo.setMerAddress(serviceInfo.getAddress());
+            basicInfo.setSettlementCycle("T+2");
             if(basicInfoList.isEmpty()){
                 basicInfo.setCreateTime(new Date());
                 enterpriseBasicInfoMapper.insertSelective(basicInfo);
             }else{
                 enterpriseBasicInfoMapper.updateByExampleSelective(basicInfo,exampleBasic);
+            }
+            //tm_settlements_info 添加 汇率信息（暂时 支付宝、微信）
+            //支付宝
+            Example exampleSettlementsInfo1 = new Example(SettlementsInfo.class);
+            exampleSettlementsInfo1.createCriteria().andEqualTo("memberId", memberId)
+                    .andEqualTo("settlementType", 1);
+            List<SettlementsInfo> settlementInfoList = settlementsInfoMapper.selectByExample(exampleSettlementsInfo1);
+            SettlementsInfo settlementsInfo = new SettlementsInfo();
+            settlementsInfo.setMerchant(0.015);
+            if(settlementInfoList.isEmpty()){
+                settlementsInfo.setCreateTime(new Date());
+                settlementsInfoMapper.insertSelective(settlementsInfo);
+            }else{
+                settlementsInfoMapper.updateByExampleSelective(settlementsInfo,exampleSettlementsInfo1);
+            }
+            //微信
+            Example exampleSettlementsInfo2 = new Example(SettlementsInfo.class);
+            exampleSettlementsInfo2.createCriteria().andEqualTo("memberId", memberId)
+                    .andEqualTo("settlementType", 2);
+            List<SettlementsInfo> settlementInfoList2 = settlementsInfoMapper.selectByExample(exampleSettlementsInfo2);
+            SettlementsInfo settlementsInfo2 = new SettlementsInfo();
+            settlementsInfo2.setMerchant(0.008);
+            if(settlementInfoList2.isEmpty()){
+                settlementsInfo2.setCreateTime(new Date());
+                settlementsInfoMapper.insertSelective(settlementsInfo2);
+            }else{
+                settlementsInfoMapper.updateByExampleSelective(settlementsInfo2,exampleSettlementsInfo2);
             }
             ServicePasswordInfo servicePasswordInfo = new ServicePasswordInfo();
             servicePasswordInfo.setMemberId(memberId);
