@@ -64,12 +64,13 @@ public class SettlementRepositoryImpl implements SettlementRepository {
         exampleSettlementsInfo.createCriteria().andEqualTo("memberId", memberId);
         List<SettlementsInfo> settlementInfoList = settlementsInfoMapper.selectByExample(exampleSettlementsInfo);
         EnterpriseSettlementInfo enterpriseSettlementInfo = new EnterpriseSettlementInfo();
+        /*
         if(settlementInfoList.isEmpty()){
             throw new MaBizException(ResponseCode.ARGUMENT_ERROR,
                     "tm_settlements_info表中memberId" + memberId + "的相关信息不存在");
         }else{
             BeanUtils.copyProperties(settlementInfoList.get(0),enterpriseSettlementInfo);
-        }
+        }*/
         //tm_enterprise_basic_info 基本信息
         Example exampleBasicInfo = new Example(EnterpriseBasicInfo.class);
         exampleBasicInfo.createCriteria().andEqualTo("memberId", memberId);
