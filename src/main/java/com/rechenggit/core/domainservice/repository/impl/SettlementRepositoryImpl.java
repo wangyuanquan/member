@@ -1,10 +1,13 @@
 package com.rechenggit.core.domainservice.repository.impl;
 
+import com.rechenggit.core.common.BaseResponse;
 import com.rechenggit.core.dal.dataobject.EnterpriseBasicInfo;
+import com.rechenggit.core.dal.dataobject.Member;
 import com.rechenggit.core.dal.dataobject.MemberIdentity;
 import com.rechenggit.core.dal.dataobject.SettlementsInfo;
 import com.rechenggit.core.dal.mapper.EnterpriseBasicInfoMapper;
 import com.rechenggit.core.dal.mapper.MemberIdentityMapper;
+import com.rechenggit.core.dal.mapper.MemberMapper;
 import com.rechenggit.core.dal.mapper.SettlementsInfoMapper;
 import com.rechenggit.core.domain.enums.ResponseCode;
 import com.rechenggit.core.domain.settlements.EnterpriseSettlementInfo;
@@ -26,6 +29,8 @@ public class SettlementRepositoryImpl implements SettlementRepository {
     private EnterpriseBasicInfoMapper enterpriseBasicInfoMapper;
     @Autowired
     private MemberIdentityMapper memberIdentityMapper;
+    @Autowired
+    private MemberMapper memberMapper;
     @Override
     public int saveRateInfo(EnterpriseSettlementInfo enterpriseSettlementInfo) throws MaBizException{
         //获取tm_member_identity  memberId验证参数
@@ -75,6 +80,15 @@ public class SettlementRepositoryImpl implements SettlementRepository {
         }else{
             BeanUtils.copyProperties(basicInfoList.get(0),enterpriseSettlementInfo);
         }
+        //商家名称 tm_member
+        Example exampleMember = new Example(Member.class);
+        exampleMember.createCriteria().andEqualTo("memberId", memberId);
+        List<Member> memberList = memberMapper.selectByExample(exampleMember);
+        if(memberList.isEmpty()){
+            throw new MaBizException(ResponseCode.ARGUMENT_ERROR,
+                    "tm_member表中memberId" + memberId + "的相关信息不存在");
+        }
+        enterpriseSettlementInfo.setMemberName(memberList.get(0).getMemberName());
         return enterpriseSettlementInfo;
     }
 }

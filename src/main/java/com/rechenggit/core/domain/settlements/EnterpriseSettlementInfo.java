@@ -36,6 +36,10 @@ public class EnterpriseSettlementInfo {
      */
     private Integer settlementType;
     /**
+     * 商户名称
+     */
+    private String memberName;
+    /**
      * 用户名
      */
     private String accountName;
