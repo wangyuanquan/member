@@ -27,18 +27,26 @@ public class SettlementControl extends BaseControl {
 
     @PostMapping("/saveRateInfo")
     public BaseResponse saveRateInfo(@RequestBody @Validated EnterpriseSettlementInfo enterpriseSettlementInfo, BindingResult result) {
+        BaseResponse response = new BaseResponse();
         try{
             validate(result);
             int state = settlementService.saveRateInfo(enterpriseSettlementInfo);
             if(state == 0){
                 return fail();
             }
+        }catch (ValidateException e){
+            logger.error("保存汇率信息参数验证失败",e.getMessage());
+            response.setStatus(505);
+            response.setMessage(e.getMessage());
+            return  fail(response);
         }catch (MaBizException e) {
             logger.error(e.getMessage());
             return fail(new BaseResponse(e.getResponseCode().getCode(),e.getResponseCode().getMessage()));
         } catch (Exception e) {
             logger.error("保存汇率信息:异常 ", e);
-            return fail();
+            response.setStatus(500);
+            response.setMessage(e.getMessage());
+            return fail(response);
         }
         return success();
 
@@ -54,7 +62,9 @@ public class SettlementControl extends BaseControl {
             return fail(new BaseResponse(e.getResponseCode().getCode(),e.getResponseCode().getMessage()));
         } catch (Exception e) {
             logger.error("商家汇率查询:异常 ", e);
-            return fail();
+            response.setStatus(500);
+            response.setMessage(e.getMessage());
+            return fail(response);
         }
         return success(response);
     }

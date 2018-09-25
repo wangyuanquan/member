@@ -51,7 +51,7 @@ public class BaseControl {
 
     }
     public BaseResponse fail(){
-        BaseResponse response=new BaseResponse(500,getMessage("operation.fail"));
+        BaseResponse response = new BaseResponse(500,getMessage("operation.fail"));
         return response;
     }
     public void validate(BindingResult result) throws ValidateException{

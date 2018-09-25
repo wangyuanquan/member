@@ -13,6 +13,7 @@ import com.rechenggit.core.domainservice.service.LoginService;
 import com.rechenggit.core.domainservice.validator.MemberValidator;
 import com.rechenggit.core.domainservice.validator.OperatorValidator;
 import com.rechenggit.core.exception.MaBizException;
+import com.rechenggit.core.exception.ValidateException;
 import com.rechenggit.util.ResponseUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -80,6 +81,11 @@ public class LoginControl extends BaseControl {
                 return  fail();
             }
             response.setData(servicePasswordInfo);
+        }catch (ValidateException e){
+            logger.error("注册信息参数验证失败",e.getMessage());
+            response.setStatus(505);
+            response.setMessage(e.getMessage());
+            return  fail(response);
         }catch (MaBizException e) {
             logger.error("注册异常："+e.getMessage());
             return fail(new BaseResponse(e.getResponseCode().getCode(),e.getResponseCode().getMessage()));
@@ -99,6 +105,11 @@ public class LoginControl extends BaseControl {
             validate(result);
             logger.info("激活邮箱:"+ mailboxInfo.getEmail());
             response = loginService.verifyingMailbox(mailboxInfo.getEmail(),mailboxInfo.getCode());
+        }catch (ValidateException e){
+            logger.error("激活信息参数验证失败",e.getMessage());
+            response.setStatus(505);
+            response.setMessage(e.getMessage());
+            return  fail(response);
         }catch (MaBizException e) {
             logger.error("激活异常："+e.getMessage());
             return fail(new BaseResponse(e.getResponseCode().getCode(),e.getResponseCode().getMessage()));
@@ -118,6 +129,11 @@ public class LoginControl extends BaseControl {
             validate(result);
             logger.info("提交密码:"+ JSONObject.toJSONString(servicePasswordInfo));
             response = loginService.saveServicePasswordInfo(servicePasswordInfo);
+        }catch (ValidateException e){
+            logger.error("保存密码参数验证失败",e.getMessage());
+            response.setStatus(505);
+            response.setMessage(e.getMessage());
+            return  fail(response);
         }catch (MaBizException e) {
             logger.error("保存密码异常"+e.getMessage());
             return fail(new BaseResponse(e.getResponseCode().getCode(),e.getResponseCode().getMessage()));
@@ -137,6 +153,11 @@ public class LoginControl extends BaseControl {
             validate(result);
             logger.info("修改登录密码:"+ JSONObject.toJSONString(loginPasswordInfo));
             response = loginService.modifyLoginPassword(loginPasswordInfo);
+        }catch (ValidateException e){
+            logger.error("修改登录密码参数验证失败",e.getMessage());
+            response.setStatus(505);
+            response.setMessage(e.getMessage());
+            return  fail(response);
         }catch (MaBizException e) {
             logger.error("修改登录密码异常"+e.getMessage());
             return fail(new BaseResponse(e.getResponseCode().getCode(),e.getResponseCode().getMessage()));
@@ -156,7 +177,12 @@ public class LoginControl extends BaseControl {
             validate(result);
             logger.info("修改交易密码:"+ JSONObject.toJSONString(transactionPasswordInfo));
             response = loginService.modifyTransactionPassword(transactionPasswordInfo);
-        } catch (MaBizException e) {
+        } catch (ValidateException e){
+            logger.error("修改交易密码参数验证失败",e.getMessage());
+            response.setStatus(505);
+            response.setMessage(e.getMessage());
+            return  fail(response);
+        }catch (MaBizException e) {
             logger.error("修改交易密码异常"+e.getMessage());
             return fail(new BaseResponse(e.getResponseCode().getCode(),e.getResponseCode().getMessage()));
         }catch (Exception e) {
@@ -176,7 +202,12 @@ public class LoginControl extends BaseControl {
             validate(result);
             logger.info("找回登录密码:"+ JSONObject.toJSONString(mailboxInfo));
             response = loginService.findLoginPassword(mailboxInfo.getEmail());
-        } catch (Exception e) {
+        } catch (ValidateException e){
+            logger.error("找回登录密码参数验证失败",e.getMessage());
+            response.setStatus(505);
+            response.setMessage(e.getMessage());
+            return  fail(response);
+        }catch (Exception e) {
             logger.error("找回登录密码异常 : ", e);
             response.setStatus(500);
             response.setMessage(e.getMessage());
