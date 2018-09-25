@@ -78,8 +78,8 @@ public class LoginRepositoryImpl implements LoginRepository {
         exampleIdentity.createCriteria().andEqualTo("identity", serviceInfo.getIdentity());
         List<MemberIdentity> memberIdentityList = memberIdentityMapper.selectByExample(exampleIdentity);
         if(!memberIdentityList.isEmpty()){
-            throw new MaBizException(ResponseCode.ARGUMENT_ERROR,
-                    "tm_member_identity表中identity" + serviceInfo.getIdentity() + "的相关信息不存在");
+            throw new MaBizException(ResponseCode.MEMBER_IDENTITY_EXIST,
+                    "重复注册：tm_member_identity表中identity" + serviceInfo.getIdentity() + "的相关信息已存在");
         }else{
             MemberTypeEnum memberType = MemberTypeEnum.getByCode(serviceInfo.getPid());
             String memberId = genMemberId(memberType);
@@ -229,7 +229,7 @@ public class LoginRepositoryImpl implements LoginRepository {
         String operatorId = operatorList.get(0).getOperatorId();
         if(!operatorId.equals(servicePasswordInfo.getOperatorId())){
             throw new MaBizException(ResponseCode.ARGUMENT_ERROR,
-                    "tm_Operator表中memberId" + servicePasswordInfo.getMemberId() + "与参数不符");
+                    "tm_Operator表中operatorId" + servicePasswordInfo.getMemberId() + "与参数不符");
         }
         //登录密码
         String loginPassword = Utils.hashSignContent(servicePasswordInfo.getLoginPassword());
@@ -284,7 +284,7 @@ public class LoginRepositoryImpl implements LoginRepository {
         String operatorId = operatorList.get(0).getOperatorId();
         if(!operatorId.equals(servicePasswordInfo.getOperatorId())){
             throw new MaBizException(ResponseCode.ARGUMENT_ERROR,
-                    "tm_Operator表中memberId" + servicePasswordInfo.getMemberId() + "与参数不符");
+                    "tm_Operator表中operatorId" + servicePasswordInfo.getMemberId() + "与参数不符");
         }
         //tr_password 更新 password 交易密码
         String paymentPassword = Utils.hashSignContent(servicePasswordInfo.getPaymentPassword());

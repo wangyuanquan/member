@@ -14,7 +14,6 @@ public class EmailMailboxInfo {
      * 商户邮箱
      */
     @NotBlank
-    @Email
     private String email;
     /**
      * 激活码
