@@ -1,12 +1,7 @@
 package com.rechenggit.web;
 
-import com.alibaba.fastjson.JSONObject;
 import com.rechenggit.core.common.BaseResponse;
-import com.rechenggit.core.domain.EnterpriseBasic;
-import com.rechenggit.core.domain.EnterpriseMemberServiceDomain;
-import com.rechenggit.core.domain.EnterpriseOther;
 import com.rechenggit.core.domain.settlements.EnterpriseSettlementInfo;
-import com.rechenggit.core.domainservice.service.MemberService;
 import com.rechenggit.core.domainservice.service.SettlementService;
 import com.rechenggit.core.exception.MaBizException;
 import com.rechenggit.core.exception.ValidateException;
@@ -48,7 +43,7 @@ public class SettlementControl extends BaseControl {
         return success(response);
     }
     //保存汇率信息 商户 只能修改consumer
-    @PostMapping("/saveRateInfo")
+    @PostMapping("/saveConsumerRateInfo")
     public BaseResponse saveConsumerRateInfo(@RequestBody @Validated EnterpriseSettlementInfo enterpriseSettlementInfo, BindingResult result) {
         BaseResponse response = new BaseResponse();
         try{

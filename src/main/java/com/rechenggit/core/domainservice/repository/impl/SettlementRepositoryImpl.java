@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import tk.mybatis.mapper.entity.Example;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -99,9 +100,13 @@ public class SettlementRepositoryImpl implements SettlementRepository {
         Example exampleSettlementsInfo = new Example(SettlementsInfo.class);
         exampleSettlementsInfo.createCriteria().andEqualTo("memberId", memberId);
         List<SettlementsInfo> settlementInfoList = settlementsInfoMapper.selectByExample(exampleSettlementsInfo);
-        if(!settlementInfoList.isEmpty()){
-            BeanUtils.copyProperties(settlementInfoList,enterpriseSettlementInfo.getSettlements());
+        List<Settlements>  settlementsList = new ArrayList<Settlements>();
+        Settlements settlements = new Settlements();
+        for(SettlementsInfo settlementsInfo:settlementInfoList){
+            BeanUtils.copyProperties(settlementsInfo,settlements);
+            settlementsList.add(settlements);
         }
+        enterpriseSettlementInfo.setSettlements(settlementsList);
         return enterpriseSettlementInfo;
     }
 }
