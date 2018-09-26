@@ -32,10 +32,6 @@ public class MemberManageServiceApplicationTests {
         System.out.println(111);
         // sequenceRepository.flush();
         System.out.println("200001380005");
-
-        System.out.println(JSONObject.toJSONString(memberRepository.load("200001380005")));
-        System.out.println(memberRepository.load("200001380005"));
-        System.out.println(memberRepository.load("200001380005"));
     }
 
 }

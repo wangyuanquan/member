@@ -1,6 +1,8 @@
 package com.rechenggit.core.domainservice.repository;
 
+import com.rechenggit.core.common.BaseResponse;
 import com.rechenggit.core.domain.AccountDomain;
+import com.rechenggit.core.domain.account.OpenAccountInfo;
 import com.rechenggit.core.domain.enums.AccountCategoryEnum;
 import com.rechenggit.core.exception.MaBizException;
 
@@ -89,4 +91,9 @@ public interface AccountRepository {
      * @param account
      */
 	void updateIdetStatus(AccountDomain account);
+    /**
+     * 开户
+     * @return
+     */
+    String openAccount(OpenAccountInfo openAccountInfo) throws MaBizException ;
 }

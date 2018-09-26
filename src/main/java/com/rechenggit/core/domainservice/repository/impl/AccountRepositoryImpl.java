@@ -1,6 +1,9 @@
 package com.rechenggit.core.domainservice.repository.impl;
 
+import com.netfinworks.common.lang.StringUtil;
+import com.rechenggit.core.common.BaseResponse;
 import com.rechenggit.core.domain.AccountDomain;
+import com.rechenggit.core.domain.account.OpenAccountInfo;
 import com.rechenggit.core.domain.enums.AccountCategoryEnum;
 import com.rechenggit.core.domainservice.repository.AccountRepository;
 import com.rechenggit.core.exception.MaBizException;
@@ -61,5 +64,11 @@ public class AccountRepositoryImpl implements AccountRepository {
     @Override
     public void updateIdetStatus(AccountDomain account) {
 
+    }
+
+    @Override
+    public String openAccount(OpenAccountInfo openAccountInfo) throws MaBizException {
+
+        return null;
     }
 }

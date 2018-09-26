@@ -26,12 +26,17 @@ public class MemberRepositoryImpl implements MemberRepository {
 
     @Override
     @Cacheable(value = "member", key = "#memberId")
-    public Member load(String memberId) {
-        return memberMapper.selectByPrimaryKey(memberId);
+    public Member load(String memberId) throws MaBizException{
+        Member member = memberMapper.selectByPrimaryKey(memberId);
+        if(member == null){
+            throw new MaBizException(ResponseCode.ARGUMENT_ERROR,
+                    "tm_member表中memberId" + memberId + "的相关信息不存在");
+        }
+        return member;
     }
 
     @Override
-    public Member queryBaseMember(MemberIntegratedQuery query){
+    public Member queryBaseMember(MemberIntegratedQuery query)throws MaBizException{
         Example example =new Example(MemberIdentity.class);
         example.createCriteria()
                 .andEqualTo("identity",query.getMemberIdentity())

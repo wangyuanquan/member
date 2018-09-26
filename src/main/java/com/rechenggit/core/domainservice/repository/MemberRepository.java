@@ -23,7 +23,7 @@ public interface MemberRepository {
      * @param memberId
      * @return
      */
-    Member load(String memberId);
+    Member load(String memberId)throws MaBizException;
 
-    Member queryBaseMember(MemberIntegratedQuery query) ;
+    Member queryBaseMember(MemberIntegratedQuery query)throws MaBizException ;
 }
