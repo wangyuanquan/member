@@ -13,11 +13,13 @@ import com.rechenggit.web.EnterPriseMemberControl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 
-@Repository
+@Service
 public class AccountServiceImpl implements AccountService {
     private final static Logger logger = LoggerFactory.getLogger(EnterPriseMemberControl.class);
+    @Autowired
+    private AccountRepository accountRepository;
     @Autowired
     private MemberRepository memberRepository;
     @Override
@@ -34,7 +36,7 @@ public class AccountServiceImpl implements AccountService {
         //设置创建会员账户关系
         /////需要其他信息
         //开户
-        //String accountId = accountRepository.openAccount(openAccountInfo);
+        String accountId = accountRepository.openAccount(openAccountInfo);
         BaseResponse BaseResponse = new BaseResponse();
         return BaseResponse;
     }

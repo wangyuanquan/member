@@ -34,7 +34,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-@Service
 @Repository
 public class LoginRepositoryImpl implements LoginRepository {
     private final static Logger logger = LoggerFactory.getLogger(LoginControl.class);

@@ -7,9 +7,10 @@ import com.rechenggit.core.domain.account.OpenAccountInfo;
 import com.rechenggit.core.domain.enums.AccountCategoryEnum;
 import com.rechenggit.core.domainservice.repository.AccountRepository;
 import com.rechenggit.core.exception.MaBizException;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
-
+@Repository
 public class AccountRepositoryImpl implements AccountRepository {
     @Override
     public void store(AccountDomain account) {
