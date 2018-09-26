@@ -38,9 +38,9 @@ public class SettlementServiceImpl implements SettlementService {
     public BaseResponse saveConsumerRateInfo(EnterpriseSettlementInfo enterpriseSettlementInfo) throws MaBizException {
         for(Settlements settlements :enterpriseSettlementInfo.getSettlements()){
             //防止请求注入
-            settlements.setSettlementCycle(null);
-            settlements.setMerchant(null);
-            settlements.setSettlementCycle(null);
+            if(settlements.getSettlementType() != 2){
+                return new BaseResponse(500,"parameter.invalid");
+            }
             int result = settlementRepository.saveRateInfo(enterpriseSettlementInfo.getMemberId(),settlements);
             if(result == 0){
                 return new BaseResponse(500,"unknown");

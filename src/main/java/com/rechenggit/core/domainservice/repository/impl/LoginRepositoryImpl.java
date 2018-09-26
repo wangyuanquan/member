@@ -29,6 +29,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.stereotype.Repository;
 import tk.mybatis.mapper.entity.Example;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -156,8 +157,7 @@ public class LoginRepositoryImpl implements LoginRepository {
             }else{
                 enterpriseBasicInfoMapper.updateByExampleSelective(basicInfo,exampleBasic);
             }
-            //tm_settlements_info 添加 汇率信息（暂时 支付宝、微信）
-            //支付宝
+            //tm_settlements_info 添加 汇率信息（暂时 支付宝、微信）对商家 对消费者分别添加默认值
             Example exampleSettlementsInfo1 = new Example(SettlementsInfo.class);
             exampleSettlementsInfo1.createCriteria().andEqualTo("memberId", memberId)
                     .andEqualTo("settlementType", 1);
@@ -165,14 +165,17 @@ public class LoginRepositoryImpl implements LoginRepository {
             SettlementsInfo settlementsInfo = new SettlementsInfo();
             settlementsInfo.setMemberId(memberId);
             settlementsInfo.setSettlementType(1);
-            settlementsInfo.setMerchant(0.015);
+            //支付宝
+            settlementsInfo.setAlipay(new BigDecimal("0.015"));
+            //微信
+            settlementsInfo.setWeChat(new BigDecimal("0.008"));
             if(settlementInfoList.isEmpty()){
                 settlementsInfo.setCreateTime(new Date());
                 settlementsInfoMapper.insertSelective(settlementsInfo);
             }else{
                 settlementsInfoMapper.updateByExampleSelective(settlementsInfo,exampleSettlementsInfo1);
             }
-            //微信
+            //
             Example exampleSettlementsInfo2 = new Example(SettlementsInfo.class);
             exampleSettlementsInfo2.createCriteria().andEqualTo("memberId", memberId)
                     .andEqualTo("settlementType", 2);
@@ -180,7 +183,10 @@ public class LoginRepositoryImpl implements LoginRepository {
             SettlementsInfo settlementsInfo2 = new SettlementsInfo();
             settlementsInfo2.setMemberId(memberId);
             settlementsInfo2.setSettlementType(2);
-            settlementsInfo2.setMerchant(0.008);
+            //支付宝
+            settlementsInfo.setAlipay(new BigDecimal("0.015"));
+            //微信
+            settlementsInfo.setWeChat(new BigDecimal("0.008"));
             if(settlementInfoList2.isEmpty()){
                 settlementsInfo2.setCreateTime(new Date());
                 settlementsInfoMapper.insertSelective(settlementsInfo2);

@@ -5,29 +5,29 @@ import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.validator.constraints.NotBlank;
 
+import java.math.BigDecimal;
+
 @Setter
 @Getter
 @ToString
 public class Settlements {
 
     /**
-     * 结算周期
+     * 微信
      */
-    private String settlementCycle;
+    @NotBlank(message ="{weChat.empty.error}")
+    private BigDecimal weChat;
 
     /**
-     * 对商人费率
+     * 支付宝
      */
-    private Float merchant;
-
-    /**
-     * 对消费者费率
-     */
-    private Float consumer;
+    @NotBlank(message ="{alipay.empty.error}")
+    private BigDecimal alipay;
 
     /**
      * 结算服务类型
      */
+    @NotBlank(message ="{settlementType.empty.error}")
     private Integer settlementType;
 
 }

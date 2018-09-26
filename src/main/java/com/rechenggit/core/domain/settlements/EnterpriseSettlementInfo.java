@@ -36,6 +36,10 @@ public class EnterpriseSettlementInfo {
      */
     private String bbsNumber;
     /**
+     * 结算周期
+     */
+    private String settlementCycle;
+    /**
      * 结算信息
      */
     private List<Settlements> settlements;

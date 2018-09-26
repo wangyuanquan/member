@@ -1,5 +1,6 @@
 package com.rechenggit.core.dal.dataobject;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import javax.persistence.*;
 
@@ -15,17 +16,18 @@ public class SettlementsInfo {
     private String memberId;
 
     /**
-     * 对商人费率
+     * 微信
      */
-    private Double merchant;
+    @Column(name = "we_chat")
+    private BigDecimal weChat;
 
     /**
-     * 对消费者费率
+     * 支付宝
      */
-    private Double consumer;
+    private BigDecimal alipay;
 
     /**
-     * 结算服务类型(1:微信2：支付宝)
+     * 结算服务类型(1:商家2：消费者)
      */
     @Column(name = "settlement_type")
     private Integer settlementType;
@@ -75,54 +77,54 @@ public class SettlementsInfo {
     }
 
     /**
-     * 获取对商人费率
+     * 获取微信
      *
-     * @return merchant - 对商人费率
+     * @return we_chat - 微信
      */
-    public Double getMerchant() {
-        return merchant;
+    public BigDecimal getWeChat() {
+        return weChat;
     }
 
     /**
-     * 设置对商人费率
+     * 设置微信
      *
-     * @param merchant 对商人费率
+     * @param weChat 微信
      */
-    public void setMerchant(Double merchant) {
-        this.merchant = merchant;
+    public void setWeChat(BigDecimal weChat) {
+        this.weChat = weChat;
     }
 
     /**
-     * 获取对消费者费率
+     * 获取支付宝
      *
-     * @return consumer - 对消费者费率
+     * @return alipay - 支付宝
      */
-    public Double getConsumer() {
-        return consumer;
+    public BigDecimal getAlipay() {
+        return alipay;
     }
 
     /**
-     * 设置对消费者费率
+     * 设置支付宝
      *
-     * @param consumer 对消费者费率
+     * @param alipay 支付宝
      */
-    public void setConsumer(Double consumer) {
-        this.consumer = consumer;
+    public void setAlipay(BigDecimal alipay) {
+        this.alipay = alipay;
     }
 
     /**
-     * 获取结算服务类型(1:微信2：支付宝)
+     * 获取结算服务类型(1:商家2：消费者)
      *
-     * @return settlement_type - 结算服务类型(1:微信2：支付宝)
+     * @return settlement_type - 结算服务类型(1:商家2：消费者)
      */
     public Integer getSettlementType() {
         return settlementType;
     }
 
     /**
-     * 设置结算服务类型(1:微信2：支付宝)
+     * 设置结算服务类型(1:商家2：消费者)
      *
-     * @param settlementType 结算服务类型(1:微信2：支付宝)
+     * @param settlementType 结算服务类型(1:商家2：消费者)
      */
     public void setSettlementType(Integer settlementType) {
         this.settlementType = settlementType;
