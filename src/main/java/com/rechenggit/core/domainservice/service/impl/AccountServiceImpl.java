@@ -19,8 +19,6 @@ import org.springframework.stereotype.Repository;
 public class AccountServiceImpl implements AccountService {
     private final static Logger logger = LoggerFactory.getLogger(EnterPriseMemberControl.class);
     @Autowired
-    private AccountRepository accountRepository;
-    @Autowired
     private MemberRepository memberRepository;
     @Override
     public BaseResponse openAccount(OpenAccountInfo openAccountInfo) throws MaBizException {
@@ -36,8 +34,8 @@ public class AccountServiceImpl implements AccountService {
         //设置创建会员账户关系
         /////需要其他信息
         //开户
-        String accountId = accountRepository.openAccount(openAccountInfo);
-
-        return null;
+        //String accountId = accountRepository.openAccount(openAccountInfo);
+        BaseResponse BaseResponse = new BaseResponse();
+        return BaseResponse;
     }
 }
