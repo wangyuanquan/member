@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.rechenggit.core.dal.mapper.SettlementsInfoMapper">
-  <resultMap id="BaseResultMap" type="com.rechenggit.core.dal.dataobject.SettlementsInfo">
+<mapper namespace="com.anole.core.dal.mapper.SettlementsInfoMapper">
+  <resultMap id="BaseResultMap" type="com.anole.core.dal.dataobject.SettlementsInfo">
     <!--
       WARNING - @mbggenerated
     -->
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="member_id" jdbcType="VARCHAR" property="memberId" />
-    <result column="we_chat" jdbcType="DECIMAL" property="weChat" />
-    <result column="alipay" jdbcType="DECIMAL" property="alipay" />
+    <result column="merchant" jdbcType="REAL" property="merchant" />
+    <result column="consumer" jdbcType="REAL" property="consumer" />
     <result column="settlement_type" jdbcType="INTEGER" property="settlementType" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
@@ -17,6 +17,6 @@
     <!--
       WARNING - @mbggenerated
     -->
-    id, member_id, we_chat, alipay, settlement_type, create_time, update_time
+    id, member_id, merchant, consumer, settlement_type, create_time, update_time
   </sql>
 </mapper>

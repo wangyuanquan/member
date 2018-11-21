@@ -9,7 +9,19 @@ spring:
   messages:
           basename: i18n/messages
           encoding: UTF-8
-
+  http:
+      encoding:
+          charset: UTF-8
+          enabled: true
+          force: true
+  mvc:
+    static-path-pattern:  /**
+  resources:
+    static-locations: classpath:/WEB-INF/static/
+  thymeleaf:
+    prefix: classpath:/WEB-INF/views/
+    suffix: .html
+    cache: false #关闭缓存
 server:
 
   port: 8681
@@ -19,11 +31,11 @@ mybatis:
 
   mapper-locations: classpath:mapping/*.xml
 
-  type-aliases-package: com.rechenggit.core.dal.dataobject
+  type-aliases-package: com.anole.core.dal.dataobject
 
 
 
-#pagehelper��ҳ���
+#pagehelper
 
 pagehelper:
 

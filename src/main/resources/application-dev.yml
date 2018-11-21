@@ -1,18 +1,18 @@
 logging:
-  config: classpath:logback-prod.xml
+  config: classpath:logback-dev.xml
 spring:
 
     datasource:
 
         name: member
 
-        url: jdbc:mysql://10.10.60.100:3306/member
+        url: jdbc:mysql://47.100.60.133:3306/member
 
         username: cheng
 
         password: cheng123~!.
 
-        # ʹ��druid����Դ
+        # druid
 
         type: com.alibaba.druid.pool.DruidDataSource
 
@@ -50,10 +50,6 @@ spring:
         pool:
             max-active: 20
         password:
-    data:
-         mongodb:
-
-            uri: mongodb://localhost:27017/member
 oss:
     upload:
         url: http://oss-cn-hangzhou.aliyuncs.com
