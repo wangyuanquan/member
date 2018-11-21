@@ -1,4 +1,4 @@
-package com.rechenggit.config;
+package com.anole.config;
 
 import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
 import org.slf4j.Logger;
