@@ -21,7 +21,8 @@ spring:
   thymeleaf:
     prefix: classpath:/WEB-INF/views/
     suffix: .html
-    cache: false #关闭缓存
+    cache: false
+    mode:  LEGACYHTML5
 server:
 
   port: 8681

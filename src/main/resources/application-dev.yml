@@ -6,11 +6,11 @@ spring:
 
         name: member
 
-        url: jdbc:mysql://47.100.60.133:3306/member
+        url: jdbc:mysql://localhost:3306/member
 
-        username: cheng
+        username: root
 
-        password: cheng123~!.
+        password: 123456
 
         # druid
 

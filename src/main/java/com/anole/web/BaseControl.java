@@ -21,7 +21,7 @@ public class BaseControl {
     private MessageSource messageSource;
     @Autowired
     protected HttpServletRequest request;
-
+    /*前置 国际化
     @InitBinder
     protected void initBinder(HttpServletRequest  request) {
         String lang = request.getHeader("lang");
@@ -31,6 +31,7 @@ public class BaseControl {
         }
         LocaleContextHolder.setLocale(new Locale(lang.split("_")[0], lang.split("_")[1]));
     }
+    */
     public BaseResponse success(){
         BaseResponse response = new BaseResponse(200,getMessage("operation.success"));
         return response;
