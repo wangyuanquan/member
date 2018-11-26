@@ -8,8 +8,6 @@ import java.util.List;
 
 /**
  * <p>扩展信息</p>
- * @author sean won
- * @version $Id: Extension.java, v 0.1 2010-12-18 上午10:59:46 fuyangbiao Exp $
  */
 public class Extension implements Serializable {
     private static final long serialVersionUID = 8034857888313309344L;
