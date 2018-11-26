@@ -60,7 +60,6 @@ oss:
         accesskeyid: LTAIZ4cUbZRTYoSB
         accesskeysecret: aX3TnUGHrHOCJDRMqYrCO7obuYBZ9C
         bucketname: super-app
-email:
-    url: http://139.196.120.236:8000
+
 
 

@@ -50,8 +50,5 @@ spring:
         pool:
             max-active: 20
         password:
-    data:
-         mongodb:
-           uri: mongodb://10.10.60.102:27017/member
 
 
