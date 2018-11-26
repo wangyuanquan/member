@@ -2,7 +2,6 @@ package com.anole.web;
 
 import com.anole.core.common.BaseResponse;
 import com.anole.core.exception.ValidateException;
-import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,13 +9,12 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.annotation.InitBinder;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Locale;
 
-public class BaseControl {
-    private final static Logger logger = LoggerFactory.getLogger(BaseControl.class);
+public class BaseController {
+    private final static Logger logger = LoggerFactory.getLogger(BaseController.class);
     @Autowired
     private MessageSource messageSource;
     @Autowired

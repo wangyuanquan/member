@@ -11,7 +11,7 @@ import java.util.List;
 
 
 @Controller
-public class indexControl {
+public class IndexController {
     @RequestMapping("/")
     public String index(Model model) {
         Person single = new Person("xingming", 11);

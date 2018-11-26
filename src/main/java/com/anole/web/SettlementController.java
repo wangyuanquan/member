@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(value="/settlement")
-public class SettlementControl extends BaseControl {
+public class SettlementController extends BaseController {
 
-    private final static Logger logger = LoggerFactory.getLogger(SettlementControl.class);
+    private final static Logger logger = LoggerFactory.getLogger(SettlementController.class);
     @Autowired
     private SettlementService settlementService;
 

@@ -4,7 +4,6 @@ package com.anole.web;
 import com.anole.core.common.BaseResponse;
 import com.anole.core.domain.test.Person;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -13,7 +12,7 @@ import java.util.List;
 
 
 @Controller
-public class testControl extends BaseControl  {
+public class TestController extends BaseController {
     @RequestMapping("/test")
     @ResponseBody
     public BaseResponse test() {

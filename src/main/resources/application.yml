@@ -47,11 +47,7 @@ pagehelper:
     supportMethodsArguments: true
 
     params: count=countSql
-jwt:
-  token-header: Authorization
-  expire: 3600
-  rsa-secret: 123
-  user-service: cheng-pay-api
+
 
 
 
