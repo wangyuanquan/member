@@ -59,9 +59,9 @@ public class BaseController {
         if (result.hasErrors()) {
             StringBuffer errorMsg = new StringBuffer();
             for (ObjectError objectError : result.getAllErrors()) {
-                errorMsg.append(" ").append(objectError.getDefaultMessage());
+                errorMsg.append("，").append(objectError.getDefaultMessage());
             }
-            logger.info("{}参数不合法：{}",errorMsg);
+            logger.info("参数不合法：{}",errorMsg);
             throw new ValidateException(message.append(errorMsg).toString());
         }
     }
@@ -95,10 +95,10 @@ public class BaseController {
      */
     public String getMessage(String code){
         //这里使用比较方便的方法，不依赖request.
-        Locale locale = LocaleContextHolder.getLocale();
+       // Locale locale = LocaleContextHolder.getLocale();
         //System.out.println(locale);
         //Locale.CHINESE
         //Locale.US
-        return messageSource.getMessage(code, null, code, locale);
+        return messageSource.getMessage(code, null, code, Locale.CHINESE);
     }
 }

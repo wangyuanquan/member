@@ -2,7 +2,6 @@ package com.anole.core.domainservice.repository.impl;
 
 import com.anole.core.dal.dataobject.SettlementsInfo;
 import com.anole.core.dal.mapper.SettlementsInfoMapper;
-import com.anole.core.domain.enums.ResponseCode;
 import com.anole.core.domain.settlements.EnterpriseSettlementInfo;
 import com.anole.core.domain.settlements.Settlements;
 import com.anole.core.domainservice.repository.SettlementRepository;

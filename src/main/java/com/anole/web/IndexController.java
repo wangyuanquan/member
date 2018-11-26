@@ -40,11 +40,6 @@ public class IndexController {
         model.addAttribute("people", people);
         return "mall/index";
     }
-    @RequestMapping("/login")
-    public String login(Model model) {
-
-        return "mall/login";
-    }
     @RequestMapping("/erjiclass")
     public String erji(Model model) {
 
