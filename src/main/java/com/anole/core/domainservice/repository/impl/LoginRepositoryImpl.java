@@ -20,6 +20,9 @@ public class LoginRepositoryImpl implements LoginRepository {
         Example exampleUserInfo = new Example(UserInfo.class);
         exampleUserInfo.createCriteria().andEqualTo("loginName", loginName);
         List<UserInfo> UserInfoList = userInfoMapper.selectByExample(exampleUserInfo);
+        if (UserInfoList.isEmpty()){
+            return null;
+        }
         return UserInfoList.get(0);
     }
 }

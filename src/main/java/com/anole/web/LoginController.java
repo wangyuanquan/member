@@ -2,6 +2,7 @@ package com.anole.web;
 
 
 import com.anole.core.common.BaseResponse;
+import com.anole.core.dal.dataobject.UserInfo;
 import com.anole.core.domain.login.UserLoginRequest;
 import com.anole.core.domainservice.service.LoginService;
 import com.anole.core.domainservice.service.SettlementService;
@@ -46,7 +47,8 @@ public class LoginController extends BaseController {
         try{
             validate(result);
             //登录验证
-            response = loginService.checkLogin(userLogin);
+            UserInfo user  = loginService.checkLogin(userLogin);
+
         }catch (ValidateException e){
             logger.error("登录信息验证失败",e.getMessage());
             response.setStatus(505);

@@ -90,12 +90,14 @@ public enum ResponseCode {
     PASSWORD_EQUAL_LOGIN_PASSWORD(263,"password_equal_login_password"),
     PASSWORD_LOCKED(264,"password_locked"),
 
+
     LOGIN_PASSWORD_UPDATE_FAIL(265,"login_password_update_fail"),
     LOGIN_PASSWORD_CHECK_FAIL(266,"login_password_check_fail"),
     LOGIN_PASSWORD_NOT_EXISTS(267,"login_password_not_exists"),
     LOGIN_PASSWORD_LOCKED(274,"login_password_locked"),
     PASSWORD_FLAG_NULL(275,"password_flag_null"),
     LOGIN_PASSWORD_EQUAL_PAY(276,"login_password_equal_pay"),
+    LOGIN_PASSWORD_ERROR(276,"login.pwd.fail"),
 
     CONTACT_EXIST(280, "contact_exist"),
     CONTACT_NOT_EXIST(281, "contact_not_exist"),

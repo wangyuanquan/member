@@ -22,11 +22,13 @@ public class LoginServiceImpl implements LoginService {
     private LoginRepository loginRepository;
 
     @Override
-    public BaseResponse checkLogin(UserLoginRequest userLogin) throws MaBizException {
+    public UserInfo checkLogin(UserLoginRequest userLogin) throws MaBizException {
         UserInfo user = loginRepository.queryUserInfoByName(userLogin.getLoginName());
         if(user == null){
-            throw new MaBizException(ResponseCode.ARGUMENT_ERROR, "相关信息不存在");
+            throw new MaBizException(ResponseCode.MEMBER_NOT_EXIST, "账户名不存在");
+        }else if(!userLogin.getPassword().equals(user.getLoginPassword())){
+            throw new MaBizException(ResponseCode.LOGIN_PASSWORD_ERROR, "账户名或密码错误");
         }
-        return null;
+        return user;
     }
 }
